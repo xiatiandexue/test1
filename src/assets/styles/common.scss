@@ -1,0 +1,341 @@
+/*修复Element Tabs 标签页遮挡问题 表格复选框遮挡问题*/
+
+.el-tabs__nav {
+  z-index: 0 !important;
+}
+
+.el-tabs__nav-wrap::after {
+  z-index: 0 !important;
+}
+
+.el-checkbox__inner {
+  z-index: 0 !important;
+}
+
+.el-button--small {
+  padding: 0 15px;
+}
+
+.fixed-width .el-button--mini {
+  padding: 0 15px;
+}
+
+.el-button--mini {
+  padding: 0 15px;
+}
+
+// .el-container{
+//   float: right;
+// }
+// 常规按钮
+.el-button {
+  height: 28px;
+  line-height: 28px;
+  background: url('../images/common/bg-btn.png');
+  border: 1px solid #cfcfcf !important;
+  color: #303133;
+}
+
+.el-button:hover {
+  opacity: 0.8;
+  color: #303133;
+}
+
+.el-button:focus {
+  opacity: 0.8;
+  color: #303133;
+}
+
+// 确定，提交等按钮
+.el-button--primary {
+  background: url('../images/common/bg-btn-primary.png') !important;
+  border: 1px solid #7FD7F9 !important;
+  color: #303133;
+}
+
+.el-button--primary:hover {
+  opacity: 0.8;
+  color: #303133;
+}
+
+.el-button--primary:focus {
+  opacity: 0.8;
+  color: #303133;
+}
+
+// 带图标类型的无边框按钮
+.el-button--info {
+  background: 0 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: 0 !important;
+}
+
+.el-button--info:hover {
+  color: #409eff;
+  background: 0 0 !important;
+  text-decoration: underline;
+}
+
+.el-button--info:focus {
+  color: #409eff;
+  background: 0 0 !important;
+  text-decoration: underline;
+}
+
+// 文本类型的无边框按钮
+.el-button--text {
+  color: #409eff;
+  background: 0 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: 0 !important;
+}
+
+.el-button--text:hover {
+  color: #409eff;
+  background: 0 0 !important;
+  text-decoration: underline;
+}
+
+.el-button--text:focus {
+  color: #409eff;
+  background: 0 0 !important;
+  text-decoration: underline;
+}
+
+.el-select {
+  .el-input.is-focus {
+    .el-input__inner {}
+
+    .el-input__inner:focus {
+      border-color: #13b6f4;
+    }
+  }
+}
+
+.el-form-item--small {
+
+  .el-form-item__content,
+  .el-form-item__label {
+    line-height: 28px;
+  }
+
+  .el-input__inner {
+    height: 28px;
+    line-height: 28px;
+    padding-top: 2px;
+  }
+}
+
+.el-tabs--card>.el-tabs__header {
+  .el-tabs__item {
+    height: 26px;
+    line-height: 26px;
+    background: url('../images/common/bg-btn.png') !important;
+  }
+
+  .el-tabs__item.is-active {
+    color: #015b8b;
+    background: 0 0 !important;
+  }
+}
+
+// bong
+.el-dialog__header {
+  height: 57px;
+  background: url('../images/common/bg-dialog-title.png');
+  border-radius: 5px;
+}
+
+.el-dialog {
+  border-radius: 5px;
+}
+
+#app {
+  overflow: hidden;
+
+  .header-top {
+    // background: #92e7fd !important;
+    height: 65px !important;
+    background: url('../images/common/bg-header.png') !important;
+  }
+
+  .app-wrapper {
+    overflow: hidden;
+  }
+
+  .tags-view-container {
+    .tags-view-wrapper {
+      border-bottom: none;
+
+      .scroll-wrapper {
+        bottom: 0;
+
+        .tags-view-item {
+          border: 1px solid #13b6f4;
+          border-radius: 5px 5px 0 0;
+          color: #46c3f1;
+          font-weight: bold;
+          padding-left: 1em;
+        }
+
+        .tags-view-item.active {
+          background: url('../images/common/bg-menu-item.png');
+          color: #015b8b;
+        }
+
+        .tags-view-item.active[data-v-68fb4ccc]::before {
+          content: '';
+          display: none;
+        }
+      }
+    }
+  }
+
+
+
+  // cheky
+  .app-container {
+    .el-dialog__wrapper {
+      .el-dialog__header {
+        background: url('../images/common/bg-menu-item.png');
+        color: #015b8b;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        border-radius: 5px;
+        height: 3.3rem;
+      }
+
+      .el-dialog__body {
+        padding: 10px 20px;
+
+        .app-container {
+          padding: 0 20px;
+        }
+
+        .dialog-footer {
+          width: 95%;
+          text-align: right;
+          margin-bottom: 0.8rem;
+        }
+      }
+
+      .el-dialog {
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .hideSidebar {
+    .sidebar-container {
+      width: 56px !important;
+    }
+
+    .main-container {
+      margin-left: 56px !important;
+    }
+  }
+
+  .sidebar-container {
+    top: 65px;
+    width: 200px !important;
+    padding: 0 10px !important;
+    background: #eff1f1 !important;
+
+    .el-scrollbar__wrap {
+      overflow: hidden !important;
+      margin-right: 0 !important;
+
+      .el-menu {
+        background: transparent !important;
+
+        .menu-wrapper {
+          .el-submenu__title {
+            height: 34px !important;
+            line-height: 34px !important;
+            margin-top: 6px !important;
+            background: url('../images/common/bg-menu-item.png');
+            border: 1px solid #13b6f4 !important;
+            border-radius: 3px;
+            color: #015b8b !important;
+            font-weight: bold;
+          }
+
+          .el-menu-item {
+            height: 30px !important;
+            line-height: 30px !important;
+            margin-top: 6px !important;
+            background: #e6f7ff !important;
+            border: 1px solid #b2bec5 !important;
+            border-radius: 3px;
+            color: #015b8b !important;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+          }
+
+          .el-menu-item:hover {
+            background: #d7e7ee !important;
+          }
+
+          .router-link-active {
+            .el-menu-item {
+              background: #d7e7ee !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main-container {
+    top: 65px;
+    margin-left: 200px !important;
+
+    .app-container {
+      .pagination-container {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.el-menu--vertical {
+  .el-menu {
+    // background: #EFF1F1 !important;
+    background: transparent !important;
+
+    .el-menu-item {
+      height: 30px !important;
+      line-height: 30px !important;
+      margin-top: 6px !important;
+      background: #e6f7ff !important;
+      border: 1px solid #b2bec5 !important;
+      border-radius: 3px;
+      color: #015b8b !important;
+      font-weight: bold;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .el-menu-item:hover {
+      background: #d7e7ee !important;
+    }
+
+    .router-link-active {
+      .el-menu-item {
+        background: #d7e7ee !important;
+      }
+    }
+  }
+}
+
+// 图标大小
+.svg-icon[data-v-c8a70580] {
+  width: 1.3em !important;
+  height: 1.3em !important;
+  vertical-align: -0.26em !important;
+  fill: currentColor;
+  overflow: hidden;
+}
