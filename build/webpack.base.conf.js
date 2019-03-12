@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const vuxLoader = require("vux-loader")
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -19,10 +20,10 @@ const createLintingRule = () => ({
   // }
 })
 
-module.exports = {
+const webpackConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    app: ["babel-polyfill",'./src/admin/main.js']
   },
   output: {
     path: config.build.assetsRoot,
@@ -36,11 +37,20 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '~': resolve('src/assets')
     }
   },
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
+      {
+        test: /\.css$/,
+        include: [
+          /src/, //表示在src目录下的css需要编译 
+          '/node_modules/element-ui/lib/' //增加此项 
+        ],
+        loader: 'style-loader!css-loader'
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -90,3 +100,8 @@ module.exports = {
     child_process: 'empty'
   }
 }
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: [{
+    name: 'vux-ui'
+  }]
+})
