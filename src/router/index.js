@@ -12,6 +12,11 @@ export const constantRouterMap = [
       hidden: true
     },
     {
+      path: '/authredirect',
+      component: () => import('@/view/login/authredirect'),
+      hidden: true
+    },
+    {
       path: '/',
       component: Layout,
       redirect: '/dashboard',

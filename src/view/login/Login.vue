@@ -7,8 +7,8 @@
       </div><!-- main头部结尾-->
       <div id="login_main_center">   
           <el-form :model="loginForm" :rules="rules2"  ref="loginForm" label-width="60px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="username" >
-              <el-input type="text" v-model="loginForm.username" auto-complete="off"></el-input>
+            <el-form-item label="用户名" prop="userCode" >
+              <el-input type="text" v-model="loginForm.userCode" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
               <el-input type="password"  v-model="loginForm.password" auto-complete="off"></el-input>
@@ -46,7 +46,7 @@
         },
         // 表单验证规则
         rules2: {
-          username: [
+          userCode: [
             { validator: validateUsername, trigger: 'blur' }
           ],
           password: [
