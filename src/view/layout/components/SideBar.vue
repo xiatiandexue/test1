@@ -26,6 +26,24 @@
         </el-submenu>
 
       </div>
+      <div class="menu-wrapper">
+        <el-submenu index="2">
+          <template slot="title">
+            <!-- <svg-icon :icon-class="item.meta.icon"/> -->
+            <span slot="title">成绩管理</span>
+          </template>
+
+          <template>
+            <router-link to="/score" >
+              <el-menu-item index="/score">
+                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
+                <span slot="title">查看成绩</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+        </el-submenu>
+
+      </div>
     </el-menu>
   </el-scrollbar>
 </template>
@@ -41,6 +59,10 @@ export default {
       // 'permission_routers',
       'sidebar'
     ]),
+    // isCollapse() {
+    //   // console.log("privRouters",this.privRouters)
+    //   return !this.sidebar.opened
+    // }
   }
 }
 </script>

@@ -86,6 +86,6 @@ export default new Router({
   mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap, // _router
-  base: process.env.NODE_ENV === 'production' ? '/ui-web/' : '/' // ui-web生产环境是tomcat时文件夹的名字
+  base: process.env.NODE_ENV === 'production' ? '/examination/' : '/' // ui-web生产环境是tomcat时文件夹的名字
 })
 

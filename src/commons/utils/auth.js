@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
-const NameKey = 'Admin-Name'
+const TokenKey = 'Admin'
+const NameKey = 'Name'
 var TimeKey = 'LoginTime'
 
 export function getToken () {

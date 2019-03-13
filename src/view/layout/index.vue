@@ -7,15 +7,25 @@
         <div class="name">登录用户：{{name}}</div>
 
         <div class="right-menu">
-          <!-- <el-dropdown class="avatar-container right-menu-item"
+          <el-dropdown class="avatar-container right-menu-item"
                        trigger="click">
             <div class="avatar-wrapper">
-              <img src="@/assets/images/dashboard/index_icon.png"
+              <img src="@/assets/images/index_icon.png"
                    class="user-avatar">
               <i class="el-icon-caret-bottom" />
-            </div> -->
-            <span style="display:block;"
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <router-link to="/">
+                <el-dropdown-item>
+                  首页
+                </el-dropdown-item>
+              </router-link>
+              <el-dropdown-item divided>
+                <span style="display:block;"
                   @click="logout">退出</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
 
@@ -31,6 +41,7 @@
           <navbar />
           <tags-view />
         </sticky> -->
+        <div style="height: 70px;"></div>
         <app-main />
       </div>
 
@@ -95,7 +106,7 @@ export default {
   }
 }
 .drawer-bg {
-  background: #000;
+  /* background: #000; */
   opacity: 0.3;
   width: 100%;
   top: 0;
@@ -105,6 +116,7 @@ export default {
 }
 .header-top {
   position: fixed;
+  top: 0px;
   width: 100%;
   height: 3rem;
   z-index: 99;

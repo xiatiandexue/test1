@@ -81,7 +81,7 @@
            score:'87'
           },
         ],
-        listLoading:true,
+        listLoading:false,
       }
     },
     method: {
