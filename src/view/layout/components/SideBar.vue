@@ -16,8 +16,8 @@
           </template>
 
           <template>
-            <router-link to="/updataPSW" >
-              <el-menu-item index="/updataPSW">
+            <router-link to="/updatePSW" >
+              <el-menu-item index="/updatePSW">
                 <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">修改密码</span>
               </el-menu-item>
@@ -38,6 +38,32 @@
               <el-menu-item index="/score">
                 <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">查看成绩</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+        </el-submenu>
+
+      </div>
+      <div class="menu-wrapper">
+        <el-submenu index="3">
+          <template slot="title">
+            <!-- <svg-icon :icon-class="item.meta.icon"/> -->
+            <span slot="title">试卷管理</span>
+          </template>
+
+          <template>
+            <router-link to="/examinationPaper/autoGeneration" >
+              <el-menu-item index="/examinationPaper/autoGeneration">
+                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
+                <span slot="title">自动组卷</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+          <template>
+            <router-link to="/examinationPaper" >
+              <el-menu-item index="/examinationPaper">
+                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
+                <span slot="title">试卷管理</span>
               </el-menu-item>
             </router-link>
           </template>

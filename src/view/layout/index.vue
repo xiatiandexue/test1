@@ -31,9 +31,7 @@
 
     </div>
     <div class="app-wrapper">
-      <div 
-           class="drawer-bg"
-           @click="handleClickOutside" />
+      
       <sidebar class="sidebar-container" />
       <div class="main-container"
            style="position: static;top: 0;">
@@ -81,9 +79,7 @@ export default {
         this.$router.push({ path: "/login" });
       });
     },
-    handleClickOutside () {
-      this.$store.dispatch("closeSideBar", { withoutAnimation: false });
-    },
+    
     // getBubble() {
     //   bubbleEmergencyEvent().then(res => {
     //     this.bubbleNum = res.data;

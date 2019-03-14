@@ -1,15 +1,15 @@
 <template>
     <div class="app-container score">
         <!--筛选条件-->
-        <div class="filter-container">
+        <!-- <div class="filter-container">
             <el-form :inline="true">
                 <el-form-item label="科目">
                  <el-input v-model="listQuery.subject" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
                 </el-form-item>
-                <!-- <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button> -->
+                <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
                 <el-button @click="handleFilter"><svg-icon icon-class="btn-search" />搜索</el-button>
             </el-form>
-        </div>
+        </div> -->
         <!--工具栏-->
         <!-- <div class="operate-container">
             <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
@@ -17,34 +17,34 @@
         <!-- </div> -->
         <!--表格数据-->
         <div class="data-container">
-            <el-table v-loading="listLoading" max-height="600" :key="tableKey" :data="list" border highlight-current-row>
-                <!-- <el-table-column type="selection" width="55" align="center">
-                </el-table-column> -->
-                <el-table-column type="index" label="序号" width="60" align="center">
-                </el-table-column>
-                <el-table-column label="科目" align="center">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.subject }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="考试时间" align="center">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.time }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="成绩" align="center">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.score }}</span>
-                    </template>
-                </el-table-column>
-                 <!-- <el-table-column :label="$t('table.actions')" align="center" width="230">
-                    <template slot-scope="scope">
-                        <el-button type="info" @click="handleUpdate(scope.row)"><svg-icon icon-class="btn-edit" />修改</el-button>
-                        <el-button type="info" @click="dictDetails(scope.row)"><svg-icon icon-class="btn-view" />管理</el-button>
-                        <el-button type="info" @click="handleDelete(scope.row)"><svg-icon icon-class="btn-delete" />{{ $t('table.delete') }}</el-button>
-                    </template>
-                </el-table-column> -->
-            </el-table>
+          <el-table v-loading="listLoading" max-height="600" :data="list" border highlight-current-row>
+              <!-- <el-table-column type="selection" width="55" align="center">
+              </el-table-column> -->
+              <el-table-column type="index" label="序号" width="60" align="center">
+              </el-table-column>
+              <el-table-column label="科目" align="center">
+                  <template slot-scope="scope">
+                      <span>{{ scope.row.subject }}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column label="考试时间" align="center">
+                  <template slot-scope="scope">
+                      <span>{{ scope.row.time }}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column label="成绩" align="center">
+                  <template slot-scope="scope">
+                      <span>{{ scope.row.score }}</span>
+                  </template>
+              </el-table-column>
+                <!-- <el-table-column :label="$t('table.actions')" align="center" width="230">
+                  <template slot-scope="scope">
+                      <el-button type="info" @click="handleUpdate(scope.row)"><svg-icon icon-class="btn-edit" />修改</el-button>
+                      <el-button type="info" @click="dictDetails(scope.row)"><svg-icon icon-class="btn-view" />管理</el-button>
+                      <el-button type="info" @click="handleDelete(scope.row)"><svg-icon icon-class="btn-delete" />{{ $t('table.delete') }}</el-button>
+                  </template>
+              </el-table-column> -->
+          </el-table>
         </div>
         <!--分页控件-->
         <div class="pagination-container">
@@ -96,6 +96,18 @@
           }
           this.listLoading = false;
         });
+      },
+
+      //=====分页相关=====
+      //控制每页显示条数
+      handleSizeChange(val) {
+        this.searchData.pageSize = val;
+        this.getList();
+      },
+      //跳转页码
+      handleCurrentChange(val) {
+        this.searchData.pageNum = val;
+        this.getList();
       },
     }
   }

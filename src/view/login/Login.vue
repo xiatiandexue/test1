@@ -13,6 +13,13 @@
             <el-form-item label="密码" prop="password">
               <el-input type="password"  v-model="loginForm.password" auto-complete="off"></el-input>
             </el-form-item>
+            <el-form-item label="用户类型">
+              <el-radio-group v-model="loginForm.role">
+                <el-radio label="学生"></el-radio>
+                <el-radio label="教师"></el-radio>
+                <el-radio label="管理员"></el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item>
               <!-- <span id="login_button_user"><el-button type="primary" @click="doLogin" :loading="loading">登录</el-button></span> -->
               <span id="login_button_admin"><el-button type="success" @click="adminLogin">登录</el-button></span>
@@ -42,7 +49,8 @@
         login_img: require("@/assets/images/login.jpg"),
         loginForm: {
           username: '',
-          password: ''
+          password: '',
+          role: ''
         },
         // 表单验证规则
         rules2: {

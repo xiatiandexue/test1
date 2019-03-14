@@ -3,7 +3,10 @@ import Router from 'vue-router'
 import Layout from '@/view/layout/'
 
 Vue.use(Router)
-
+const paperRouter = [
+  {path: '/examinationPaper/autoGeneration', component: () => import('@/view/examinationPaper/autoGeneration'), name: 'AutoGeneration', meta: { title: '自动组卷'}},
+  {path: '/examinationPaper/', component: () => import('@/view/examinationPaper/'), name: 'Paper', meta: { title: '试卷管理'}}
+]
 export const constantRouterMap = [
     {
       path: '/login',
@@ -32,16 +35,16 @@ export const constantRouterMap = [
       ]
       },
       {
-        path: '/updatapsw',
+        path: '/updatepsw',
         component: Layout,
-        redirect: '/updatapsw',
+        redirect: '/updatepsw',
         name: 'updataIndex',
         meta: { title: '密码管理' },
         children: [
           {
-            path: '/updatapsw',
-            component: () => import('@/view/updataPSW/'),
-            name: 'updatapsw',
+            path: '/updatepsw',
+            component: () => import('@/view/updatePSW/'),
+            name: 'updatepsw',
             meta: { title: '修改密码'}
           }
         ]
@@ -60,6 +63,14 @@ export const constantRouterMap = [
             meta: { title: '查看成绩'}
           }
         ]
+      },
+      {
+        path: '/examinationPaper',
+        component: Layout,
+        redirect: '/examinationPaper/autoGeneration',
+        name: 'paperIndex',
+        meta: { title: '试卷管理', icon: 'component' },
+        children: paperRouter
       },
     // {
     //   path: '',
