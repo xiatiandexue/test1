@@ -5,7 +5,7 @@ import Layout from '@/view/layout/'
 Vue.use(Router)
 const paperRouter = [
   {path: '/examinationPaper/autoGeneration', component: () => import('@/view/examinationPaper/autoGeneration'), name: 'AutoGeneration', meta: { title: '自动组卷'}},
-  {path: '/examinationPaper/', component: () => import('@/view/examinationPaper/'), name: 'Paper', meta: { title: '试卷管理'}}
+  {path: '/examinationPaper/', component: () => import('@/view/examinationPaper/'), name: 'Paper', meta: { title: '试卷管理'}},
 ]
 export const constantRouterMap = [
     {
