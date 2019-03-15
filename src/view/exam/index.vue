@@ -1,18 +1,29 @@
 <template>
-  <div class="updatePaper">
+  <div class="exam">
+    <h3 class="text-center marginT10">{{paperData.subject}}</h3>
+    <div class="text-center marginT10">考试时长：{{paperData.time}}分钟  总分：{{paperData.score}}分</div>
+    <hr>  
+    <div class="submit-box" ref="submitBox">
+      <el-button @click="submit" type="primary" class="submit-btn">提交试卷</el-button>
+      <div class="timeout">
+        <p>距离考试结束</p>
+        <p>{{time}}</p>
+      </div>
+    </div>
     <div class="main">
       <div class="single" v-if="singleQuestions.length>0">
         <h3>一、单选题（只有一个正确答案）</h3>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in singleQuestions" :key="item.id">
             <p class="question-title">{{index+1}} 、{{item.name}}</p>
+
             <span class="option"
                   v-if="item.type!='judgement'&&item.type!='Q&A'"item
                   v-for="(item1,index1) in item.selection" :key="item1.id">
               <el-radio v-model="item.sanswer" :label="options[index1]" :key="index1">
-                {{options[index1]}}、{{item1}}
+              {{options[index1]}}、{{item1}}
               </el-radio>
-            </span>
+              </span>
           </li>
         </ul>
       </div>
@@ -23,7 +34,7 @@
           <li class="marginB10" v-for="(item,index) in QAQuestions" :key="item.id">
             <p class="question-title">{{index+1}} 、{{item.name}}</p>
             <el-input
-              class="textarea"
+             class="textarea"
               type="textarea"
               :rows="3"
               placeholder="请输入内容"
@@ -74,7 +85,27 @@
         scroll: document.body.scrollTop
       }
     },
-    
+    computed:{
+      time:function(){
+        let time = this.examTime;
+        let hour = 0;
+        let mm = 0;
+        let ss = 0;
+        hour = Math.floor(time / 3600);
+        mm = Math.floor((time / 60 % 60));
+        ss = Math.floor((time % 60));
+        return  `${hour}小时${mm}分钟${ss}秒`;
+      }
+    },
+    watch: {
+      time(curVal, oldVal) {
+        if(curVal == "小时分钟秒"){
+          this.$message.error('考试时间到，强制提交!');
+          let isMust = true;
+          this.submit(isMust);
+        }
+      }
+    },
     created() {
       this.PaperId = this.$route.query.PaperId;
     },
@@ -261,7 +292,7 @@
   }
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
-  .updatePaper{
+  .exam{
     padding: 20px 0;
     .main{
       padding: 20px 40px;

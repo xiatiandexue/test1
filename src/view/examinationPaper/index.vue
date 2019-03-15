@@ -105,8 +105,13 @@ export default {
     getList() {
 
     },
-    handleUpdate() {
-
+    handleUpdate(row) {
+      this.$router.push({
+        path:``,
+        query: {
+          
+        }
+      })
     },
     //刪除按钮操作
     handleDelete(row) {
