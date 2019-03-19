@@ -67,6 +67,14 @@
               </el-menu-item>
             </router-link>
           </template>
+          <template>
+            <router-link to="/examinationPaper/updatePaper" >
+              <el-menu-item index="/examinationPaper/updatePaper">
+                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
+                <span slot="title">更新试卷</span>
+              </el-menu-item>
+            </router-link>
+          </template>
         </el-submenu>
 
       </div>

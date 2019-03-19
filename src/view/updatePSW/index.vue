@@ -1,4 +1,5 @@
 <template>
+  <div class="updatePSW">
   <el-form :model="addUserFormData" ref="vueElForm" :rules="rules" label-width="80px">
     <el-form-item label="密码"  prop="password">
       <el-input type="password" v-model="addUserFormData.password" placeholder="密码"></el-input>
@@ -10,6 +11,7 @@
         <el-button type="primary" @click="update">确 定</el-button>
     </el-form-item>
   </el-form>
+</div>
 </template>
 
 <script>
@@ -56,3 +58,14 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/scss" lang="scss">
+.updatePSW{
+  width: 40vh;
+  height: 40vh;
+  position: relative;
+  top:5vh;
+  left:20vh;
+  bottom: 1px solid #807e7e;
+  vertical-align: middle;
+}
+</style>

@@ -38,7 +38,7 @@
         </el-table-column>
           <el-table-column label="操作" align="center" width="230">
             <template slot-scope="scope">
-              <el-button type="info" @click="handleUpdate(scope.row)">修改</el-button>
+              <el-button type="info" @click="handleUpdate">修改</el-button>
               <el-button type="info" @click="handleDelete(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -105,13 +105,20 @@ export default {
     getList() {
 
     },
-    handleUpdate(row) {
-      this.$router.push({
-        path:``,
-        query: {
+    // handleUpdate(row) {
+    //   this.$router.push({
+    //     path:`/examinationPaper/updatePaper`,
+    //     query: {
           
-        }
-      })
+    //     }
+    //   })
+    // },
+    handleUpdate() {
+      debugger
+      this.$router.push({
+        // path: '/examinationPaper/updatePaper'
+        name:'updatePaper'
+      });
     },
     //刪除按钮操作
     handleDelete(row) {

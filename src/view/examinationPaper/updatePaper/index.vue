@@ -7,7 +7,6 @@
           <li class="marginB10" v-for="(item,index) in singleQuestions" :key="item.id">
             <p class="question-title">{{index+1}} 、{{item.name}}</p>
             <span class="option"
-                  v-if="item.type!='judgement'&&item.type!='Q&A'"item
                   v-for="(item1,index1) in item.selection" :key="item1.id">
               <el-radio v-model="item.sanswer" :label="options[index1]" :key="index1">
                 {{options[index1]}}、{{item1}}
@@ -51,7 +50,8 @@
   </div>
 </template>
 <script>
-  export default{
+export default {
+    name: 'UpdatePaper',
     data(){
       return {
         PaperId: '',
@@ -65,12 +65,23 @@
         nowTime: '',
         examTime: '',
         timer: null,
-        singleQuestions:[],
+        // singleQuestions:[],
+        singleQuestions:[
+          {name:'测试1',
+           selection:[
+             '1','2','3','4'
+           ]
+          },
+          {name:'测试2',
+           selection:[
+             '1','2','3','4'
+           ]
+          },
+        ],
         multiQuestions:[],
         QAQuestions:[],
         judgeQuestions:[],
-        options:['A','B','C','D','E','F','G','H','I','J','K',
-          'L','M','N','O','P','Q','R','S','T'],
+        options:['A','B','C','D'],
         scroll: document.body.scrollTop
       }
     },
