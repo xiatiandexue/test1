@@ -8,7 +8,7 @@
       <el-input type="password" v-model="addUserFormData.password_confirm" placeholder="确认密码"></el-input>
     </el-form-item>
     <el-form-item>
-        <el-button type="primary" @click="update">确 定</el-button>
+        <el-button type="primary" @click="update()">确 定</el-button>
     </el-form-item>
   </el-form>
 </div>
@@ -33,11 +33,11 @@ export default {
         password:'',
         password_confirm:''
       },
-      // rules:{
-      //   password_confirm:[
-      //     {require: true, validator: validatePass, trigger: 'blur' }
-      //   ]    
-      // }
+      rules:{
+        password_confirm:[
+          {require: true, validator: validatePass, trigger: 'blur' }
+        ]    
+      }
     }
   },
   method: {
@@ -62,10 +62,7 @@ export default {
 .updatePSW{
   width: 40vh;
   height: 40vh;
-  position: relative;
-  top:5vh;
-  left:20vh;
-  bottom: 1px solid #807e7e;
   vertical-align: middle;
+  margin: 20px auto;
 }
 </style>

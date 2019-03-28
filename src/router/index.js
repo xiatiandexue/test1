@@ -4,10 +4,16 @@ import Layout from '@/view/layout/'
 
 Vue.use(Router)
 const paperRouter = [
-  {path: '/examinationPaper/autoGeneration', component: () => import('@/view/examinationPaper/autoGeneration'), name: 'AutoGeneration', meta: { title: '自动组卷'}},
   {path: '/examinationPaper/', component: () => import('@/view/examinationPaper/'), name: 'Paper', meta: { title: '试卷管理'}},
-  {path: '/examinationPaper/updatePaper', component: () =>('@/view/examinationPaper/updatePaper'), name: 'UpdatePaper', meta: { title: '更新试卷' }}
+  {path: '/examinationPaper/autoGeneration', component: () => import('@/view/examinationPaper/autoGeneration'), name: 'AutoGeneration', meta: { title: '自动组卷'}},
+  {path: '/examinationPaper/updatePaper', component: () => import('@/view/examinationPaper/updatePaper'), name: 'UpdatePaper', meta: { title: '更新试卷'}},
 ]
+const itemRouter = [
+  {path: '/itemBank/singleSelect', component: () => import('@/view/itemBank/singleSelect'), name: 'SingleSelect', meta: { title: '单选题管理'}},
+  {path: '/itemBank/SAQ', component: () => import('@/view/itemBank/SAQ'), name: 'SAQ', meta: { title: '简答题管理'}},
+]
+
+
 export const constantRouterMap = [
     {
       path: '/login',
@@ -72,6 +78,29 @@ export const constantRouterMap = [
         name: 'paperIndex',
         meta: { title: '试卷管理', icon: 'component' },
         children: paperRouter
+      },
+      {
+        path: '/itemBank',
+        component: Layout,
+        redirect: '/itemBank/singleSelect',
+        name: 'itemIndex',
+        meta: { title: '题库管理', icon: 'component' },
+        children: itemRouter
+      },
+      {
+        path: '/user',
+        component: Layout,
+        redirect: '/user',
+        name: 'userIndex',
+        meta: { title: '用户管理', icon: 'component' },
+        children: [
+          {
+            path: '/user',
+            component: () => import('@/view/user/'),
+            name: 'user',
+            meta: { title: '用户管理'}
+          }
+        ]
       },
     // {
     //   path: '',

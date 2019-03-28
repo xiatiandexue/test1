@@ -13,8 +13,8 @@
         <!--工具栏-->
         <!-- <div class="operate-container">
             <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
-          <!--  <el-button @click="batchRemove" :disabled="this.sels.length===0"><svg-icon icon-class="btn-delete" />批量删除</el-button> -->
-        <!-- </div> -->
+          <el-button @click="batchRemove" :disabled="this.sels.length===0"><svg-icon icon-class="btn-delete" />批量删除</el-button>
+        </div>-->
         <!--表格数据-->
         <div class="data-container">
           <el-table v-loading="listLoading" max-height="600" :data="list" border highlight-current-row>
@@ -67,6 +67,7 @@
             },
             subject:"",
         },
+        total:3,
         list:[
           {subject:'语文',
            time:'2019-01-03',

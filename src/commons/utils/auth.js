@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'Admin'
 const NameKey = 'Name'
+const RoleKey = 'Role'
 var TimeKey = 'LoginTime'
 
 export function getToken () {
@@ -26,6 +27,18 @@ export function setName (name) {
 
 export function removeName () {
   return Cookies.remove(NameKey)
+}
+
+export function getRole () {
+  return Cookies.get(RoleKey)
+}
+
+export function setRole (role) {
+  return Cookies.set(RoleKey, role)
+}
+
+export function removeRole () {
+  return Cookies.remove(RoleKey)
 }
 
 export function getTime () {

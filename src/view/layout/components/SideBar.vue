@@ -11,14 +11,13 @@
       <div class="menu-wrapper">
         <el-submenu index="1">
           <template slot="title">
-            <!-- <svg-icon :icon-class="item.meta.icon"/> -->
+            <svg-icon icon-class="updatePsw"/>
             <span slot="title">密码管理</span>
           </template>
 
           <template>
             <router-link to="/updatePSW" >
               <el-menu-item index="/updatePSW">
-                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">修改密码</span>
               </el-menu-item>
             </router-link>
@@ -29,7 +28,7 @@
       <div class="menu-wrapper">
         <el-submenu index="2">
           <template slot="title">
-            <!-- <svg-icon :icon-class="item.meta.icon"/> -->
+            <svg-icon icon-class="item.meta.icon"/>
             <span slot="title">成绩管理</span>
           </template>
 
@@ -47,14 +46,31 @@
       <div class="menu-wrapper">
         <el-submenu index="3">
           <template slot="title">
-            <!-- <svg-icon :icon-class="item.meta.icon"/> -->
+            <svg-icon icon-class="item.meta.icon"/>
+            <span slot="title">用户管理</span>
+          </template>
+
+          <template>
+            <router-link to="/user" >
+              <el-menu-item index="/user">
+                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
+                <span slot="title">用户管理</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+        </el-submenu>
+
+      </div>
+      <div class="menu-wrapper">
+        <el-submenu index="4">
+          <template slot="title">
+            <svg-icon icon-class="item.meta.icon"/>
             <span slot="title">试卷管理</span>
           </template>
 
           <template>
             <router-link to="/examinationPaper/autoGeneration" >
               <el-menu-item index="/examinationPaper/autoGeneration">
-                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">自动组卷</span>
               </el-menu-item>
             </router-link>
@@ -62,7 +78,6 @@
           <template>
             <router-link to="/examinationPaper" >
               <el-menu-item index="/examinationPaper">
-                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">试卷管理</span>
               </el-menu-item>
             </router-link>
@@ -70,13 +85,35 @@
           <template>
             <router-link to="/examinationPaper/updatePaper" >
               <el-menu-item index="/examinationPaper/updatePaper">
-                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">更新试卷</span>
               </el-menu-item>
             </router-link>
           </template>
         </el-submenu>
 
+      </div>
+      <div class="menu-wrapper">
+        <el-submenu index="5">
+          <template slot="title">
+            <svg-icon icon-class="item.meta.icon"/>
+            <span slot="title">题库管理</span>
+          </template>
+
+          <template>
+            <router-link to="/itemBank/singleSelect" >
+              <el-menu-item index="/itemBank/singleSelect">
+                <span slot="title">单选题管理</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+          <template>
+            <router-link to="/itemBank/SAQ" >
+              <el-menu-item index="/itemBank/SAQ">
+                <span slot="title">简单题管理</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+        </el-submenu>
       </div>
     </el-menu>
   </el-scrollbar>

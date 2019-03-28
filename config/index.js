@@ -11,19 +11,19 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api':{
-          target:'http://10.1.0.34:8000',  //这里配置的是 请求接口的域名
+      '/Exam':{
+          target:'http://localhost:8090',  //这里配置的是 请求接口的域名
           // secure: false, // 如果是https接口，需要配置这个参数
           changeOriginL: true, // 如果接口跨域，需要进行这个参数配置
           pathRewrite:{
-             '^/api':'/api' //路径重写，这里理解成用'/api'代替target里面的地址，比如我们调用‘http://10.1.0.34:8000/api/homepage’，直接写‘/api/homepage’即可。
+             '^/Exam':'/Exam' //路径重写，这里理解成用'/api'代替target里面的地址，比如我们调用‘http://10.1.0.34:8000/api/homepage’，直接写‘/api/homepage’即可。
           }
         }
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

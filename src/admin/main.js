@@ -11,9 +11,10 @@ import '@/commons/styles/index.scss' // global css
 import '@/assets/styles/common.scss' // 覆盖index.scss中的样式
 import store from '@/commons/store'
 // import store from '../vuex/store'
-// import '@/commons/permission' // permission control
+import '@/commons/permission' // permission control
 import 'es6-promise'
 import 'svg.js'
+import '@/assets/images/icons/index.js'
 
 
 Vue.config.productionTip = false

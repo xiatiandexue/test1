@@ -43,7 +43,7 @@
             </template>
         </el-table-column>
       </el-table>
-      </div>
+    </div>
     <!--分页控件-->
     <div class="pagination-container">
         <el-pagination v-show="total>0" :current-page="listQuery.basePageVO.pageNum" :page-sizes="[10,20,30,50]" :page-size="listQuery.basePageVO.pageSize" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
@@ -64,7 +64,7 @@ export default {
         },
         subject:"",
       },
-      total: 3,
+      total: 2,
       list:[
         {subject:'语文',
           score:'100',
@@ -114,7 +114,6 @@ export default {
     //   })
     // },
     handleUpdate() {
-      debugger
       this.$router.push({
         // path: '/examinationPaper/updatePaper'
         name:'updatePaper'

@@ -6,23 +6,23 @@
         <h1>在线考试系统</h1>
       </div><!-- main头部结尾-->
       <div id="login_main_center">   
-          <el-form :model="loginForm" :rules="rules2"  ref="loginForm" label-width="60px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="userCode" >
-              <el-input type="text" v-model="loginForm.userCode" auto-complete="off"></el-input>
+          <el-form :model="loginForm" :rules="rules2"  ref="loginForm" label-width="80px" class="demo-ruleForm">
+            <el-form-item label="用户名" prop="usercode" >
+              <el-input type="text" v-model="loginForm.usercode" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
               <el-input type="password"  v-model="loginForm.password" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="用户类型">
+            <el-form-item label="用户类型" >
               <el-radio-group v-model="loginForm.role">
-                <el-radio label="学生"></el-radio>
-                <el-radio label="教师"></el-radio>
-                <el-radio label="管理员"></el-radio>
+                <el-radio label="student">学生</el-radio>
+                <el-radio label="teacher">教师</el-radio>
+                <el-radio label="admin">管理员</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item>
-              <!-- <span id="login_button_user"><el-button type="primary" @click="doLogin" :loading="loading">登录</el-button></span> -->
-              <span id="login_button_admin"><el-button type="success" @click="adminLogin">登录</el-button></span>
+              <span id="login_button_user"><el-button type="primary" @click="doLogin" :loading="loading">登录</el-button></span>
+              <!-- <span id="login_button_admin"><el-button type="success" @click="adminLogin">登录</el-button></span> -->
             </el-form-item>
         </el-form>
       </div><!-- main中部结尾-->
@@ -33,7 +33,7 @@
   export default {
     data() {
       
-      var validateUsername = (rule, value, callback) => {
+      var validateUsercode = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入用户名'));
         } 
@@ -48,14 +48,14 @@
       return {
         login_img: require("@/assets/images/login.jpg"),
         loginForm: {
-          username: '',
+          usercode: '',
           password: '',
-          role: ''
+          role: 'admin'
         },
         // 表单验证规则
         rules2: {
-          userCode: [
-            { validator: validateUsername, trigger: 'blur' }
+          usercode: [
+            { validator: validateUsercode, trigger: 'blur' }
           ],
           password: [
             { validator: validatePassword, trigger: 'blur' }
@@ -70,11 +70,11 @@
             this.$message.error(msgerror);
         },
         //把获取参数加入全局store中
-        change(id,username,password,islogin){
+        change(id,username,password,role){
           this.$store.state.user_id=id;
           this.$store.state.username=username;
           this.$store.state.password=password;
-          this.$store.state.islogin=islogin;
+          this.$store.state.role=role;
         },
         //登录加载过渡效果的方法
         load(){
@@ -83,60 +83,60 @@
            this.$Loading.start();
            setTimeout(() => {this.$Loading.finish();}, 1000); 
         },
-        doLogin(){
-            var _this = this;
-            this.$http.get('/api/user/login'
-            ,{
-              params:{
-                username:_this.loginForm.username,
-                password:_this.loginForm.password
-              }, 
+        doLogin() {
+          console.log(this.loginForm)
+          this.$refs.loginForm.validate(valid => {
+            if (valid) {
+              this.loading = true;
+              this.$store
+                .dispatch("LoginByUsername", this.loginForm)
+                .then(() => {
+                  this.loading = false;
+                  this.$router.push({ path: "/" });
+                  
+                })
+                .catch(data => {
+                  this.$notify.error({
+                    title: '失败',
+                    message:'登录失败'})
+                  this.loading = false;
+                });
+            } else {
+              console.log("error submit!!");
+              return false;
             }
-            )
-            .then(function (response) {
-              var errorcode=response.data.errorcode;
-                 if(errorcode=="200"){
-                  //  console.debug(response.data.data);
-                      //进去主界面的过渡效果方法
-                      _this.load();
-                      //把获取到的参数存入store
-                      _this.change(response.data.data.id,_this.loginForm.username,_this.loginForm.password,response.data.data.deptCode,
-                      response.data.data.deptName,response.data.data.address,response.data.data.phone,response.data.data.principal
-                      ,response.data.data.email,response.data.data.businessScope,true);
-                      setTimeout(() => {_this.$router.push({ path: '/Main' });}, 1500); 
-
-                }else if(errorcode=="500"){
-                    
-                    //如果返回500，就在页面上方弹出错误信息
-                    _this.errormsg(response.data.errormsg);
-                }
-              })
-            .catch(function (error) {
-                console.log(error);
-            });
-    },
-    // 测试post登录,成功，传的参数必须是字符串类型
-    // doLogin(){
-    //   var _this = this;
-    //   var data='username='+_this.loginForm.username+'&password='+_this.loginForm.password;
-    //         this.$http.post('/api/user/login2',data)
+          });
+        },
+    //     doLogin(){
+    //         this.$http.post('http://localhost:8089/Exam/showUser'
+    //         ,{
+    //           params:{
+    //             usercode:this.loginForm.usercode,
+    //             password:this.loginForm.password
+    //           }, 
+    //         }
+    //         )
     //         .then(function (response) {
     //           var errorcode=response.data.errorcode;
     //              if(errorcode=="200"){
-    //                console.debug(response);
-    //                   _this.load();
-    //                   _this.change(_this.loginForm.username,_this.loginForm.password);
-    //                   setTimeout(() => {_this.$router.push({ path: '/Main' });}, 3000); 
+    //               //  console.debug(response.data.data);
+    //                   //进去主界面的过渡效果方法
+    //                   this.load();
+    //                   //把获取到的参数存入store
+    //                   this.change(this.loginForm.usercode,this.loginForm.password,true);
+    //                   setTimeout(() => {this.$router.push({ path: '/' });}, 1500); 
+
     //             }else if(errorcode=="500"){
-    //                 // console.debug(response);
+                    
     //                 //如果返回500，就在页面上方弹出错误信息
-    //                 _this.errormsg(response.data.errormsg);
+    //                 this.errormsg(response.data.errormsg);
     //             }
     //           })
     //         .catch(function (error) {
     //             console.log(error);
     //         });
     // },
+
     adminLogin(){
       this.$router.push({ path: '/Layout' });
     },
@@ -170,7 +170,7 @@ img{
 
 /*输入框*/
 #login_main{
-   width: 400px;
+   width: 450px;
    margin: auto;
    /* margin:250px 50px 200px 450px; */
    text-align: center;
@@ -190,7 +190,7 @@ img{
   text-align: center;
 }
 #login_main_center{
-   margin: 0px 30% 0px 40px;
+   margin: 0px 20% 0px 40px;
    /*background-color:green;*/
 }
 

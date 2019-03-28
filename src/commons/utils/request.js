@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 
 import store from '@/commons/store'
-import router from '@/router/admin.router'
+import router from '@/router/'
 // create an axios instance
 axios.defaults.withCredentials = true
 const service = axios.create({

@@ -1,7 +1,7 @@
 <template>
   <div class="updatePaper">
     <div class="main">
-      <div class="single" v-if="singleQuestions.length>0">
+      <div class="single">
         <h3>一、单选题（只有一个正确答案）</h3>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in singleQuestions" :key="item.id">
@@ -16,7 +16,7 @@
         </ul>
       </div>
       
-      <div class="judge" v-if="QAQuestions.length>0">
+      <div class="judge">
         <h3>二、简答题</h3>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in QAQuestions" :key="item.id">

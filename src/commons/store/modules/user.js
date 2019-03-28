@@ -1,5 +1,5 @@
-// import { loginByUsername, logout, getUserInfo, getUserMenu } from '@/commons/api/user'
-import { getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, removeTime } from '@/commons/utils/auth'
+import { loginByUsername} from '@/commons/api/user'
+import { getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, getRole } from '@/commons/utils/auth'
 const user = {
   state: {
     user: '',
@@ -8,6 +8,7 @@ const user = {
     token: getToken(),
     name: getName(),
     logintime: getTime(),
+    role: getRole(),
     avatar: '',
     introduction: '',
     roles: [],
@@ -26,6 +27,9 @@ const user = {
     },
     SET_TOKEN: (state, token) => {
       state.token = token
+    },
+    SET_ROLE: (state, role) => {
+      state.role = role
     },
     SET_INTRODUCTION: (state, introduction) => {
       state.introduction = introduction
@@ -74,19 +78,23 @@ const user = {
   actions: {
     // 用户名登录
     LoginByUsername ({ commit }, userInfo) {
-      const username = userInfo.account.trim()
+      const usercode = userInfo.usercode
+      const role = userInfo.role
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
+        loginByUsername(usercode, userInfo.password,role).then(response => {
           if (response.code === -2) {
             reject(response)
           }
           const data = response.data
+          console.log(data)
           var time = new Date()
-          commit('SET_TOKEN', data.userCode)
+          commit('SET_TOKEN', data.usercode)
           commit('SET_NAME', data.name)
+          commit('SET_ROLE', data.role)
           commit('SET_TIME', time)
-          setToken(response.data.userCode)
+          setToken(data.usercode)
           setName(data.name)
+          setRole(data.role)
           setTime(time)
 
           resolve()
@@ -128,57 +136,14 @@ const user = {
         })
       })
     },
-    // 获取用户菜单
-    GetUserMenu ({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        getUserMenu(state.token).then(response => {
-          if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
-            reject(response.msg || 'error')
-          }
-          const data = response.data
-
-          // console.log('menus', data)
-          if (data && data.length > 0) { // 验证返回的roles是否是一个非空数组
-            let menu = _.find(data, {menuUrl: '/emergency/emergencyEvent'})
-            if (menu) {
-              commit('SET_SHOWBUBBLE', true)
-            } else {
-              commit('SET_SHOWBUBBLE', false)
-            }
-            let urls = data.map(m => m.menuUrl)
-            commit('SET_URLS', urls)
-            commit('SET_MENUS', data)
-          } else {
-            // reject('getMenu: menus must be a non-null array !')
-          }
-          // console.log('response', response)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-
-    // 第三方验证登录
-    // LoginByThirdparty({ commit, state }, code) {
-    //   return new Promise((resolve, reject) => {
-    //     commit('SET_CODE', code)
-    //     loginByThirdparty(state.status, state.email, state.code).then(response => {
-    //       commit('SET_TOKEN', response.data.token)
-    //       setToken(response.data.token)
-    //       resolve()
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
+    
 
     // 登出
     LogOut ({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          commit('SET_ROLE', '')
           commit('SET_MENUS', [])
           commit('SET_URLS', [])
           commit('SET_PRIVROUTERS', [])
@@ -206,7 +171,7 @@ const user = {
     FedLogOut ({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+        commit('SET_ROLE', '')
         commit('SET_MENUS', [])
         commit('SET_URLS', [])
         commit('SET_PRIVROUTERS', [])
@@ -223,7 +188,7 @@ const user = {
         setToken(role)
         getUserInfo(role).then(response => {
           const data = response.data
-          commit('SET_ROLES', data.roles)
+          commit('SET_ROLE', data.role)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)

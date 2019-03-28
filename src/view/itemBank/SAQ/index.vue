@@ -1,15 +1,11 @@
 <template>
-  <div class="select">
+  <div class="SAQ">
     <div class="filter-container">
       <el-form :inline="true">
-        <el-form-item label="用户名">
-          <el-input v-model="listQuery.name" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+        <el-form-item label="题目">
+          <el-input v-model="listQuery.singleSelect" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
-        <el-form-item label="用户类型">
-          <el-input v-model="listQuery.role" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
-        </el-form-item>
-        <el-button @click="handleReset">重置</el-button>
-          <!-- <svg-icon icon-class="btn-reset" /> -->
+        <!-- <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button> -->
         <el-button @click="handleFilter">搜索</el-button>
       </el-form>
     </div>
@@ -22,27 +18,22 @@
         </el-table-column> -->
         <el-table-column type="index" label="序号" width="60" align="center">
         </el-table-column>
-        <el-table-column label="账号" align="center">
+        <el-table-column label="题目" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.usercode }}</span>
+            <span>{{ scope.row.SAQ }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="用户名" align="center">
+        <el-table-column label="参考答案" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="用户类型" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.role }}</span>
+            <span>{{ scope.row.answer }}</span>
           </template>
         </el-table-column>
         
-        <el-table-column label="操作" align="center" width="230">
-          <template slot-scope="scope">
-            <el-button type="info" @click="handleUpdate">修改</el-button>
-            <el-button type="info" @click="handleDelete(scope.row)">删除</el-button>
-          </template>
+          <el-table-column label="操作" align="center" width="230">
+            <template slot-scope="scope">
+              <el-button type="info" @click="handleUpdate">修改</el-button>
+              <el-button type="info" @click="handleDelete(scope.row)">删除</el-button>
+            </template>
         </el-table-column>
       </el-table>
     </div>
@@ -51,25 +42,23 @@
         <el-pagination v-show="total>0" :current-page="listQuery.basePageVO.pageNum" :page-sizes="[10,20,30,50]" :page-size="listQuery.basePageVO.pageSize" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
     <el-dialog
-      title="添加用户"
+      title="添加单选题"
       :visible.sync="dialogVisible"
       width="40%">
       <el-form label-width="80px">
-        <el-form-item label="账号" >
+        <el-form-item label="题目" >
           <el-input type="textarea"
                     autosize 
-                    v-model="data.singleSelect" 
+                    v-model="data.SAQ" 
                     clearable
                     style="width:350px;" />
         </el-form-item>
-        <el-form-item label="用户名">
-          <el-input v-model="data.choiceOne" clearable style="width:250px;" />
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="data.choiceTwo" clearable style="width:250px;" />
-        </el-form-item>
-        <el-form-item label="用户类型">
-          <el-input v-model="data.choiceThree" clearable style="width:250px;" />
+        <el-form-item label="参考答案">
+          <el-input type="textarea"
+                    autosize 
+                    v-model="data.answer" 
+                    clearable
+                    style="width:350px;" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -86,53 +75,32 @@ export default {
     return {
       listLoading:false,
       data: {
-        singleSelect: '',
-        choiceOne: '',
-        choiceTwo: '',
-        choiceThree: '',
-        choiceFour: ''
+        SAQ: '',
+        answer: '',
       },
       listQuery:{
         basePageVO:{
           pageNum: 1,
           pageSize: 10
         },
-        singleSelect: ''
+        SAQ: ''
       },
       dialogVisible: false,
       list: [
         {
-          singleSelect:'单选题一',
-          choiceOne: '选项一',
-          choiceTwo: '选项二',
-          choiceThree: '选项三',
-          choiceFour: '选项四'
+          SAQ:'简答题一',
+          answer: '参考答案'
         },
         {
-          singleSelect:'单选题一',
-          choiceOne: '选项一',
-          choiceTwo: '选项二',
-          choiceThree: '选项三',
-          choiceFour: '选项四'
+          SAQ:'简答题一',
+          answer: '参考答案'
         },
       ],
-      total: 3,
+      total: 2,
 
     }
   },
   methods: {
-    getList() {
-      this.listLoading = true;
-      // console.log(this.listQuery)
-      score.getList(this.listQuery).then(response => {
-        var res = notify(this, response, true);
-        if (res) {
-          this.list = response.data.list;
-          this.total = response.data.total;
-        }
-        this.listLoading = false;
-      });
-    },
     handleFilter() {
 
     },

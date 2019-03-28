@@ -4,7 +4,8 @@
       <div class="title">在线考试系统</div>
       <div class="login">
         <!-- <div class="time">登录时间：{{logintime |format('yyyy-MM-dd hh:mm')}}</div> -->
-        <div class="name">登录用户：{{name}}</div>
+        <!-- <div class="name">登录用户：{{name}}</div> -->
+        <div class="name">登录用户：管理员</div>
 
         <div class="right-menu">
           <el-dropdown class="avatar-container right-menu-item"
