@@ -1,4 +1,4 @@
-import { loginByUsername} from '@/commons/api/user'
+import { loginByUsername, logout} from '@/commons/api/user'
 import { getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, getRole } from '@/commons/utils/auth'
 const user = {
   state: {
@@ -88,13 +88,13 @@ const user = {
           const data = response.data
           console.log(data)
           var time = new Date()
-          commit('SET_TOKEN', data.usercode)
+          commit('SET_TOKEN', usercode)
           commit('SET_NAME', data.name)
-          commit('SET_ROLE', data.role)
+          commit('SET_ROLE', role)
           commit('SET_TIME', time)
-          setToken(data.usercode)
+          setToken(usercode)
           setName(data.name)
-          setRole(data.role)
+          setRole(role)
           setTime(time)
 
           resolve()
@@ -109,39 +109,13 @@ const user = {
         resolve(this.state.urls)
       })
     },
-    // 获取用户信息
-    GetUserInfo ({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        commit('SET_ROLES', ['admin'])
-        getUserInfo(state.token).then(response => {
-          // if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
-          //   reject('error')
-          // }
-          const data = response
-
-          commit('SET_ROLES', ['admin'])
-          // if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-          //   commit('SET_ROLES', ['admin'])
-          // } else {
-          //   reject('getInfo: roles must be a non-null array !')
-          // }
-          // console.log('response', response)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          // commit('SET_ACCOUNT', data.userCode)
-
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
+    
     
 
     // 登出
     LogOut ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        
           commit('SET_TOKEN', '')
           commit('SET_ROLE', '')
           commit('SET_MENUS', [])
@@ -150,9 +124,7 @@ const user = {
           removeToken()
           removeName()
           resolve()
-        }).catch(error => {
-          reject(error)
-        })
+       
       })
     },
     // 登出
@@ -181,21 +153,7 @@ const user = {
       })
     },
 
-    // 动态修改权限
-    ChangeRoles ({ commit }, role) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', role)
-        setToken(role)
-        getUserInfo(role).then(response => {
-          const data = response.data
-          commit('SET_ROLE', data.role)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve()
-        })
-      })
-    }
+    
   }
 }
 

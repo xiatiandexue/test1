@@ -49,6 +49,6 @@ export function setTime (logintime) {
   return Cookies.set(TimeKey, logintime)
 }
 
-export function remove () {
+export function removeTime () {
   return Cookies.remove(TimeKey)
 }
