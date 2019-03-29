@@ -12,9 +12,10 @@ export function notify(obj, response, noNotice, customMsg) {
   var offset = 120
 
   var code = response.code ? response.code : 0
-  var msg = response.msg
+  var msg = response.message
 
   if (tipType === '$alert') {
+    debugger
     if (noNotice && code === 0) {
       return true
     } else if (code === 0) {
@@ -33,6 +34,7 @@ export function notify(obj, response, noNotice, customMsg) {
       showConfirmButton: false,
       type: type,
       closeOnClickModal: true
+      
       // center: true
     })
     return result

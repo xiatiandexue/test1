@@ -184,7 +184,19 @@ export default {
       })
     },
     handleDelete(row) {
-
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var deleteInfo = {
+          usercode: row.usercode
+        }
+        user.deleteUser(deleteInfo).then(response => {
+          var res = notify(this, response)
+          if (res) {
+            this.getList()
+          }
+        })
+      }).catch(() => {})
     },
     //=====分页相关=====
     //控制每页显示条数

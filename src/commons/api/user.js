@@ -26,4 +26,5 @@ export default {
  getUserPage: (data) => getInterface(root, '/users/', data, 'post', 'page'), // 分页查询用户
  addUser: (data) => getInterface(root, '/users/', data, 'post', ''), // 添加用户
  updateUser: (data) => getInterface(root, '/users/', data, 'put', ''), // 更新用户
+ deleteUser: (data) => getInterface(root, '/users/', data, 'delete', ''), // 删除用户
 }
