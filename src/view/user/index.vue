@@ -68,7 +68,15 @@
           <el-input v-model="temp.password" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item label="用户类型" prop="role">
-          <el-input v-model="temp.role" clearable style="width:250px;" />
+          <el-select v-model="temp.role" clearable placeholder="请选择" style="width:250px;">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <!-- <el-input v-model="temp.role" clearable style="width:250px;" /> -->
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -103,11 +111,16 @@ export default {
       },
       dialogVisible: false,
       list: [],
-      total: 3,
+      total: undefined,
       create: true,
       disabled: false,
       textMap:['添加用户信息','修改用户信息'],
       title:'',
+      options: [
+        {value: '学生', label: '学生' },
+        {value: '教师', label: '教师' },
+        {value: '管理员', label: '管理员' },
+      ]
     }
   },
   created(){

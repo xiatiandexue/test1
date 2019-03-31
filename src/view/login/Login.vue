@@ -45,6 +45,12 @@
         } 
           callback();
       };
+      var validateRole = (rule, value, callback) => {
+         if (value === '') {
+          callback(new Error('请选择用户类型'));
+        } 
+          callback();
+      };
       return {
         login_img: require("@/assets/images/login.jpg"),
         loginForm: {
@@ -59,6 +65,9 @@
           ],
           password: [
             { validator: validatePassword, trigger: 'blur' }
+          ],
+          role: [
+            { validator: validateRole, trigger: 'blur' }
           ]
         },
         loading:false,
@@ -98,7 +107,7 @@
                 .catch(data => {
                   this.$notify.error({
                     title: '失败',
-                    message:'登录失败'})
+                    message:'用户名、密码或用户类型有误，请重新输入'})
                   this.loading = false;
                 });
             } else {

@@ -15,7 +15,6 @@ export function notify(obj, response, noNotice, customMsg) {
   var msg = response.message
 
   if (tipType === '$alert') {
-    debugger
     if (noNotice && code === 0) {
       return true
     } else if (code === 0) {

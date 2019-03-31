@@ -150,7 +150,20 @@ export const rules = {
 export const userRules = {
   usercode: [reqf('账号'), lenf(6, 20)],
   name: [reqf('姓名'), lenf()],
-  password: [reqf('密码'), lenf(6, 32)],
+  password: [reqf('密码'), lenf(8, 32)],
   role: [reqf('用户类型', true)]
+}
+
+export const selectRules = {
+  question: [reqf('题目')],
+  choiceone: [reqf('选项一')],
+  choicetwo: [reqf('选项二')],
+  choicethree: [reqf('选项三')],
+  choicefour: [reqf('选项四')],
+  answer: [reqf('答案')],
+  score: [reqf('成绩'), numf()],
+  subject: [reqf('科目')],
+  chapter: [reqf('章节')],
+  difficulty: [reqf('难度')]
 }
 

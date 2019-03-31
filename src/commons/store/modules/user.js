@@ -1,5 +1,5 @@
 import { loginByUsername, logout} from '@/commons/api/user'
-import { getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, getRole } from '@/commons/utils/auth'
+import { getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, getRole, setRole, removeRole } from '@/commons/utils/auth'
 const user = {
   state: {
     user: '',
@@ -123,6 +123,7 @@ const user = {
           commit('SET_PRIVROUTERS', [])
           removeToken()
           removeName()
+          removeRole()
           resolve()
        
       })
