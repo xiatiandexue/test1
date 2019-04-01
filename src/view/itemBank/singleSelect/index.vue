@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column label="难度" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.difficulty }}</span>
+            <span v-text="getDifficultyById(scope.row.difficulty)"></span>
           </template>
         </el-table-column>
         <el-table-column label="创建者" align="center">
@@ -214,7 +214,8 @@ export default {
         {value: 1, label: '简单' },
         {value: 2, label: '一般' },
         {value: 3, label: '困难' },
-      ]
+      ],
+      
     }
   },
   created(){
@@ -310,6 +311,17 @@ export default {
           }
         })
       }).catch(() => {})
+    },
+    getDifficultyById(id) {
+      var name = ''
+      var typeList = this.options
+      for (var type of typeList) {
+        if(type.value === id) {
+          name = type.label
+          break
+        }
+      }
+      return name
     },
     //=====分页相关=====
     //控制每页显示条数
