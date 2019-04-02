@@ -11,7 +11,7 @@
       <div class="menu-wrapper">
         <el-submenu index="1">
           <template slot="title">
-            <svg-icon icon-class="updatePsw"/>
+            <svg-icon icon-class="update-psw"/>
             <span slot="title">密码管理</span>
           </template>
 
@@ -28,7 +28,7 @@
       <div class="menu-wrapper">
         <el-submenu index="2">
           <template slot="title">
-            <svg-icon icon-class="item.meta.icon"/>
+            <svg-icon icon-class="score"/>
             <span slot="title">成绩管理</span>
           </template>
 
@@ -46,7 +46,7 @@
       <div class="menu-wrapper">
         <el-submenu index="3">
           <template slot="title">
-            <svg-icon icon-class="item.meta.icon"/>
+            <svg-icon icon-class="user"/>
             <span slot="title">用户管理</span>
           </template>
 
@@ -64,7 +64,7 @@
       <div class="menu-wrapper">
         <el-submenu index="4">
           <template slot="title">
-            <svg-icon icon-class="item.meta.icon"/>
+            <svg-icon icon-class="paper"/>
             <span slot="title">试卷管理</span>
           </template>
 
@@ -95,7 +95,7 @@
       <div class="menu-wrapper">
         <el-submenu index="5">
           <template slot="title">
-            <svg-icon icon-class="item.meta.icon"/>
+            <svg-icon icon-class="itemBank"/>
             <span slot="title">题库管理</span>
           </template>
 

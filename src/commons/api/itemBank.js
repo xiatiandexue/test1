@@ -8,4 +8,9 @@ export default {
   addSelect: (data) => getInterface(root, '/select/', data, 'post', ''), // 添加单选题
   updateSelect: (data) => getInterface(root, '/select/', data, 'put', ''), // 修改单选题
   deleteSelect: (data) => getInterface(root, '/select/', data, 'delete', ''), // 修改单选题
+  //简单题
+  getSaqPage: (data) => getInterface(root, '/saq/', data, 'post', 'page'),
+  addSaq: (data) => getInterface(root, '/saq/', data, 'post', ''),
+  updateSaq: (data) => getInterface(root, '/saq/', data, 'put', ''),
+  deleteSaq: (data) => getInterface(root, '/saq/', data, 'delete', ''),
 }

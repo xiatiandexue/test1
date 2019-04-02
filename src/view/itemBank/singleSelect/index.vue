@@ -55,7 +55,7 @@
             <span>{{ scope.row.answer }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="分数" align="center">
+        <el-table-column label="分值" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.score }}</span>
           </template>
@@ -147,7 +147,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="分数" prop="score">
+            <el-form-item label="分值" prop="score">
               <el-input v-model="data.score" clearable style="width:90px;" />
             </el-form-item>
           </el-col>
@@ -179,7 +179,7 @@
 import itemBank from '@/commons/api/itemBank'
 import { notify } from '@/commons/utils/notify'
 import {selectRules} from '@/commons/utils/validate'
-import { getToken } from "@/commons/utils/auth";
+import { getName } from "@/commons/utils/auth";
 export default {
   data () {
     return {
@@ -193,6 +193,7 @@ export default {
         subject: '',
         chapter: '',
         score: undefined,
+        difficulty: undefined,
         answer: '',
         createuser: ''
       },
@@ -262,7 +263,7 @@ export default {
         score: undefined,
         answer: '',
       }
-      this.data.createuser = getToken()
+      this.data.createuser = getName()
 
     },
     createData() {

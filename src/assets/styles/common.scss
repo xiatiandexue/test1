@@ -30,11 +30,12 @@
 // 常规按钮
 .el-button {
   height: 28px;
-  line-height: 0px;
+  // line-height: 0px;
   margin-bottom: 2px;
   background: url('../images/common/bg-btn.png');
   border: 1px solid #cfcfcf !important;
   color: #303133;
+  padding: 5px 20px!important;
 }
 
 .el-button:hover {

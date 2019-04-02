@@ -6,7 +6,7 @@
         <el-form-item label="科目">
           <el-select v-model="Data.subject" placeholder="请选择科目">
             <el-option label="语文" value="Chinese"></el-option>
-            <el-option label="数学" value="Math"></el-option>
+            <el-option label="历史" value="Math"></el-option>
           </el-select>
         </el-form-item>
       </el-col>

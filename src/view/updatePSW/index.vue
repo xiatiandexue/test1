@@ -7,15 +7,17 @@
     <el-form-item label="确认密码" prop="password_confirm">
       <el-input type="password" v-model="addUserFormData.password_confirm" placeholder="确认密码"></el-input>
     </el-form-item>
-    <el-form-item>
-        <el-button type="primary" @click="update()">确 定</el-button>
-    </el-form-item>
+    <el-button type="primary" @click="handleUpdate()" style="float:right;">确 定</el-button>
+    <!-- <el-button @click="handleUpdate"><svg-icon icon-class="btn-search" />确定</el-button> -->
   </el-form>
 </div>
 </template>
 
 <script>
   // import { pswRules } from "@/commons/utils/validate";
+  import user from '@/commons/api/user'
+  import { notify } from '@/commons/utils/notify'
+  import { getToken } from "@/commons/utils/auth";
 export default {
   
   data(){                
@@ -31,7 +33,12 @@ export default {
     return{
       addUserFormData:{
         password:'',
-        password_confirm:''
+        password_confirm:'',
+        
+      },
+      tempData: {
+        password:'',
+        usercode: ''
       },
       rules:{
         password_confirm:[
@@ -40,17 +47,16 @@ export default {
       }
     }
   },
-  method: {
-    update () {
-      this.$refs["vueElForm"].form.validate((valid) => {
+  methods: {
+    handleUpdate () {
+      debugger
+      this.$refs["vueElForm"].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.addUserFormData);
-          system.updatePSW(tempData).then(response => {
+          this.tempData.usercode = getToken()
+          this.tempData.password = this.addUserFormData.password
+          user.updateUser(this.tempData).then(response => {
               //通知
               var res = notify(this, response);
-              if (res) {
-                  this.getList();
-              }
           });
         }
       });

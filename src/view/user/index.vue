@@ -99,7 +99,7 @@ export default {
       temp:{
         usercode:'',
         name:'',
-        password:'',
+        password:undefined,
         role:''
       },
       rules: userRules,
