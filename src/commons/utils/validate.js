@@ -174,4 +174,6 @@ export const saqRules = {
   difficulty: [reqf('难度')],
   score: [reqf('分值'), numf()],
 }
-
+export const autoGeneratingPaperRules = {
+  subject: [reqf('科目')]
+}
