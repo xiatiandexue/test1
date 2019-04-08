@@ -1,6 +1,11 @@
 <template>
   <el-form ref="form" :model="Data" label-width="120px" rules="rules">
     <tip-title title="基本信息"></tip-title>
+    <el-row>
+      <el-form-item label="试卷名" prop="name">
+        <el-input v-model="Data.name"></el-input>
+      </el-form-item>
+    </el-row>
     <el-row :gutter="20">
       <el-col :span="6">
         <el-form-item label="科目" prop="subject">
@@ -56,6 +61,7 @@ export default {
   data() {
     return {
       Data: {
+        name: '',
         subject: '',
         score: '',
         selectnum: '',

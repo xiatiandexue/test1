@@ -68,13 +68,13 @@
             <span slot="title">试卷管理</span>
           </template>
 
-          <template>
+          <!-- <template>
             <router-link to="/examinationPaper/autoGeneration" >
               <el-menu-item index="/examinationPaper/autoGeneration">
                 <span slot="title">自动组卷</span>
               </el-menu-item>
             </router-link>
-          </template>
+          </template> -->
           <template>
             <router-link to="/examinationPaper" >
               <el-menu-item index="/examinationPaper">
@@ -82,13 +82,13 @@
               </el-menu-item>
             </router-link>
           </template>
-          <template>
+          <!-- <template>
             <router-link to="/examinationPaper/updatePaper" >
               <el-menu-item index="/examinationPaper/updatePaper">
                 <span slot="title">更新试卷</span>
               </el-menu-item>
             </router-link>
-          </template>
+          </template> -->
         </el-submenu>
 
       </div>
