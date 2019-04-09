@@ -7,6 +7,8 @@ const paperRouter = [
   {path: '/examinationPaper/', component: () => import('@/view/examinationPaper/'), name: 'Paper', meta: { title: '试卷管理'}},
   {path: '/examinationPaper/autoGeneration', component: () => import('@/view/examinationPaper/autoGeneration'), name: 'AutoGeneration', meta: { title: '自动组卷'}},
   {path: '/examinationPaper/updatePaper', component: () => import('@/view/examinationPaper/updatePaper'), name: 'UpdatePaper', meta: { title: '更新试卷'}},
+  {path: '/examinationPaper/updatePaper/addSelect', component: () => import('@/view/examinationPaper/updatePaper/select'), name: 'AddSelect', meta: { title: '添加单选题'}},
+  {path: '/examinationPaper/updatePaper/addSAQ', component: () => import('@/view/examinationPaper/updatePaper/saq'), name: 'AddSAQ', meta: { title: '添加单选题'}},
 ]
 const itemRouter = [
   {path: '/itemBank/singleSelect', component: () => import('@/view/itemBank/singleSelect'), name: 'SingleSelect', meta: { title: '单选题管理'}},

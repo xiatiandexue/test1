@@ -1,8 +1,12 @@
 <template>
   <div class="updatePaper" style="height: 87vh">
+    <span class="back">
+      <el-button type="primary" @click="handleUpdate">确定</el-button>
+      <el-button type="primary" @click="handleBack">返回</el-button>
+    </span>
     <div class="main">
       <div class="title">
-        <el-form label-width="80px" :model="paperData" ref="dataForm" >
+        <el-form label-width="80px" ref="dataForm" >
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item label="科目" prop="subject">
@@ -22,15 +26,17 @@
         </el-form>
       </div>
       <div class="select">
-        <h3>一、单选题（10分）</h3>
+        <h3>一、单选题（{{paperData.selectscore}}分）</h3>
         <div class="tool">
           <el-button @click="addSelect"><svg-icon icon-class="btn-add" />添加</el-button>
         </div>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionid">
             <p class="question-title">
-              <el-button type="info" @click="deleteSelect(item.questionid)"><svg-icon icon-class="btn-delete" />删除</el-button>
               {{index+1}} 、{{item.question}}
+              <span class="delete_button">
+                <el-button @click="deleteSelect(item.questionid)"><svg-icon icon-class="btn-delete" />删除</el-button>
+              </span>
             </p>
             <el-radio-group v-model="item.answer">
               <el-radio :label="item.choiceone">{{options[0]}}、{{item.choiceone}}</el-radio>
@@ -38,41 +44,64 @@
               <el-radio :label="item.choicethree">{{options[2]}}、{{item.choicethree}}</el-radio>
               <el-radio :label="item.choicefour">{{options[3]}}、{{item.choicefour}}</el-radio>
             </el-radio-group>
+            <hr />
           </li>
         </ul>
       </div>
       
       <div class="SAQ">
-        <h3>二、简答题（20分）</h3>
+        <h3>二、判断题（{{paperData.saqscore}}分）</h3>
+        <div class="tool">
+          <el-button @click="addSAQ"><svg-icon icon-class="btn-add" />添加</el-button>
+        </div>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.saqid">
             <p class="question-title">
-              <el-button type="info" @click="deleteSAQ(item.saqid)"><svg-icon icon-class="btn-delete" />删除</el-button>
-              {{index+1}} 、{{item.question}}</p>
-            <el-input
-              class="textarea"
-              type="textarea"
-              :rows="3"
-              placeholder="请输入内容"
-              v-model="item.answer">
-            </el-input>
+              {{index+1}} 、{{item.question}}
+              <span class="delete_button">
+                <el-button @click="deleteSAQ(item.saqid)"><svg-icon icon-class="btn-delete" />删除</el-button>
+              </span>
+              </p>
+            <el-radio-group v-model="item.answer">
+              <el-radio label="是"></el-radio>
+              <el-radio label="否"></el-radio>
+            </el-radio-group>
+            <hr />
           </li>
         </ul>
       </div>
     </div>
-    <el-dialog
+    <!-- <el-dialog
       title="添加单选题"
       :visible.sync="selectDialog"
       width="30%"
       >
       <el-form label-width="80px" :model="select" ref="dataForm" :rules="rules">
-        <el-form-item label="题目" prop="question"></el-form-item>
+        <el-form-item label="题目" prop="question">
+          <el-select
+            style="min-height: 30px;line-height: 30px;height: auto;"
+            class="selects"
+            multiple
+            filterable
+            remote
+            reserve-keyword
+            :multiple-limit="1"
+            :remote-method="remoteMethod"
+            placeholder="请选择题目">
+            <el-option
+              v-for="item in options4"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="selectDialog = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -92,15 +121,13 @@ export default {
       }
     },
     
-    created() {
+    activated() {
       this.paperid = this.$route.query.paperid;
       this.init();
       
     },
     methods:{
-      /**
-       * 初始化
-       */
+      //初始化
       init(){
         if(this.paperid == '' || !this.paperid ){
             this.$router.push({path:'/examinationPaper/'});
@@ -167,16 +194,49 @@ export default {
         })
         .catch(() => {});
       },
+      //添加单选题
       addSelect() {
-        this.selectDialog = true
-      }
-     
+        this.$router.push({
+          path:`/examinationPaper/updatePaper/addSelect`,
+          query: {
+            paperid: this.paperData.paperid,
+            subject: this.paperData.subject
+          }
+        })
+      },
+      addSAQ() {
+        this.$router.push({
+          path:`/examinationPaper/updatePaper/addSAQ`,
+          query: {
+            paperid: this.paperData.paperid,
+            subject: this.paperData.subject
+          }
+        })
+      },
+      handleUpdate() {
+
+      },
+      handleBack() {
+      this.$router.push({
+        path:`/examinationPaper/`,
+      })
+    },
+    
     }
   }
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
   .updatePaper{
     padding: 20px 0;
+    .back{
+      position: fixed;
+      top: 15vh;
+      right:5vh;
+    }
+    .delete_button{
+      position: absolute;
+      right:5vh;
+    }
     .main{
       padding: 20px 40px;
       .question-title{

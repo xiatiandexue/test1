@@ -13,4 +13,6 @@ export default {
   getSAQById: (data) => getInterface(root, '/paper/', data, 'post', 'saq'), //查询简答题信息
   deleteSelect: (data) => getInterface(root, '/paper/', data, 'delete', 'select'), //删除单选题
   deleteSAQ: (data) => getInterface(root, '/paper/', data, 'delete', 'saq'), //删除单选题
+  addSelect: (data) => getInterface(root, '/paper/', data, 'post', 'addSelect'), //添加单选题
+  addSAQ: (data) => getInterface(root, '/paper/', data, 'post', 'addSAQ'), //添加判断题
 }

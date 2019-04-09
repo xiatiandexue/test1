@@ -109,7 +109,7 @@
           <template>
             <router-link to="/itemBank/SAQ" >
               <el-menu-item index="/itemBank/SAQ">
-                <span slot="title">简单题管理</span>
+                <span slot="title">判断题管理</span>
               </el-menu-item>
             </router-link>
           </template>

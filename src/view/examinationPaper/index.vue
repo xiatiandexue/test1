@@ -17,22 +17,19 @@
       <el-button @click="dialogVisible = true"><svg-icon icon-class="btn-add" />添加</el-button>
     </div>
     <div class="data-container">
-      <el-table v-loading="listLoading" max-height="600" :data="list" border highlight-current-row>
-        <el-table-column type="index" label="序号" width="60" align="center">
-        </el-table-column>
-        <el-table-column prop="name" label="试卷名称" align="center">
-        </el-table-column>
-        <el-table-column prop="subject" label="科目" align="center">
-        </el-table-column>
-        <el-table-column prop="score" label="试卷总分" align="center">
-        </el-table-column>
-        <el-table-column prop="selectnum" label="单选题数量" align="center">
-        </el-table-column>
-        <el-table-column prop="saqnum" label="简答题数量" align="center">
-        </el-table-column>
-        <el-table-column prop="createuser" label="创建者" align="center">
-        </el-table-column>
-        <el-table-column label="操作" align="center" width="230">
+      <el-table v-loading="listLoading" max-height="400" :data="list" border highlight-current-row>
+        <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
+        <el-table-column prop="name" label="试卷名称" align="center"></el-table-column>
+        <el-table-column prop="subject" label="科目" align="center"></el-table-column>
+        <el-table-column prop="score" label="试卷总分" align="center"></el-table-column>
+        <el-table-column prop="totalselect" label="单选题总数" align="center"></el-table-column>
+        <el-table-column prop="selectnum" label="单选题数量" align="center"></el-table-column>
+        <el-table-column prop="selectscore" label="单选题分数" align="center"></el-table-column>
+        <el-table-column prop="totalsaq" label="判断题总数" align="center"></el-table-column>
+        <el-table-column prop="saqnum" label="判断题数量" align="center"></el-table-column>
+        <el-table-column prop="saqscore" label="判断题分数" align="center"></el-table-column>
+        <el-table-column prop="createuser" label="创建者" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button type="info" @click="handleUpdate(scope.row)"><svg-icon icon-class="btn-edit" />修改</el-button>
             <el-button type="info" @click="handleDelete(scope.row)"><svg-icon icon-class="btn-delete" />删除</el-button>
@@ -71,10 +68,18 @@
         <tip-title title="试卷信息"></tip-title>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="单选题数量"><el-input v-model="Data.selectnum"></el-input></el-form-item>
+            <el-form-item label="单选题总数"><el-input v-model="Data.totalselect"></el-input></el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="简答题数量"><el-input v-model="Data.saqnum"></el-input></el-form-item>
+            <el-form-item label="判断题总数"><el-input v-model="Data.totalsaq"></el-input></el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="单选题分数"><el-input v-model="Data.selectscore"></el-input></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="判断题分数"><el-input v-model="Data.saqscore"></el-input></el-form-item>
           </el-col>
         </el-row>
         <!-- <el-row>
@@ -127,9 +132,8 @@ export default {
       rules: autoGeneratingPaperRules
     }
   },
-  created () {
+  activated () {
     this.getList()
-    console.log(getName())
   },
   methods: {
     handleReset () {

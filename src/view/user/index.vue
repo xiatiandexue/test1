@@ -6,15 +6,18 @@
           <el-input v-model="listQuery.name" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="用户类型">
-          <el-input v-model="listQuery.role" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+          <el-select v-model="listQuery.role" clearable placeholder="请选择用户类型">
+            <el-option label="管理员" value="管理员"></el-option>
+            <el-option label="学生" value="学生"></el-option>
+            <el-option label="教师" value="教师"></el-option>
+          </el-select>
         </el-form-item>
-        <el-button @click="handleReset">重置</el-button>
-          <!-- <svg-icon icon-class="btn-reset" /> -->
-        <el-button @click="handleFilter">搜索</el-button>
+        <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
+        <el-button @click="handleFilter"><svg-icon icon-class="btn-search" />搜索</el-button>
       </el-form>
     </div>
     <div class="tool">
-      <el-button @click="handleCreate">添加</el-button>
+      <el-button @click="handleCreate"><svg-icon icon-class="btn-add" /> 添加</el-button>
     </div>
     <div class="data-container">
       <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
@@ -40,8 +43,8 @@
         
         <el-table-column label="操作" align="center" width="230">
           <template slot-scope="scope">
-            <el-button type="info" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button type="info" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button type="info" @click="handleUpdate(scope.row)"><svg-icon icon-class="btn-edit" /> 修改</el-button>
+            <el-button type="info" @click="handleDelete(scope.row)"><svg-icon icon-class="btn-delete" /> 删除</el-button>
           </template>
         </el-table-column>
       </el-table>
