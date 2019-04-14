@@ -11,7 +11,7 @@
         <el-form-item label="章节">
           <el-input v-model="listQuery.chapter" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
-        <el-form-item label="创建者">
+        <el-form-item v-if="role == '管理员'" label="创建者">
           <el-input v-model="listQuery.createuser" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
@@ -112,12 +112,14 @@
 import itemBank from '@/commons/api/itemBank'
 import { notify } from '@/commons/utils/notify'
 import {saqRules} from '@/commons/utils/validate'
-import { getName } from "@/commons/utils/auth";
+import { getName } from "@/commons/utils/auth"
+import { getRole } from "@/commons/utils/auth"
 export default {
   data () {
     return {
       listLoading:false,
       rules: saqRules,
+      role: getRole(),
       data: {
         question: '',
         answer: '',
@@ -156,6 +158,9 @@ export default {
     getList() {
       this.listLoading = true;
       // console.log(this.listQuery)
+      if(this.role == '教师'){
+        this.listQuery.createuser = getName()
+      }
       itemBank.getSaqPage(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {

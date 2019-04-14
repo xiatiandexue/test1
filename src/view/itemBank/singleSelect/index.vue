@@ -11,6 +11,9 @@
         <el-form-item label="章节">
           <el-input v-model="listQuery.chapter" clearable style="width:250px;"/>
         </el-form-item>
+        <el-form-item v-if="role == '管理员'" label="创建者">
+          <el-input v-model="listQuery.createuser" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
+        </el-form-item>
         <!-- <svg-icon icon-class="btn-reset" /> -->
         <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
         <el-button @click="handleFilter"><svg-icon icon-class="btn-search" />搜索</el-button>
@@ -169,11 +172,13 @@
 import itemBank from '@/commons/api/itemBank'
 import { notify } from '@/commons/utils/notify'
 import {selectRules} from '@/commons/utils/validate'
-import { getName } from "@/commons/utils/auth";
+import { getName } from "@/commons/utils/auth"
+import { getRole } from "@/commons/utils/auth";
 export default {
   data () {
     return {
       listLoading:false,
+      role: getRole(),
       data: {
         question: '',
         choiceOne: '',
@@ -192,7 +197,8 @@ export default {
         pageSize: 10,
         quetion: '',
         subject: '',
-        chapter: ''
+        chapter: '',
+        createuser: ''
       },
       dialogVisible: false,
       list: [],
@@ -216,6 +222,9 @@ export default {
     getList() {
       this.listLoading = true;
       // console.log(this.listQuery)
+      if(this.role == '教师'){
+        this.listQuery.createuser = getName()
+      }
       itemBank.getSelectPage(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {

@@ -8,6 +8,7 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
+      
       <div class="menu-wrapper">
         <el-submenu index="1">
           <template slot="title">
@@ -43,7 +44,7 @@
         </el-submenu>
 
       </div>
-      <div class="menu-wrapper">
+      <div v-if="role=='管理员'" class="menu-wrapper">
         <el-submenu index="3">
           <template slot="title">
             <svg-icon icon-class="user"/>
@@ -61,8 +62,23 @@
         </el-submenu>
 
       </div>
-      <div class="menu-wrapper">
+      <div v-if="role=='管理员'" class="menu-wrapper">
         <el-submenu index="4">
+          <template slot="title">
+            <svg-icon icon-class="class"/>
+            <span slot="title">班级管理</span>
+          </template>
+          <template>
+            <router-link to="/class" >
+              <el-menu-item index="/class">
+                <span slot="title">班级管理</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+        </el-submenu>
+      </div>
+      <div v-if="role != '学生'" class="menu-wrapper">
+        <el-submenu index="5">
           <template slot="title">
             <svg-icon icon-class="paper"/>
             <span slot="title">试卷管理</span>
@@ -92,8 +108,8 @@
         </el-submenu>
 
       </div>
-      <div class="menu-wrapper">
-        <el-submenu index="5">
+      <div v-if="role != '学生'" class="menu-wrapper">
+        <el-submenu index="6">
           <template slot="title">
             <svg-icon icon-class="itemBank"/>
             <span slot="title">题库管理</span>
@@ -115,15 +131,37 @@
           </template>
         </el-submenu>
       </div>
+      <div v-if="role == '学生'" class="menu-wrapper">
+        <el-submenu index="7">
+          <template slot="title">
+            <svg-icon icon-class="examlist"/>
+            <span slot="title">考试管理</span>
+          </template>
+
+          <template>
+            <router-link to="/examList" >
+              <el-menu-item index="/examList">
+                <span slot="title">考试管理</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+        </el-submenu>
+      </div>
     </el-menu>
   </el-scrollbar>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { getRole } from "@/commons/utils/auth";
 // import SidebarItem from './SidebarItem'
 export default {
   // components: { SidebarItem },
+  data(){
+    return{
+      role: getRole(),
+    }
+  },
   computed: {
     ...mapGetters([
       'privRouters',

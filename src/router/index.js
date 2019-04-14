@@ -104,6 +104,51 @@ export const constantRouterMap = [
           }
         ]
       },
+      {
+        path: '/class',
+        component: Layout,
+        redirect: '/class',
+        name: 'userIndex',
+        meta: { title: '班级管理', icon: 'component' },
+        children: [
+          {
+            path: '/class',
+            component: () => import('@/view/class/'),
+            name: 'class',
+            meta: { title: '班级管理'}
+          }
+        ]
+      },
+      {
+        path: '/examList',
+        component: Layout,
+        redirect: '/examList',
+        name: 'userIndex',
+        meta: { title: '考试管理', icon: 'component' },
+        children: [
+          {
+            path: '/examList',
+            component: () => import('@/view/examList/'),
+            name: 'examList',
+            meta: { title: '考试管理'}
+          }
+        ]
+      },
+      {
+        path: '/exam',
+        component: Layout,
+        redirect: '/exam',
+        name: 'userIndex',
+        meta: { title: '考试', icon: 'component' },
+        children: [
+          {
+            path: '/exam',
+            component: () => import('@/view/exam/'),
+            name: 'exam',
+            meta: { title: '考试'}
+          }
+        ]
+      },
     // {
     //   path: '',
     //   name: '',

@@ -6,7 +6,7 @@
         <el-form-item label="科目">
           <el-input v-model="listQuery.subject" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
-        <el-form-item label="创建者">
+        <el-form-item v-if="role == '管理员'" label="创建者">
           <el-input v-model="listQuery.createuser" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
@@ -103,7 +103,8 @@ import TipTitle from '@/components/TipTitle'
 import paper from '@/commons/api/paper'
 import { notify } from '@/commons/utils/notify'
 import {autoGeneratingPaperRules} from '@/commons/utils/validate'
-import { getName } from "@/commons/utils/auth";
+import { getName } from "@/commons/utils/auth"
+import { getRole } from "@/commons/utils/auth"
 export default {
   name: 'Paper',
   components: {
@@ -112,6 +113,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      role: getRole(),
       listQuery: {
         pageNum: 1,
         pageSize: 10,
@@ -164,6 +166,9 @@ export default {
     getList() {
       this.listLoading = true;
       // console.log(this.listQuery)
+      if(this.role == '教师'){
+        this.listQuery.createuser = getName()
+      }
       paper.getPaperPage(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {

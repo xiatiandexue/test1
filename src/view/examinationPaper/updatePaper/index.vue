@@ -12,7 +12,14 @@
               <el-form-item label="科目" prop="subject">
                 <el-input v-model="paperData.subject" 
                           disabled
-                          style="width:150px;" />
+                          style="width:100px;" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="试卷总分" prop="score">
+                <el-input v-model="paperData.score" 
+                          disabled
+                          style="width:100px;" />
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -71,37 +78,6 @@
         </ul>
       </div>
     </div>
-    <!-- <el-dialog
-      title="添加单选题"
-      :visible.sync="selectDialog"
-      width="30%"
-      >
-      <el-form label-width="80px" :model="select" ref="dataForm" :rules="rules">
-        <el-form-item label="题目" prop="question">
-          <el-select
-            style="min-height: 30px;line-height: 30px;height: auto;"
-            class="selects"
-            multiple
-            filterable
-            remote
-            reserve-keyword
-            :multiple-limit="1"
-            :remote-method="remoteMethod"
-            placeholder="请选择题目">
-            <el-option
-              v-for="item in options4"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="selectDialog = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 <script>
