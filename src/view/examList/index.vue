@@ -10,7 +10,7 @@
               </el-table-column>
                 <el-table-column label="操作" align="center" width="230">
                   <template slot-scope="scope">
-                      <el-button type="info" @click="takeExam(scope.row)"><svg-icon icon-class="btn-view" />管理</el-button>
+                      <el-button type="info" @click="takeExam(scope.row)"><svg-icon icon-class="btn-view" />考试</el-button>
                   </template>
               </el-table-column>
           </el-table>

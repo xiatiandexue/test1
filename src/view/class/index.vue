@@ -49,21 +49,32 @@
           <el-input v-model="temp.name" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item label="上传文件" prop="fileList">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :before-remove="beforeRemove"
-            :limit="1"
-            :on-exceed="handleExceed"
-            :file-list="temp.fileList">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
+          <el-upload ref="upload"
+                    class="avatar-uploader"
+                    action="/app/waterquality/import"
+                    :multiple="false"
+                    :file-list="filesList"
+                    :data="formValues"
+                    drap
+                    :show-file-list="true"
+                    :on-success="uploadCallBack"
+                    :before-upload="beforeAvatarUpload"
+                    :auto-upload="false">
+          <el-button slot="trigger"
+                      size="small"
+                      type="primary">选取文件</el-button>
+          <!-- <el-button style="margin-left: 10px;"
+                      size="small"
+                      type="primary"
+                      @click="submitUpload">上传到服务器</el-button> -->
+          <div class="el-upload__tip"
+                slot="tip">只能上传xls/xlsx文件</div>
+        </el-upload>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="UpVisible = false">取 消</el-button>
-        <el-button type="primary" @click="UpLoad">确 定</el-button>
+        <el-button type="primary" @click="submitUpload">确 定</el-button>
     </span>
     </el-dialog>
     <el-dialog
@@ -152,18 +163,35 @@ export default {
     handleUpload() {
       this.UpVisible = true
     },
-    UpLoad() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          user.addUser(this.temp).then(response => {
-            var res = notify(this, response)
-            if (res) {
-              this.UpVisible = false
-              this.getList()
-            }
-          })
-        }
-      })
+    submitUpload () {
+      this.$refs.importForm.validate().then(res => { this.$refs.upload.submit(); }).catch(err => { console.log("失败了：" + err) })
+    },
+    beforeAvatarUpload (file) {
+      if (this.filesList.length > 0) {
+        _.remove(this.filesList)
+      }
+      let names = file.name.split('.')
+      let fileType = names[names.length - 1]
+      const isExcel = fileType === "xls" || fileType === 'xlsx';
+      if (!isExcel) {
+        this.$notifyNative(this, "上传文件只能是 xls/xlsx 格式!", 'error')
+      } else {
+        this.loading = this.$loading({
+          lock: true,
+          text: "正在导入...",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)"
+        });
+        setTimeout(() => {
+          this.getList()
+        }, 1000)
+      }
+      this.loading.close()
+      this.importVisible = false
+    },
+    uploadCallBack (response, file, fileList) {
+      var res = notify(this, response);
+      _.remove(fileList)
     },
     handleAdd(){
       this.dialogVisible = true

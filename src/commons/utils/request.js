@@ -150,6 +150,30 @@ export const download = (_this, url, fileName) => {
     // loading.close()
   })
 }  
+export function getDownload (url, name) {
+  let link = document.createElement('a')
+  link.style.display = 'none'
+  link.href = url
+  link.setAttribute('download', name)
+  link.setAttribute('target', '_self')
+  window.open(url,'_self')
+  document.body.appendChild(link)
+  // if(document.all)    
+  //         {
+  //                //   IE里面触发
+
+  //                link.click()               
+  //         }         
+  //         else  
+  //         {  
+  //               //   firefox 里面触发
+  //                var event = document.createEvent("MouseEvents");  
+  //                event .initEvent("click",true,true);  
+  //                link.dispatchEvent(event );  
+  //          }  
+  
+  document.body.removeChild(link)
+}
 export default service
 
 // const service = axios.create({

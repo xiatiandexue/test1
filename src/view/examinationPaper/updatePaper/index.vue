@@ -92,7 +92,6 @@ export default {
         selectQuestions: '',
         SAQQuestions:'',
         options:['A','B','C','D'],
-        scroll: document.body.scrollTop,
         selectDialog: false
       }
     },
@@ -100,7 +99,6 @@ export default {
     activated() {
       this.paperid = this.$route.query.paperid;
       this.init();
-      
     },
     methods:{
       //初始化

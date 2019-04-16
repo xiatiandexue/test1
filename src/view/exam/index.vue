@@ -11,82 +11,61 @@
       </div>
     </div>
     <div class="main">
-      <div class="single" v-if="singleQuestions.length>0">
-        <h3>一、单选题（只有一个正确答案）</h3>
+      <div class="select">
+        <h3>一、单选题（{{paperData.selectscore}}分）</h3>
         <ul class="question-item">
-          <li class="marginB10" v-for="(item,index) in singleQuestions" :key="item.id">
-            <p class="question-title">{{index+1}} 、{{item.name}}</p>
-
-            <span class="option"
-                  v-if="item.type!='judgement'&&item.type!='Q&A'"item
-                  v-for="(item1,index1) in item.selection" :key="item1.id">
-              <el-radio v-model="item.sanswer" :label="options[index1]" :key="index1">
-              {{options[index1]}}、{{item1}}
-              </el-radio>
-              </span>
+          <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionid">
+            <p class="question-title">
+              {{index+1}} 、{{item.question}}
+            </p>
+            <el-radio-group v-model="item.answer">
+              <el-radio :label="item.choiceone">{{options[0]}}、{{item.choiceone}}</el-radio>
+              <el-radio :label="item.choicetwo">{{options[1]}}、{{item.choicetwo}}</el-radio>
+              <el-radio :label="item.choicethree">{{options[2]}}、{{item.choicethree}}</el-radio>
+              <el-radio :label="item.choicefour">{{options[3]}}、{{item.choicefour}}</el-radio>
+            </el-radio-group>
+            <hr />
           </li>
         </ul>
       </div>
       
-      <div class="judge" v-if="QAQuestions.length>0">
-        <h3>二、简答题</h3>
+      <div class="SAQ">
+        <h3>二、判断题（{{paperData.saqscore}}分）</h3>
         <ul class="question-item">
-          <li class="marginB10" v-for="(item,index) in QAQuestions" :key="item.id">
-            <p class="question-title">{{index+1}} 、{{item.name}}</p>
-            <el-input
-             class="textarea"
-              type="textarea"
-              :rows="3"
-              placeholder="请输入内容"
-              v-model="item.sanswer">
-            </el-input>
+          <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.saqid">
+            <p class="question-title">
+              {{index+1}} 、{{item.question}}
+              </p>
+            <el-radio-group v-model="item.answer">
+              <el-radio label="是"></el-radio>
+              <el-radio label="否"></el-radio>
+            </el-radio-group>
+            <hr />
           </li>
         </ul>
       </div>
     </div>
-    <div class="scroll_top" @click="scrollTop" v-if="scroll>500">
-      <i class="el-icon-caret-top"></i>
-    </div>
 
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      >
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    
   </div>
 </template>
 <script>
-  export default{
+export default {
     data(){
       return {
-        PaperId: '',
-        dialogVisible: false,
-        paperData:{
-          name:'',
-          time:'',
-          totalPoints:''
-        },
+        paperid: '',
+        paperData:'',
         startTime:'',
         nowTime: '',
         examTime: '',
         timer: null,
+        options:['A','B','C','D'],
         singleQuestions:[],
-        multiQuestions:[],
-        QAQuestions:[],
-        judgeQuestions:[],
-        options:['A','B','C','D','E','F','G','H','I','J','K',
-          'L','M','N','O','P','Q','R','S','T'],
-        scroll: document.body.scrollTop
+        SAQQuestions:[],
       }
     },
     computed:{
-      time:function(){
+      time(){
         let time = this.examTime;
         let hour = 0;
         let mm = 0;
@@ -107,37 +86,28 @@
       }
     },
     created() {
-      this.PaperId = this.$route.query.PaperId;
+      this.paperid = this.$route.query.paperid;
     },
     mounted(){
       this.nowTime = new Date();
       // this.startTime = new Date();
       this.init();
-      window.addEventListener('scroll', this.handleScroll);
-    },
-    beforeDestroy(){
-      window.removeEventListener('scroll', this.handleScroll);
     },
     methods:{
       /**
        * 初始化
        */
       init(){
-        if(this.id == '' || !this.id ){
-            this.$router.push({path:'forntexamindex'});
+        if(this.paperid == '' || !this.paperid ){
+            this.$router.push({path:'/exmaList'});
             return
         } else {
-          this.$axios.get('/api/getExamInfo',{
-            params:{
-              id: this.id
-            }
-          }).then(response => {
-            let res = response.data;
-            if(res.status == '0') {
-              for(let key in this.paperData) {
-                  this.paperData[key] = res.result[key];
-              }
-              this.startTime = res.result.startTime;
+          var id = {paperid:this.paperid} 
+          paper.getPaper(id).then(response => {
+            var res = notify(this, response, true);
+            if(res){
+              this.paperData = response.data;
+              this.startTime = response.startTime;
               this.examTime = this.paperData.time*60 - ((this.nowTime - new Date(this.startTime))/1000);
               if(this.examTime <= 0){
                 this.$message.error('考试时间已过!');
@@ -160,20 +130,7 @@
           })
         }
       },
-      /**
-       * 回到顶部
-       * @return {[type]} [description]
-       */
-      scrollTop(){
-        let timer = setInterval(() => {
-          let top = document.body.scrollTop || document.documentElement.scrollTop;
-          let speed = Math.ceil(top / 5);
-          document.body.scrollTop = top - speed;
-          if (top === 0) {
-            clearInterval(timer);
-          }
-        }, 20)
-      },
+      //设置倒计时
       getCode(){
         const TIME_COUNT = this.examTime;
         if (!this.timer) {
@@ -187,14 +144,7 @@
           }, 1000)
         }
       },
-      handleScroll(){
-        this.scroll = document.body.scrollTop;
-        if(this.scroll>250) {
-          this.$refs.submitBox.style.top=10+'px';
-        } else {
-          this.$refs.submitBox.style.top=250+'px';
-        }
-      },
+     
       /**
        * 提交试卷
        * @return {[type]} [description]
@@ -202,22 +152,14 @@
       submit(isMust){
         let isAllAnswer = true;
         let single = true;
-        let mutil = true;
-        let judge = true;
-        let QA = true;
+        let SAQ = true;
         this.singleQuestions.some((item) => {
           single = !item.sanswer == '';
         })
-        this.multiQuestions.some((item) => {
-          mutil = !item.sanswer.length == 0;
+        this.SAQQuestions.some((item) => {
+          SAQ = !item.sanswer == '';
         })
-        this.judgeQuestions.some((item) => {
-          judge = !item.sanswer == '';
-        })
-        this.QAQuestions.some((item) => {
-          QA = !item.sanswer == '';
-        })
-        if(single&&mutil&&judge&&QA){
+        if(single&&SAQ){
           isAllAnswer = true;
         } else {
           isAllAnswer = false;
@@ -233,18 +175,7 @@
               score += item.score;
             }
           });
-          this.multiQuestions.forEach(item => {
-            let answer = item.answer.split(',');
-            if(answer.equals(item.sanswer)){
-              score += item.score;
-            }
-          });
-          this.judgeQuestions.forEach((item) => {
-            if(item.sanswer === item.answer){
-              score += item.score;
-            }
-          })
-          if(this.QAQuestions.length > 0) {
+          if(this.SAQQuestions.length > 0) {
             this.QAQuestions.forEach(item => {
               answers.push({
                 _question: item._id,

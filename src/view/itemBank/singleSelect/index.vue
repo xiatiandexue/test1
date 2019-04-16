@@ -165,6 +165,68 @@
         <el-button v-else type="primary" @click="updateData">确 定</el-button>
     </span>
     </el-dialog>
+    <el-dialog :visible.sync="importVisible"
+                  :append-to-body='true'
+                 width="40%">
+      <div style="margin:0rem 1rem;">
+        <el-form ref="dataForm"
+                  :rules="rules"
+                  :model="data"
+                  label-width="80px"
+                  label-position="center">
+          <tip-title title="一、导入信息">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="科目"
+                              prop="subject">
+                  <el-input v-model="data.subject" clearable style="width:200px;" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="创建人"
+                              prop="createuser">
+                  <el-input v-model="data.createuser" clearable style="width:200px;" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </tip-title>
+          <tip-title title="二、上传数据">
+            <div style="overflow:hidden;">
+              <div style="height:28px;line-height:28px;width:100px;float:left;font-weight:bold;">上传文件：</div>
+              <div style="float:left;">
+                <el-upload ref="upload"
+                            class="avatar-uploader"
+                            action="/app/waterquality/import"
+                            :multiple="false"
+                            :file-list="filesList"
+                            :data="formValues"
+                            drap
+                            :show-file-list="true"
+                            :on-success="uploadCallBack"
+                            :before-upload="beforeAvatarUpload"
+                            :auto-upload="false">
+                  <el-button slot="trigger"
+                              size="small"
+                              type="primary">选取文件</el-button>
+                  <!-- <el-button style="margin-left: 10px;"
+                              size="small"
+                              type="primary"
+                              @click="submitUpload">上传到服务器</el-button> -->
+                  <div class="el-upload__tip"
+                        slot="tip">只能上传xls/xlsx文件</div>
+                </el-upload>
+              </div>
+            </div>
+          </tip-title>
+        </el-form>
+        <div slot="footer"
+              class="dialog-footer">
+          <el-button @click="submitUpload"
+                      type="primary">上传</el-button>
+          <el-button @click="importVisible = false">关闭</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -173,8 +235,10 @@ import itemBank from '@/commons/api/itemBank'
 import { notify } from '@/commons/utils/notify'
 import {selectRules} from '@/commons/utils/validate'
 import { getName } from "@/commons/utils/auth"
-import { getRole } from "@/commons/utils/auth";
+import { getRole } from "@/commons/utils/auth"
+import TipTitle from "@/components/TipTitle";
 export default {
+  components:{TipTitle},
   data () {
     return {
       listLoading:false,
@@ -212,7 +276,7 @@ export default {
         {value: 2, label: '一般' },
         {value: 3, label: '困难' },
       ],
-      
+      importVisible: false,
     }
   },
   created(){
@@ -322,6 +386,40 @@ export default {
         }
       }
       return name
+    },
+    //导入数据
+    handleImport(){
+      this.importVisible = true
+    },
+    submitUpload () {
+      this.$refs.importForm.validate().then(res => { this.$refs.upload.submit(); }).catch(err => { console.log("失败了：" + err) })
+    },
+    beforeAvatarUpload (file) {
+      if (this.filesList.length > 0) {
+        _.remove(this.filesList)
+      }
+      let names = file.name.split('.')
+      let fileType = names[names.length - 1]
+      const isExcel = fileType === "xls" || fileType === 'xlsx';
+      if (!isExcel) {
+        this.$notifyNative(this, "上传文件只能是 xls/xlsx 格式!", 'error')
+      } else {
+        this.loading = this.$loading({
+          lock: true,
+          text: "正在导入...",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)"
+        });
+        setTimeout(() => {
+          this.getList()
+        }, 1000)
+      }
+      this.loading.close()
+      this.importVisible = false
+    },
+    uploadCallBack (response, file, fileList) {
+      var res = notify(this, response);
+      _.remove(fileList)
     },
     //=====分页相关=====
     //控制每页显示条数
