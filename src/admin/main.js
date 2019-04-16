@@ -12,6 +12,7 @@ import '@/assets/styles/common.scss' // 覆盖index.scss中的样式
 import store from '@/commons/store'
 // import store from '../vuex/store'
 // import '@/commons/permission' // permission control
+import echarts from 'echarts'
 import 'es6-promise'
 import 'svg.js'
 import '@/commons/icons'
@@ -27,7 +28,7 @@ let axiosIns = axios.create({
   baseURL: '/api/',
 });
 Vue.prototype.$http = axiosIns;
-
+Vue.prototype.$echarts = echarts
 Vue.prototype.$axios = axios;
 
 Vue.use(ElementUI);
