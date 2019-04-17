@@ -44,9 +44,9 @@
       title="导入班级"
       :visible.sync="UpVisible"
       width="40%">
-      <el-form label-width="80px" :model="temp" ref="dataForm" :rules="rules">
-        <el-form-item label="班级" prop="name">
-          <el-input v-model="temp.name" clearable style="width:250px;" />
+      <el-form label-width="80px" :model="formValues" ref="dataForm" :rules="rules">
+        <el-form-item label="班级" prop="class">
+          <el-input v-model="formValues.class" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item label="上传文件" prop="fileList">
           <el-upload ref="upload"
@@ -86,7 +86,7 @@
           <el-input v-model="data.class" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item label="学号" prop="usercode">
-          <el-input v-model="temp.usercode" 
+          <el-input v-model="data.usercode" 
                     clearable
                     :disabled="disabled"
                     style="width:250px;" />
@@ -136,6 +136,9 @@ export default {
       UpVisible: false,
       dialogVisible: false,
       total: undefined,
+      formValues:{
+        class:''
+      },
     }
   },
   methods: {

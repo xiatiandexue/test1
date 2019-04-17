@@ -149,6 +149,36 @@ export const constantRouterMap = [
           }
         ]
       },
+      {
+        path: '/paperAnalysis',
+        component: Layout,
+        redirect: '/paperAnalysis',
+        name: 'userIndex',
+        meta: { title: '试卷分析', icon: 'component' },
+        children: [
+          {
+            path: '/paperAnalysis',
+            component: () => import('@/view/paperAnalysis/'),
+            name: 'paperAnalysis',
+            meta: { title: '试卷分析'}
+          }
+        ]
+      },
+      {
+        path: '/examArrange',
+        component: Layout,
+        redirect: '/examArrange',
+        name: 'userIndex',
+        meta: { title: '试卷分析', icon: 'component' },
+        children: [
+          {
+            path: '/examArrange',
+            component: () => import('@/view/examArrange/'),
+            name: 'examArrange',
+            meta: { title: '试卷分析'}
+          }
+        ]
+      },
     // {
     //   path: '',
     //   name: '',

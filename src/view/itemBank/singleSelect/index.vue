@@ -21,6 +21,7 @@
     </div>
     <div class="tool">
       <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
+      <el-button @click="handleImport"><i class="el-icon-upload"></i>导入</el-button>
     </div>
     <div class="data-container">
       <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
@@ -199,7 +200,7 @@
                             action="/app/waterquality/import"
                             :multiple="false"
                             :file-list="filesList"
-                            :data="formValues"
+                            :data="data"
                             drap
                             :show-file-list="true"
                             :on-success="uploadCallBack"
@@ -219,12 +220,12 @@
             </div>
           </tip-title>
         </el-form>
-        <div slot="footer"
+        <span slot="footer"
               class="dialog-footer">
           <el-button @click="submitUpload"
                       type="primary">上传</el-button>
           <el-button @click="importVisible = false">关闭</el-button>
-        </div>
+        </span>
       </div>
     </el-dialog>
   </div>
@@ -277,6 +278,7 @@ export default {
         {value: 3, label: '困难' },
       ],
       importVisible: false,
+      filesList: [],
     }
   },
   created(){

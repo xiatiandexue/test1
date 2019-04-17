@@ -98,13 +98,13 @@
               </el-menu-item>
             </router-link>
           </template>
-          <!-- <template>
-            <router-link to="/examinationPaper/updatePaper" >
-              <el-menu-item index="/examinationPaper/updatePaper">
-                <span slot="title">更新试卷</span>
+          <template>
+            <router-link to="/paperAnalysis" >
+              <el-menu-item index="/paperAnalysis">
+                <span slot="title">试卷分析</span>
               </el-menu-item>
             </router-link>
-          </template> -->
+          </template>
         </el-submenu>
 
       </div>
@@ -131,17 +131,24 @@
           </template>
         </el-submenu>
       </div>
-      <div v-if="role == '学生'" class="menu-wrapper">
+      <div class="menu-wrapper">
         <el-submenu index="7">
           <template slot="title">
             <svg-icon icon-class="examlist"/>
             <span slot="title">考试管理</span>
           </template>
 
-          <template>
+          <template v-if="role == '学生'" >
             <router-link to="/examList" >
               <el-menu-item index="/examList">
-                <span slot="title">考试管理</span>
+                <span slot="title">考试列表</span>
+              </el-menu-item>
+            </router-link>
+          </template>
+          <template v-else >
+            <router-link to="/examArrange" >
+              <el-menu-item index="/examArrange">
+                <span slot="title">考试安排</span>
               </el-menu-item>
             </router-link>
           </template>

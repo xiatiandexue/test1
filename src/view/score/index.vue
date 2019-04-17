@@ -78,7 +78,7 @@
         listLoading:false,
       }
     },
-    create(){
+    created(){
       // this.getList()
     },
     methods: {

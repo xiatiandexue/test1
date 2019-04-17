@@ -177,3 +177,13 @@ export const saqRules = {
 export const autoGeneratingPaperRules = {
   subject: [reqf('科目')]
 }
+export const examArrangeRules = {
+  subject: [reqf('科目')],
+  testname: [reqf('考试名')],
+  start: [reqf('考试开始时间')],
+  duration: [reqf('考试时长')],
+  name: [reqf('试卷名')],
+  class: [reqf('考试班级')],
+  status: [reqf('考试状态')],
+  createuser: [reqf('创建人')]
+}
