@@ -21,6 +21,7 @@
     </div>
     <div class="tool">
       <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
+      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-add" />下载模板</el-button>
       <el-button @click="handleImport"><i class="el-icon-upload"></i>导入</el-button>
     </div>
     <div class="data-container">
@@ -181,12 +182,6 @@
                 <el-form-item label="科目"
                               prop="subject">
                   <el-input v-model="data.subject" clearable style="width:200px;" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="创建人"
-                              prop="createuser">
-                  <el-input v-model="data.createuser" clearable style="width:200px;" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -422,6 +417,15 @@ export default {
     uploadCallBack (response, file, fileList) {
       var res = notify(this, response);
       _.remove(fileList)
+    },
+    handleDownLoad() {
+      var url = `/Exam/saq/download?type=${2}`
+      let link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     },
     //=====分页相关=====
     //控制每页显示条数

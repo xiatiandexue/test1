@@ -16,7 +16,7 @@ module.exports = {
           // secure: false, // 如果是https接口，需要配置这个参数
           changeOriginL: true, // 如果接口跨域，需要进行这个参数配置
           pathRewrite:{
-             '^/Exam':'/Exam' //路径重写，这里理解成用'/api'代替target里面的地址，比如我们调用‘http://10.1.0.34:8000/api/homepage’，直接写‘/api/homepage’即可。
+             '^/Exam':'/exam' //路径重写，这里理解成用'/api'代替target里面的地址，比如我们调用‘http://10.1.0.34:8000/api/homepage’，直接写‘/api/homepage’即可。
           }
         }
     },

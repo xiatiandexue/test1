@@ -2,9 +2,6 @@
   <div class="select">
     <div class="filter-container">
       <el-form :inline="true">
-        <el-form-item label="学生姓名">
-          <el-input v-model="listQuery.name" clearable style="width:250px;" @keyup.enter.native="getList" />
-        </el-form-item>
         <el-form-item label="班级">
           <el-input v-model="listQuery.class" clearable style="width:250px;" @keyup.enter.native="getList" />
         </el-form-item>
@@ -107,7 +104,7 @@
   </div>
 </template>
 <script>
-import user from '@/commons/api/user'
+import classes from '@/commons/api/class'
 import { notify } from '@/commons/utils/notify'
 export default {
   data(){
@@ -117,7 +114,6 @@ export default {
       list: '',
       listQuery: {
         name: '',
-        class: '',
         pageNum: 1,
         pageSize: 10,
       },
@@ -145,7 +141,7 @@ export default {
     getList() {
       this.listLoading = true;
       // console.log(this.listQuery)
-      user.getUserPage(this.listQuery).then(response => {
+      classes.getClassList(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {
           this.list = response.data.list;
@@ -159,7 +155,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
         name: '',
-        class: '',
       }
       this.getList()
     },
