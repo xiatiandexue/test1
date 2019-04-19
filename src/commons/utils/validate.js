@@ -177,6 +177,9 @@ export const saqRules = {
 export const autoGeneratingPaperRules = {
   subject: [reqf('科目')]
 }
+export const classesRules = {
+  name: [reqf('班级')]
+}
 export const examArrangeRules = {
   subject: [reqf('科目')],
   testname: [reqf('考试名')],
@@ -187,3 +190,4 @@ export const examArrangeRules = {
   status: [reqf('考试状态')],
   createuser: [reqf('创建人')]
 }
+

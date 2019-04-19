@@ -16,18 +16,21 @@ import echarts from 'echarts'
 import 'es6-promise'
 import 'svg.js'
 import '@/commons/icons'
+import * as _ from 'lodash'
+import axios from '@/commons/utils/request';
 // import '@/assets/images/icons/index.js'
 
 
 Vue.config.productionTip = false
-import axios from 'axios';
-let axiosIns = axios.create({
-  // 发布
-  baseURL:'/',
-  // 开发
-  baseURL: '/api/',
-});
-Vue.prototype.$http = axiosIns;
+axios.defaults.withCredentials = true
+// let axiosIns = axios.create({
+//   // 发布
+//   baseURL:'/',
+//   // 开发
+//   baseURL: '/api/',
+//   withCredentials:true
+// });
+// Vue.prototype.$http = axiosIns;
 Vue.prototype.$echarts = echarts
 Vue.prototype.$axios = axios;
 

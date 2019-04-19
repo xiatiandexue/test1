@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form :inline="true">
         <el-form-item label="班级">
-          <el-input v-model="listQuery.class" clearable style="width:250px;" @keyup.enter.native="getList" />
+          <el-input v-model="listQuery.name" clearable style="width:250px;" @keyup.enter.native="getList" />
         </el-form-item>
         <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
         <el-button @click="getList"><svg-icon icon-class="btn-search" />搜索</el-button>
@@ -11,7 +11,8 @@
     </div>
     <div class="tool">
       <el-button @click="handleUpload"><svg-icon icon-class="btn-send" /> 导入</el-button>
-      <el-button @click="handleAdd"><svg-icon icon-class="btn-add" /> 添加</el-button>
+      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-add" />下载模板</el-button>
+      <el-button @click="handleAdd"><svg-icon icon-class="btn-add" /> 创建班级</el-button>
     </div>
     <div class="data-container">
       <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
@@ -19,11 +20,14 @@
         </el-table-column> -->
         <el-table-column type="index" label="序号" width="60" align="center">
         </el-table-column>
-        <el-table-column label="班级" prop="class" align="center">
+        <el-table-column label="班级" prop="name" align="center">
         </el-table-column>
-        <el-table-column label="学号" prop="" align="center">
-        </el-table-column>
-        <el-table-column label="姓名" prop="" align="center">
+        <!-- <el-table-column label="学号" prop="" align="center">
+        </el-table-column> -->
+        <el-table-column label="姓名" prop="studentNames" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.studentNames&&row.studentNames.join(',')}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="230">
           <template slot-scope="scope">
@@ -41,14 +45,21 @@
       title="导入班级"
       :visible.sync="UpVisible"
       width="40%">
-      <el-form label-width="80px" :model="formValues" ref="dataForm" :rules="rules">
-        <el-form-item label="班级" prop="class">
-          <el-input v-model="formValues.class" clearable style="width:250px;" />
+      <el-form label-width="80px" :model="formValues" ref="importForm" :rules="rules">
+        <el-form-item label="班级" prop="classId">
+          <el-select v-model="formValues.classId" placeholder="请选择">
+            <el-option
+              v-for="item in classesOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="上传文件" prop="fileList">
+        <el-form-item label="上传文件">
           <el-upload ref="upload"
                     class="avatar-uploader"
-                    action="/app/waterquality/import"
+                    action="/Exam/saq/import"
                     :multiple="false"
                     :file-list="filesList"
                     :data="formValues"
@@ -78,22 +89,21 @@
       :title="title"
       :visible.sync="dialogVisible"
       width="40%">
-      <el-form label-width="80px" :model="data" ref="dataForm" :rules="rules">
-        <el-form-item label="班级" prop="class">
-          <el-input v-model="data.class" clearable style="width:250px;" />
+      <el-form label-width="80px" :model="addForm" ref="dataForm" :rules="rules" v-if="dialogVisible">
+        <el-form-item label="班级名称" prop="name">
+          <el-input v-model="addForm.name" clearable style="width:250px;" />
         </el-form-item>
-        <el-form-item label="学号" prop="usercode">
-          <el-input v-model="data.usercode" 
-                    clearable
-                    :disabled="disabled"
-                    style="width:250px;" />
+        <el-form-item label="选择学生" prop="userIds">
+          <el-select v-model="addForm.userIds" multiple placeholder="请选择">
+            <el-option
+              v-for="item in studentOptions"
+              :key="item.userid"
+              :label="item.name"
+              :value="item.userid+''">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="data.name" clearable style="width:250px;" />
-        </el-form-item>
-        <el-form-item v-if="this.create" label="密码" prop="name">
-          <el-input v-model="data.password" clearable style="width:250px;" />
-        </el-form-item>
+        
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -105,37 +115,44 @@
 </template>
 <script>
 import classes from '@/commons/api/class'
+import user from '@/commons/api/user'
+import {classesRules} from '@/commons/utils/validate'
 import { notify } from '@/commons/utils/notify'
 export default {
   data(){
     return {
       listLoading:false,
-      fileList: [],
-      list: '',
+      rules: classesRules,
+      filesList: [],
+      list: [],
       listQuery: {
         name: '',
         pageNum: 1,
         pageSize: 10,
       },
-      temp: {
-        name:'',
-        fileList: []
-      },
-      data: {
-        class: '',
-        usercode: '',
-        name: ''
+      addForm: {
+        userIds: [],
+        name: '',
+        classId:undefined,
       },
       create: true,
-      textMap:['添加学生信息','修改学生信息'],
+      textMap:['添加班级','修改班级'],
       title:'',
       UpVisible: false,
       dialogVisible: false,
       total: undefined,
       formValues:{
-        class:''
+        classId:'',
+        type:3
       },
+      classesOptions:[],
+      studentOptions:[],
+      tempIds:[]
     }
+  },
+  created() {
+    this.getList()
+    this.getStudentOption()
   },
   methods: {
     getList() {
@@ -146,8 +163,18 @@ export default {
         if (res) {
           this.list = response.data.list;
           this.total = response.data.total;
+          this.classesOptions = response.data.list;
         }
         this.listLoading = false;
+      });
+    },
+    getStudentOption() {
+      var role = {role: '学生'}
+      user.getUser(role).then(response => {
+        var res = notify(this, response, true);
+        if (res) {
+          this.studentOptions = response.data;
+        }
       });
     },
     handleReset() {
@@ -162,6 +189,7 @@ export default {
       this.UpVisible = true
     },
     submitUpload () {
+      // classes.addClass(this.formValues)
       this.$refs.importForm.validate().then(res => { this.$refs.upload.submit(); }).catch(err => { console.log("失败了：" + err) })
     },
     beforeAvatarUpload (file) {
@@ -196,39 +224,52 @@ export default {
       this.title = this.textMap[0]
       this.create = true
       this.disabled = false
-      this.data = {
-        class: '',
-        usercode:'',
-        name:'',
+      
+      this.addForm = {
+        userIds: [],
+        name: '',
+        classId:undefined,
       }
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          user.addUser(this.temp).then(response => {
+          classes.addClass(this.addForm).then(response => {
             var res = notify(this, response)
             if (res) {
               this.dialogVisible = false
               this.getList()
+              this.$refs["dataForm"].resetFields();
             }
           })
         }
       })
     },
     handleUpdate(row) {
-      this.dialogVisible = true
       this.title = this.textMap[1]
       this.create = false
-      this.data = row
+      this.addForm.classId=row.id
+      this.addForm.name=row.name
+
+      _.remove(this.addForm.userIds)
+      _.assign(this.addForm.userIds ,row.studentIds)
+      this.tempIds=row.studentIds
+      this.$nextTick(()=>{
+        this.dialogVisible = true
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          user.updateUser(this.temp).then(response => {
+          this.addForm.deleteIds=_.filter(this.tempIds,(id)=>{
+            return !this.addForm.userIds.includes(id)
+          })
+          classes.updateClass(this.addForm).then(response => {
             var res = notify(this, response)
             if (res) {
               this.dialogVisible = false
               this.getList()
+              this.$refs["dataForm"].resetFields();
             }
           })
         }
@@ -239,9 +280,9 @@ export default {
         type: 'warning'
       }).then(() => {
         var deleteInfo = {
-          usercode: row.usercode
+          ids: [row.id]
         }
-        user.deleteUser(deleteInfo).then(response => {
+        classes.deleteClass(deleteInfo).then(response => {
           var res = notify(this, response)
           if (res) {
             this.getList()
@@ -254,6 +295,15 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${ file.name }？`);
+    },
+    handleDownLoad() {
+      var url = `/Exam/saq/download?type=${3}`
+      let link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     },
     //=====分页相关=====
     //控制每页显示条数

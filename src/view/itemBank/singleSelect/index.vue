@@ -171,31 +171,30 @@
                   :append-to-body='true'
                  width="40%">
       <div style="margin:0rem 1rem;">
-        <el-form ref="dataForm"
-                  :rules="rules"
+        <el-form ref="importForm"
                   :model="data"
                   label-width="80px"
                   label-position="center">
-          <tip-title title="一、导入信息">
+          <!-- <tip-title title="一、导入信息">
             <el-row>
               <el-col :span="12">
                 <el-form-item label="科目"
                               prop="subject">
-                  <el-input v-model="data.subject" clearable style="width:200px;" />
+                  <el-input v-model="formValue.subject" clearable style="width:200px;" />
                 </el-form-item>
               </el-col>
             </el-row>
-          </tip-title>
+          </tip-title> -->
           <tip-title title="二、上传数据">
             <div style="overflow:hidden;">
               <div style="height:28px;line-height:28px;width:100px;float:left;font-weight:bold;">上传文件：</div>
               <div style="float:left;">
                 <el-upload ref="upload"
                             class="avatar-uploader"
-                            action="/app/waterquality/import"
+                            action="/Exam/saq/import"
                             :multiple="false"
                             :file-list="filesList"
-                            :data="data"
+                            :data="formValue"
                             drap
                             :show-file-list="true"
                             :on-success="uploadCallBack"
@@ -274,6 +273,7 @@ export default {
       ],
       importVisible: false,
       filesList: [],
+      formValue:{type:2},
     }
   },
   created(){

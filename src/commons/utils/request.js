@@ -5,10 +5,12 @@ import store from '@/commons/store'
 import router from '@/router/'
 // create an axios instance
 axios.defaults.withCredentials = true
+axios.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
   timeout: 5000, // request timeout
-  withCredentials: true
+  withCredentials: true,
+  crossDomain: true,  
 })
 export const fetch = (url, data) => {
   const params = { ...data.params,

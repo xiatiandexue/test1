@@ -27,4 +27,5 @@ export default {
  addUser: (data) => getInterface(root, '/users/', data, 'post', ''), // 添加用户
  updateUser: (data) => getInterface(root, '/users/', data, 'put', ''), // 更新用户
  deleteUser: (data) => getInterface(root, '/users/', data, 'delete', ''), // 删除用户
+ getUser: (data) => getInterface(root, '/users/', data, 'post', 'list')
 }
