@@ -47,7 +47,7 @@
       <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
     </div>
     <div class="data-container">
-      <el-table v-loading="listLoading" max-height="400" :data="list" border highlight-current-row>
+      <el-table v-loading="listLoading" max-height="300" :data="list" border highlight-current-row>
         <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="subject" label="科目" align="center"></el-table-column>
         <el-table-column prop="examName" label="考试名" align="center"></el-table-column>
@@ -74,11 +74,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="createUser" label="创建者" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="300">
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button type="info" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button type="info" @click="handleView(scope.row)">试卷分析</el-button>
-            <el-button type="info" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button v-if="(scope.row.status == '1')" type="info" @click="handleUpdate(scope.row)">修改</el-button>
+            <el-button v-if="(scope.row.status == '3')" type="info" @click="handleView(scope.row)">试卷分析</el-button>
+            <el-button v-if="(scope.row.status == '1')" type="info" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -141,7 +141,7 @@
                 v-for="item in classesOptions"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id">
+                :value="item.id+''">
               </el-option>
             </el-select>
             </el-form-item>
@@ -254,7 +254,7 @@ export default {
   methods: {
     formatDate(time) {
       var date = new Date(time);
-      return format(date, 'yyyy-MM-dd HH:mm:ss');
+      return format(date, 'yyyy-MM-dd hh:mm:ss');
     },
     handleReset () {
       this.listQuery={
@@ -331,15 +331,21 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.dialogVisible = true
       this.title = this.textMap[1]
       this.create = false
-      this.data = row
+      this.formValues = row
+      this.formValues.beginTime = new Date(row.beginTime)
+      this.formValues.endTime = new Date(row.endTime)
+      this.dialogVisible = true
     },
     updateData() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          itemBank.updateSaq(this.data).then(response => {
+          this.formValues.beginTime = format(this.formValues.beginTime, 'yyyy-MM-dd hh:mm:ss')
+          this.formValues.endTime = format(this.formValues.endTime, 'yyyy-MM-dd hh:mm:ss')
+          this.formValues.createUser = this.formValues.userId
+          console.log(this.formValues.createUser)
+          exam.updateExam(this.formValues).then(response => {
             var res = notify(this, response)
             if (res) {
               this.dialogVisible = false
@@ -356,8 +362,8 @@ export default {
         type: "warning"
       })
         .then(() => {
-          var deleteRecordInfo = { paperid: row.paperid };
-          paper.deletePaper(deleteRecordInfo).then(response => {
+          var deleteRecordInfo = { ids: [row.examId] };
+          exam.deleteExam(deleteRecordInfo).then(response => {
             var res = notify(this, response);
             if (res) {
               this.getList();
