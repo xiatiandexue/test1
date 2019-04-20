@@ -6,6 +6,7 @@ export default {
   //考试安排
   getExamList: (data) => getInterface(root, '/arrange/', data, 'post', 'page'), // 分页查询考试安排
   getStatus: (data) => getInterface(root, '/arrange/', data, 'get', ''), // 考试安排状态下拉表
+  getPaperOptions: (data) => getInterface(root, '/paper/', data, 'get', 'constant'), //试卷下拉列表
   addExam: (data) => getInterface(root, '/arrange/', data, 'post', ''), // 添加考试安排
   updateExam: (data) => getInterface(root, '/arrange/', data, 'put', ''), // 更新考试安排
   deleteExam: (data) => getInterface(root, '/arrange/', data, 'delete', ''), // 删除考试安排

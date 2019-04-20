@@ -1,10 +1,21 @@
 import Cookies from 'js-cookie'
-
+const IdKey = 'Id'
 const TokenKey = 'Admin'
 const NameKey = 'Name'
 const RoleKey = 'Role'
 var TimeKey = 'LoginTime'
 
+export function getId () {
+  return Cookies.get(IdKey)
+}
+
+export function setId (id) {
+  return Cookies.set(IdKey, id)
+}
+
+export function removeId () {
+  return Cookies.remove(IdKey)
+}
 export function getToken () {
   return Cookies.get(TokenKey)
 }

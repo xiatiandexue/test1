@@ -88,7 +88,7 @@
         <el-pagination v-show="total>0" :current-page="listQuery.pageNum" :page-sizes="[10,20,30,50]" :page-size="listQuery.pageSize" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
     <el-dialog
-      title="title"
+      :title="title"
       :visible.sync="dialogVisible"
       width="45%">
       <el-form ref="form" :model="formValues" label-width="120px" :rules="rules">
@@ -100,65 +100,58 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="考试名" prop="testname">
-              <el-input v-model="formValues.testname"></el-input>
+            <el-form-item label="考试名" prop="examName">
+              <el-input v-model="formValues.examName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="考试开始时间" prop="start">
-              <el-date-picker v-model="formValues.start" type="date" placeholder="选择日期" :picker-options="beginTimeOptions">
+            <el-form-item label="考试开始时间" prop="beginTime">
+              <el-date-picker v-model="formValues.beginTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="考试时长" prop="duration"><el-input v-model="formValues.duration"></el-input></el-form-item>
+            <el-form-item label="考试结束时间" prop="endTime">
+              <el-date-picker v-model="formValues.endTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss">
+              </el-date-picker>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="试卷名" prop="name">
-              <el-select v-model="formValues.name">
+            <el-form-item label="试卷名" prop="paperId">
+              <el-select
+                v-model="formValues.paperId"
+                placeholder="请选择">
                 <el-option
-                v-for="item in paperName"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+                  v-for="item in paperOptions"
+                  :key="item.paperid"
+                  :label="item.name"
+                  :value="item.paperid">
+                </el-option>
+              </el-select>
           </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="考试班级" prop="class">
-              <el-select v-model="formValues.class">
-                  <el-option
-                  v-for="item in paperName"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
+            <el-form-item label="考试班级" prop="classIds">
+              <el-select v-model="formValues.classIds" multiple placeholder="请选择">
+              <el-option
+                v-for="item in classesOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="考试状态" prop="status">
-              <el-select v-model="formValues.status">
-                  <el-option
-                  v-for="item in paperName"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+        <!-- <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="创建人"><el-input v-model="formValues.saqscore"></el-input></el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -176,6 +169,7 @@ import classes from '@/commons/api/class'
 import { notify } from '@/commons/utils/notify'
 import {examArrangeRules} from '@/commons/utils/validate'
 import { getName } from "@/commons/utils/auth"
+import { getId } from "@/commons/utils/auth"
 import { getRole } from "@/commons/utils/auth"
 import {format} from '@/commons/utils'
 export default {
@@ -193,7 +187,7 @@ export default {
         examName: undefined,
         paperName: undefined,
         status: undefined,
-        classId:undefined,
+        classId:'',
         createName: undefined,
       },
       total: undefined,
@@ -203,7 +197,10 @@ export default {
       listLoading:false,
       rules: examArrangeRules,
       create: true,
-      formValues:{},
+      formValues:{
+        createUser:getId(),
+        subject:'',
+      },
       paperName:[],
       statusOptions: [
         {value: "1", label: '未开始' },
@@ -211,6 +208,19 @@ export default {
         {value: "3", label: '已结束' },
       ],
       classesOptions:[],
+      paperOptions:[],
+      subject:"",
+    }
+  },
+  watch: {
+    'formValues.subject':{
+      handler(newSubject,oldSubject){
+        var info = {subject:newSubject}
+        exam.getPaperOptions(info).then(response => {
+          this.paperOptions = response.data
+        })
+      },
+      deep: true
     }
   },
   created () {
@@ -244,14 +254,17 @@ export default {
   methods: {
     formatDate(time) {
       var date = new Date(time);
-      return format(date, 'yyyy-MM-dd hh:mm:ss');
+      return format(date, 'yyyy-MM-dd HH:mm:ss');
     },
     handleReset () {
       this.listQuery={
         pageNum: 1,
         pageSize: 10,
-        quetion: '',
-        createuser: ''
+        examName: undefined,
+        paperName: undefined,
+        status: undefined,
+        classId:undefined,
+        createName: undefined,
       }
       this.getList()
     },
@@ -294,7 +307,6 @@ export default {
         if (res) {
           this.classesOptions = response.data.list;
         }
-        this.listLoading = false;
       });
     },
     handleCreate(){
@@ -306,7 +318,7 @@ export default {
     createData() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          paper.autoGenerating(this.Data).then(response => {
+          exam.addExam(this.formValues).then(response => {
             var res = notify(this, response)
             if (res) {
               this.dialogVisible = false
@@ -388,7 +400,20 @@ export default {
         }
       }
       return names.join(",")
-    }
+    },
+    //远程查找试卷
+    // remoteMethod(query) {
+    //     if (query !== '') {
+    //       setTimeout(() => {
+    //         debugger
+    //         exam.getPaperOptions(this.formValues.subject).then(response => {
+    //           this.paperOptions = response.data.list
+    //         })
+    //       }, 200);
+    //     } else {
+    //       this.paperOptions = [];
+    //     }
+    //   }
   }
 }
 </script>

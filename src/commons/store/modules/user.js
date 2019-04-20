@@ -1,10 +1,11 @@
 import { loginByUsername, logout} from '@/commons/api/user'
-import { getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, getRole, setRole, removeRole } from '@/commons/utils/auth'
+import { getId, setId, removeId, getToken, setToken, removeToken, getName, setName, removeName, getTime, setTime, getRole, setRole, removeRole } from '@/commons/utils/auth'
 const user = {
   state: {
     user: '',
     status: '',
     code: '',
+    id: getId(),
     token: getToken(),
     name: getName(),
     logintime: getTime(),
@@ -24,6 +25,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_ID: (state, id) => {
+      state.id = id
     },
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -88,10 +92,12 @@ const user = {
           const data = response.data
           console.log(data)
           var time = new Date()
+          commit('SET_ID', data.userid)
           commit('SET_TOKEN', usercode)
           commit('SET_NAME', data.name)
           commit('SET_ROLE', role)
           commit('SET_TIME', time)
+          setId(data.userid)
           setToken(usercode)
           setName(data.name)
           setRole(role)
@@ -116,6 +122,7 @@ const user = {
     LogOut ({ commit, state }) {
       return new Promise((resolve, reject) => {
         
+          commit('SET_ID', '')
           commit('SET_TOKEN', '')
           commit('SET_ROLE', '')
           commit('SET_MENUS', [])
@@ -143,11 +150,13 @@ const user = {
     // 前端 登出
     FedLogOut ({ commit }) {
       return new Promise(resolve => {
+        commit('SET_ID', '')
         commit('SET_TOKEN', '')
         commit('SET_ROLE', '')
         commit('SET_MENUS', [])
         commit('SET_URLS', [])
         commit('SET_PRIVROUTERS', [])
+        removeId()
         removeToken()
         removeName()
         resolve()

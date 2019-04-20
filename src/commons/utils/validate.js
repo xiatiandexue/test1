@@ -182,12 +182,10 @@ export const classesRules = {
 }
 export const examArrangeRules = {
   subject: [reqf('科目')],
-  testname: [reqf('考试名')],
-  start: [reqf('考试开始时间')],
-  duration: [reqf('考试时长')],
-  name: [reqf('试卷名')],
-  class: [reqf('考试班级')],
-  status: [reqf('考试状态')],
-  createuser: [reqf('创建人')]
+  examName: [reqf('考试名')],
+  beginTime: [reqf('考试开始时间')],
+  endTime: [reqf('考试结束时间')],
+  paperId: [reqf('试卷名')],
+  classIds: [reqf('考试班级')],
 }
 
