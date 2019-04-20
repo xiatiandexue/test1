@@ -60,7 +60,7 @@ export default {
         examTime: '',
         timer: null,
         options:['A','B','C','D'],
-        singleQuestions:[],
+        selectQuestions:[],
         SAQQuestions:[],
       }
     },
@@ -99,7 +99,7 @@ export default {
        */
       init(){
         if(this.paperid == '' || !this.paperid ){
-            this.$router.push({path:'/exmaList'});
+            this.$router.push({path:`/exmaList`});
             return
         } else {
           var id = {paperid:this.paperid} 

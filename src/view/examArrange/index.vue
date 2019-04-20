@@ -168,9 +168,7 @@ import exam from '@/commons/api/exam'
 import classes from '@/commons/api/class'
 import { notify } from '@/commons/utils/notify'
 import {examArrangeRules} from '@/commons/utils/validate'
-import { getName } from "@/commons/utils/auth"
-import { getId } from "@/commons/utils/auth"
-import { getRole } from "@/commons/utils/auth"
+import { getName,getUserId,getRole } from "@/commons/utils/auth"
 import {format} from '@/commons/utils'
 export default {
   name: 'Paper',
@@ -198,7 +196,7 @@ export default {
       rules: examArrangeRules,
       create: true,
       formValues:{
-        createUser:getId(),
+        createUser:getUserId(),
         subject:'',
       },
       paperName:[],

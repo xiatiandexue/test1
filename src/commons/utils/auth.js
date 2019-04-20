@@ -1,20 +1,32 @@
 import Cookies from 'js-cookie'
-const IdKey = 'Id'
+const UserIdKey = 'UserId'
+const ClassIdKey = 'ClassId'
 const TokenKey = 'Admin'
 const NameKey = 'Name'
 const RoleKey = 'Role'
 var TimeKey = 'LoginTime'
 
-export function getId () {
-  return Cookies.get(IdKey)
+export function getUserId () {
+  return Cookies.get(UserIdKey)
 }
 
-export function setId (id) {
-  return Cookies.set(IdKey, id)
+export function setUserId (userId) {
+  return Cookies.set(UserIdKey, userId)
 }
 
-export function removeId () {
-  return Cookies.remove(IdKey)
+export function removeUserId () {
+  return Cookies.remove(UserIdKey)
+}
+export function getClassId () {
+  return Cookies.get(ClassIdKey)
+}
+
+export function setClassId (classId) {
+  return Cookies.set(ClassIdKey, classId)
+}
+
+export function removeClassId () {
+  return Cookies.remove(ClassIdKey)
 }
 export function getToken () {
   return Cookies.get(TokenKey)
