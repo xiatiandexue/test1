@@ -3,21 +3,41 @@
     <!--筛选条件-->
     <div class="filter-container">
       <el-form :inline="true">
-        <el-form-item label="科目">
-          <el-input v-model="listQuery.subject" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+        <el-form-item label="考试名">
+          <el-input v-model="listQuery.examName" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+        </el-form-item>
+        <el-form-item label="试卷名">
+          <el-input v-model="listQuery.paperName" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="班级">
-          <el-input v-model="listQuery.class" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+          <el-select v-model="listQuery.classId" placeholder="请选择">
+            <el-option
+              v-for="item in classesOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="时间">
+        <el-form-item label="考试状态">
+          <el-select v-model="listQuery.status" placeholder="请选择">
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="时间">
             <el-date-picker v-model="listQuery.beginTime" type="date" placeholder="选择日期" :picker-options="beginTimeOptions">
             </el-date-picker>
             <span>~</span>
             <el-date-picker v-model="listQuery.endTime" type="date" placeholder="选择日期" :picker-options="endTimeOptions">
             </el-date-picker>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item v-if="role == '管理员'" label="创建者">
-          <el-input v-model="listQuery.createuser" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+          <el-input v-model="listQuery.createName" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
         <el-button @click="handleFilter"><svg-icon icon-class="btn-search" />搜索</el-button>
@@ -30,18 +50,35 @@
       <el-table v-loading="listLoading" max-height="400" :data="list" border highlight-current-row>
         <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="subject" label="科目" align="center"></el-table-column>
-        <el-table-column prop="name" label="考试名" align="center"></el-table-column>
-        <el-table-column prop="" label="考试开始时间" align="center"></el-table-column>
-        <el-table-column prop="" label="考试时长" align="center"></el-table-column>
-        <el-table-column prop="" label="试卷名称" align="center"></el-table-column>
-        <el-table-column prop="" label="考试班级" align="center"></el-table-column>
-        <el-table-column prop="" label="考试状态" align="center"></el-table-column>
-        <el-table-column prop="createuser" label="创建者" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column prop="examName" label="考试名" align="center"></el-table-column>
+        <el-table-column prop="beginTime" label="考试开始时间" align="center">
           <template slot-scope="scope">
-            <el-button type="info" @click="handleUpdate(scope.row)"><svg-icon icon-class="btn-edit" />修改</el-button>
-            <el-button type="info" @click="handleView(scope.row)"><svg-icon icon-class="btn-view" />试卷分析</el-button>
-            <el-button type="info" @click="handleDelete(scope.row)"><svg-icon icon-class="btn-delete" />删除</el-button>
+            {{formatDate(scope.row.beginTime)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="endTime" label="结束时间" align="center">
+          <template slot-scope="scope">
+            {{formatDate(scope.row.endTime)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="paperName" label="试卷名称" align="center">
+        </el-table-column>
+        <el-table-column prop="classIds" label="考试班级" align="center">
+          <template slot-scope="scope">
+            <span v-text="getClassNameById(scope.row.classIds)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="考试状态" align="center">
+          <template slot-scope="scope">
+            <span v-text="getStatusById(scope.row.status)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createUser" label="创建者" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="300">
+          <template slot-scope="scope">
+            <el-button type="info" @click="handleUpdate(scope.row)">修改</el-button>
+            <el-button type="info" @click="handleView(scope.row)">试卷分析</el-button>
+            <el-button type="info" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -84,7 +121,7 @@
             <el-form-item label="试卷名" prop="name">
               <el-select v-model="formValues.name">
                 <el-option
-                v-for="item in papername"
+                v-for="item in paperName"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -96,7 +133,7 @@
             <el-form-item label="考试班级" prop="class">
               <el-select v-model="formValues.class">
                   <el-option
-                  v-for="item in papername"
+                  v-for="item in paperName"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -110,7 +147,7 @@
             <el-form-item label="考试状态" prop="status">
               <el-select v-model="formValues.status">
                   <el-option
-                  v-for="item in papername"
+                  v-for="item in paperName"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -134,15 +171,17 @@
 
 <script>
 import TipTitle from '@/components/TipTitle'
-import paper from '@/commons/api/paper'
+import exam from '@/commons/api/exam'
+import classes from '@/commons/api/class'
 import { notify } from '@/commons/utils/notify'
 import {examArrangeRules} from '@/commons/utils/validate'
 import { getName } from "@/commons/utils/auth"
 import { getRole } from "@/commons/utils/auth"
+import {format} from '@/commons/utils'
 export default {
   name: 'Paper',
   components: {
-    TipTitle,
+    TipTitle,format
   },
   data() {
     return {
@@ -151,11 +190,11 @@ export default {
       listQuery: {
         pageNum: 1,
         pageSize: 10,
-        subject: '',
-        class:'',
-        beginTime:'',
-        endTime:'',
-        createuser: '',
+        examName: undefined,
+        paperName: undefined,
+        status: undefined,
+        classId:undefined,
+        createName: undefined,
       },
       total: undefined,
       list:[],
@@ -165,10 +204,20 @@ export default {
       rules: examArrangeRules,
       create: true,
       formValues:{},
+      paperName:[],
+      statusOptions: [
+        {value: "1", label: '未开始' },
+        {value: "2", label: '进行中' },
+        {value: "3", label: '已结束' },
+      ],
+      classesOptions:[],
     }
   },
   created () {
-    this.getList()
+    this.getClassesOptions()
+    this.$nextTick(() => {
+      this.getList()
+    })
   },
   computed:{
     endTimeOptions(){
@@ -193,6 +242,10 @@ export default {
     },
   },
   methods: {
+    formatDate(time) {
+      var date = new Date(time);
+      return format(date, 'yyyy-MM-dd hh:mm:ss');
+    },
     handleReset () {
       this.listQuery={
         pageNum: 1,
@@ -224,11 +277,22 @@ export default {
       if(this.role == '教师'){
         this.listQuery.createuser = getName()
       }
-      paper.getPaperPage(this.listQuery).then(response => {
+      exam.getExamList(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {
           this.list = response.data.list;
           this.total = response.data.total;
+        }
+        this.listLoading = false;
+      });
+    },
+    //获取班级列表
+    getClassesOptions() {
+      var info = {pageNum: 1,pageSize: 100,}
+      classes.getClassList(info).then(response => {
+        var res = notify(this, response, true);
+        if (res) {
+          this.classesOptions = response.data.list;
         }
         this.listLoading = false;
       });
@@ -297,6 +361,33 @@ export default {
           paperid: row.paperid
         }
       })
+    },
+    //通过id获取考试状态
+    getStatusById(id) {
+      var name = ''
+      var typeList = this.statusOptions
+      for (var type of typeList) {
+        if(type.value === id) {
+          name = type.label
+          break
+        }
+      }
+      return name
+    },
+    //通过id获取班级名称
+    getClassNameById(ids) {
+      var names = []
+      var typeList = this.classesOptions
+      for (var type of typeList) {
+        for(var i = 0; i < ids.length; i++) {
+          if(type.id+'' === ids[i]) {
+            names[i] = type.name
+            break
+          }
+
+        }
+      }
+      return names.join(",")
     }
   }
 }

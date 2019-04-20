@@ -322,6 +322,7 @@ export default {
     },
     submitUpload () {
       this.$refs.importForm.validate().then(res => { this.$refs.upload.submit(); }).catch(err => { console.log("失败了：" + err) })
+      this.getList()
     },
     beforeAvatarUpload (file) {
       if (this.filesList.length > 0) {
