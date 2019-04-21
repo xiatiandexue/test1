@@ -374,7 +374,8 @@ export default {
       this.$router.push({
         path:`/paperAnalysis`,
         query: {
-          paperid: row.paperid
+          paperId: row.paperId,
+          examId: row.examId
         }
       })
     },

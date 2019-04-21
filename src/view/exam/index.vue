@@ -136,15 +136,16 @@ export default {
                 this.$router.push({path:`/examList`});
               }
               this.getCode();
+              this.regularlySubmit();
               tempSingle.forEach(item1 => {
-                item1.type = '1'
+                item1.type = '2'
                 item1.userAnswer = ''
                 item1.value = this.paperData.selectScore
                 this.selectQuestions.push(item1);
               })
               console.log(this.selectQuestions)
               tempSAQ.forEach(item2 => {
-                item2.type = '2'
+                item2.type = '1'
                 item2.userAnswer = ''
                 item2.value = this.paperData.saqScore
                 this.SAQQuestions.push(item2);
@@ -173,7 +174,24 @@ export default {
           }, 1000)
         }
       },
-     
+      //定时提交试卷
+      regularlySubmit(){
+        let regular = setInterval(() => {
+          if (this.examTime > 0 ) {
+            this.submitAnswer = {
+              userId: getUserId(),
+              examId: this.query.examId,
+              paperId: this.query.paperId,
+              isSubmit: false,
+              answerList: [...this.selectQuestions, ...this.SAQQuestions]
+            }
+            this.submitApi(this.submitAnswer)
+          } else {
+            clearInterval(regular);
+          }
+        }, 60000)
+      },
+
       /**
        * 提交试卷
        * @return {[type]} [description]
@@ -204,7 +222,7 @@ export default {
             userId: getUserId(),
             examId: this.query.examId,
             paperId: this.query.paperId,
-            isSumbit: true,
+            isSubmit: true,
             answerList: [...this.selectQuestions, ...this.SAQQuestions]
           }
           console.log(this.submitAnswer)
@@ -231,8 +249,14 @@ export default {
       submitApi(submitAnswer){
         exam.submitAnswer(submitAnswer).then(response => {
           var res = notify(this, response, true);
-          if(res){
-            this.$router.push({path:`/examList`});
+          debugger
+          if(res && submitAnswer.isSubmit){
+            this.$router.push({
+              path:`/examList`,
+              query: {
+                takeExam: false
+              }
+            });
           }
         })
       }

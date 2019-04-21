@@ -7,40 +7,40 @@
         <div class="title">
           <el-form label-width="80px" ref="dataForm" >
             <el-row :gutter="20">
-              <el-col :span="5">
+              <!-- <el-col :span="5">
                 <el-form-item label="科目:" prop="subject">
                   <span v-text="paperData.subject"></span>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
               <el-col :span="5">
                 <el-form-item label="试卷总分:" prop="score">
                   <span v-text="paperData.score"></span>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="试卷名:" prop="name">
-                  <span v-text="paperData.name"></span>
+                <el-form-item label="考试名:" prop="examName">
+                  <span v-text="paperData.examName"></span>
                 </el-form-item>
               </el-col>
             </el-row>
           </el-form>
         </div>
         <div class="select">
-          <h3>一、单选题（{{paperData.selectscore}}分）</h3>
+          <h3>一、单选题（{{paperData.selectScore}}分）</h3>
           <ul class="question-item">
-            <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionid">
+            <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionId">
               <p class="question-title">
                 {{index+1}} 、{{item.question}}
               </p>
               <el-radio-group v-model="item.answer">
-                <el-radio :label="item.choiceone">{{options[0]}}、{{item.choiceone}}</el-radio>
-                <el-radio :label="item.choicetwo">{{options[1]}}、{{item.choicetwo}}</el-radio>
-                <el-radio :label="item.choicethree">{{options[2]}}、{{item.choicethree}}</el-radio>
-                <el-radio :label="item.choicefour">{{options[3]}}、{{item.choicefour}}</el-radio>
+                <el-radio :label="item.one">{{options[0]}}、{{item.one}}</el-radio>
+                <el-radio :label="item.two">{{options[1]}}、{{item.two}}</el-radio>
+                <el-radio :label="item.three">{{options[2]}}、{{item.three}}</el-radio>
+                <el-radio :label="item.four">{{options[3]}}、{{item.four}}</el-radio>
               </el-radio-group>
               <div class="chart">
                 <div :id="'selectChart'+index" class="select-chart"></div>
-                <div class="tips">
+                <div class="tips" v-if="item.corrent < item.wrong">
                   <span>Tips:本题错误人数较多，建议重点讲解</span>
                 </div>
               </div>
@@ -50,9 +50,9 @@
         </div>
         
         <div class="SAQ">
-          <h3>二、判断题（{{paperData.saqscore}}分）</h3>
+          <h3>二、判断题（{{paperData.saqScore}}分）</h3>
           <ul class="question-item">
-            <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.saqid">
+            <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.questionId">
               <p class="question-title">
                 {{index+1}} 、{{item.question}}
                 </p>
@@ -61,6 +61,9 @@
                 <el-radio label="否"></el-radio>
               </el-radio-group>
               <div :id="'saqChart'+index" class="select-chart"></div>
+              <div class="tips" v-if="item.corrent < item.wrong">
+                <span>Tips:本题错误人数较多，建议重点讲解</span>
+              </div>
               <hr />
             </li>
           </ul>
@@ -69,30 +72,29 @@
   </div>
 </template>
 <script>
+import {format, dateDiff} from '@/commons/utils'
+import { notify } from '@/commons/utils/notify'
+import { getUserId } from "@/commons/utils/auth"
+import exam from '@/commons/api/exam'
 export default {
   data() {
     return{
       options:['A','B','C','D'],
-      paperData: {subject: '语文', score:'100',name:'语文考试',selectscore:'10',saqscore:'20'},
-      selectQuestions: [
-        {
-          question:'1',answer:'1',choiceone:'1',choicetwo:'2',choicethree:'3',choicefour:'4'
-        },{
-          question:'2',answer:'2',choiceone:'1',choicetwo:'2',choicethree:'3',choicefour:'4'
-        },{
-          question:'3',answer:'3',choiceone:'1',choicetwo:'2',choicethree:'3',choicefour:'4'
-        },
-      ],
-      SAQQuestions: [
-        {question:'1',answer:'1'},
-        {question:'2',answer:'0'},
-      ],
-      selectData:[[3,5],[4,4],[6,2]],
+      paperData: {},
+      selectQuestions: [],
+      SAQQuestions: [],
+      selectData:[],
       saqData:[[3,5],[6,2]],
-      tempChartData:[]
+      tempChartData:[],
+      query: {
+        paperId:undefined,
+        examId: undefined,
+        isAnalyze: true,
+      },
     }
   },
   mounted(){
+    this.init()
     this.$nextTick(()=>{
       setTimeout(()=>{
         for(let i = 0; i< this.selectQuestions.length; i++){
@@ -105,11 +107,14 @@ export default {
           var saq = 'saq'
           this.initChart(j,saq)
         }
-      },200)
+      },1000)
     })
     
   },
   created(){
+    this.query.paperId =this.$route.query.paperId
+    this.query.examId = this.$route.query.examId
+    
   },
   
   methods:{
@@ -177,10 +182,38 @@ export default {
       myChart.setOption(option);
       console.log('生成图表成功')
     },
+    init(){
+      if(this.query.examId == '' || !this.query.examId ){
+          this.$router.push({path:`/examList`});
+          return
+      } else {
+        exam.getPaperContent(this.query).then(response => {
+          var res = notify(this, response, true);
+          if(res){
+            this.paperData = response.data.paperData
+            this.selectQuestions = response.data.single
+            this.SAQQuestions = response.data.saq
+            for (var i = 0; i < this.selectQuestions.length; i++){
+              var arr1 = Array.of(this.selectQuestions[i].corrent, this.selectQuestions[i].wrong)
+              this.selectData[i] = arr1
+            }
+            for (var j = 0; j < this.SAQQuestions.length; j++){
+              var arr2 = Array.of(this.SAQQuestions[j].corrent, this.SAQQuestions[j].wrong)
+              this.saqData[j] = arr2
+            }
+          }
+        }).catch(err => {
+          this.$message({
+            message: err,
+            type: 'error'
+          });
+        })
+      }
+    },
     //返回
     handleBack() {
       this.$router.push({
-        path:`/examinationPaper/`,
+        path:`/examArrange/`,
       })
     }
   }
