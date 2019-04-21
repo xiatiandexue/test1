@@ -1,7 +1,7 @@
 <template>
-  <div class="exam">
-    <h3 class="text-center marginT10">{{paperData.subject}}</h3>
-    <div class="text-center marginT10">考试时长：{{paperData.time}}分钟  总分：{{paperData.score}}分</div>
+  <div class="exam" style="height: 87vh">
+    <h3 class="text-center marginT10">{{paperData.examName}}</h3>
+    <div class="text-center marginT10">考试时长：{{duration}}分钟  总分：{{paperData.score}}分</div>
     <hr>  
     <div class="submit-box" ref="submitBox">
       <el-button @click="submit" type="primary" class="submit-btn">提交试卷</el-button>
@@ -12,35 +12,33 @@
     </div>
     <div class="main">
       <div class="select">
-        <h3>一、单选题（{{paperData.selectscore}}分）</h3>
+        <h3>一、单选题（{{paperData.selectScore}}分）</h3>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionid">
             <p class="question-title">
               {{index+1}} 、{{item.question}}
             </p>
-            <el-radio-group v-model="item.answer">
-              <el-radio :label="item.choiceone">{{options[0]}}、{{item.choiceone}}</el-radio>
-              <el-radio :label="item.choicetwo">{{options[1]}}、{{item.choicetwo}}</el-radio>
-              <el-radio :label="item.choicethree">{{options[2]}}、{{item.choicethree}}</el-radio>
-              <el-radio :label="item.choicefour">{{options[3]}}、{{item.choicefour}}</el-radio>
+            <el-radio-group v-model="item.userAnswer">
+              <el-radio :label="item.one">{{options[0]}}、{{item.one}}</el-radio>
+              <el-radio :label="item.two">{{options[1]}}、{{item.two}}</el-radio>
+              <el-radio :label="item.three">{{options[2]}}、{{item.three}}</el-radio>
+              <el-radio :label="item.four">{{options[3]}}、{{item.four}}</el-radio>
             </el-radio-group>
-            <hr />
           </li>
         </ul>
       </div>
       
       <div class="SAQ">
-        <h3>二、判断题（{{paperData.saqscore}}分）</h3>
+        <h3>二、判断题（{{paperData.saqScore}}分）</h3>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.saqid">
             <p class="question-title">
               {{index+1}} 、{{item.question}}
               </p>
-            <el-radio-group v-model="item.answer">
+            <el-radio-group v-model="item.userAnswer">
               <el-radio label="是"></el-radio>
               <el-radio label="否"></el-radio>
             </el-radio-group>
-            <hr />
           </li>
         </ul>
       </div>
@@ -50,10 +48,18 @@
   </div>
 </template>
 <script>
+  import {format, dateDiff} from '@/commons/utils'
+  import { notify } from '@/commons/utils/notify'
+  import { getUserId } from "@/commons/utils/auth"
+  import exam from '@/commons/api/exam'
 export default {
     data(){
       return {
-        paperid: '',
+        query: {
+          paperId: undefined,
+          examId: undefined,
+          isAnalyze: undefined,
+        },
         paperData:'',
         startTime:'',
         nowTime: '',
@@ -62,6 +68,8 @@ export default {
         options:['A','B','C','D'],
         selectQuestions:[],
         SAQQuestions:[],
+        duration: '',
+        submitAnswer: '',
       }
     },
     computed:{
@@ -79,54 +87,75 @@ export default {
     watch: {
       time(curVal, oldVal) {
         if(curVal == "小时分钟秒"){
-          this.$message.error('考试时间到，强制提交!');
+          this.$message({
+            message: '考试时间到，强制提交!',
+            type: 'error'
+          });
           let isMust = true;
           this.submit(isMust);
         }
       }
     },
-    created() {
-      this.paperid = this.$route.query.paperid;
+    activated() {
+      this.query.paperId = this.$route.query.paperId;
+      this.query.examId = this.$route.query.examId;
+      this.query.isAnalyze = this.$route.query.isAnalyze;
+      this.$nextTick(() => {
+        this.init()
+      })
     },
     mounted(){
       this.nowTime = new Date();
       // this.startTime = new Date();
-      this.init();
+      // this.init();
     },
     methods:{
       /**
        * 初始化
        */
       init(){
-        if(this.paperid == '' || !this.paperid ){
-            this.$router.push({path:`/exmaList`});
+        if(this.query.examId == '' || !this.query.examId ){
+            this.$router.push({path:`/examList`});
             return
         } else {
-          var id = {paperid:this.paperid} 
-          paper.getPaper(id).then(response => {
+          exam.getPaperContent(this.query).then(response => {
             var res = notify(this, response, true);
             if(res){
-              this.paperData = response.data;
-              this.startTime = response.startTime;
-              this.examTime = this.paperData.time*60 - ((this.nowTime - new Date(this.startTime))/1000);
+              this.paperData = response.data.paperData
+              var tempSingle = response.data.single
+              var tempSAQ = response.data.saq
+              this.duration = dateDiff(this.paperData.beginTime,this.paperData.endTime)
+              this.startTime = this.paperData.beginTime;
+              this.examTime = this.duration*60 - ((this.nowTime - new Date(this.startTime))/1000);
+              console.log(this.examTime)
               if(this.examTime <= 0){
-                this.$message.error('考试时间已过!');
-                this.$router.go(-1);
+                this.$message({
+                  message: '考试时间已过!',
+                  type: 'error'
+                });
+                this.$router.push({path:`/examList`});
               }
               this.getCode();
-              // this.timeOut();
-              res.result._questions.forEach(item => {
-                if(item.type=='single'){
-                  item.sanswer = '';
-                  this.singleQuestions.push(item);
-                }else if(item.type == 'judgement'){
-                  item.sanswer = '';
-                  this.judgeQuestions.push(item);
-                }
+              tempSingle.forEach(item1 => {
+                item1.type = '1'
+                item1.userAnswer = ''
+                item1.value = this.paperData.selectScore
+                this.selectQuestions.push(item1);
               })
+              console.log(this.selectQuestions)
+              tempSAQ.forEach(item2 => {
+                item2.type = '2'
+                item2.userAnswer = ''
+                item2.value = this.paperData.saqScore
+                this.SAQQuestions.push(item2);
+              })
+              console.log(this.SAQQuestions)
             }
           }).catch(err => {
-            this.$message.error(err);
+            this.$message({
+              message: err,
+              type: 'error'
+            });
           })
         }
       },
@@ -153,11 +182,11 @@ export default {
         let isAllAnswer = true;
         let single = true;
         let SAQ = true;
-        this.singleQuestions.some((item) => {
-          single = !item.sanswer == '';
+        this.selectQuestions.some((item) => {
+          single = !item.userAnswer == '';
         })
         this.SAQQuestions.some((item) => {
-          SAQ = !item.sanswer == '';
+          SAQ = !item.userAnswer == '';
         })
         if(single&&SAQ){
           isAllAnswer = true;
@@ -166,31 +195,27 @@ export default {
         }
         console.log(isAllAnswer,isMust);
         if(isAllAnswer === false && isMust !== true){
-          this.$message.warning('考试时间未到，请完成所有题目!');
+          this.$message({
+            type: 'warning',
+            message: '考试时间未到，请完成所有题目!'
+          })
         } else {
-          let score = 0; // 得分
-          let answers = [];
-          this.singleQuestions.forEach(item => {
-            if(item.sanswer === item.answer){
-              score += item.score;
-            }
-          });
-          if(this.SAQQuestions.length > 0) {
-            this.QAQuestions.forEach(item => {
-              answers.push({
-                _question: item._id,
-                answer: item.sanswer
-              })
-            })
+          this.submitAnswer = {
+            userId: getUserId(),
+            examId: this.query.examId,
+            paperId: this.query.paperId,
+            isSumbit: true,
+            answerList: [...this.selectQuestions, ...this.SAQQuestions]
           }
+          console.log(this.submitAnswer)
           if(isMust === true){
-            this.submitApi(score,answers);
+            this.submitApi(this.submitAnswer);
           } else {
             this.$confirm('是否提前交卷？', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
             }).then(() => {
-              this.submitApi(score,answers);
+              this.submitApi(this.submitAnswer);
             }).catch(()=>{
               this.$message({
                 type: 'info',
@@ -203,20 +228,12 @@ export default {
       /**@argument score answers
        * 提交试卷api请求
        */
-      submitApi(score,answers){
-        this.$axios.post('/api/submitExam',{
-          id: this.id,
-          score: score,
-          answers: answers,
-          startTime: this.startTime
-        }).then(response => {
-          let res = response.data;
-          if(res.status == '0') {
-            this.$message.success('提交成功!');
-            this.$router.push({path:'frontstudentinfo'});
+      submitApi(submitAnswer){
+        exam.submitAnswer(submitAnswer).then(response => {
+          var res = notify(this, response, true);
+          if(res){
+            this.$router.push({path:`/examList`});
           }
-        }).catch(err => {
-          this.$message.error('提交失败，请联系老师!');
         })
       }
     }

@@ -298,84 +298,6 @@ export function uniqueArr (arr) {
   return Array.from(new Set(arr))
 }
 
-// 角色菜单列表转成菜单树
-export function treeDataTranslate (data, id = 'id', pid = 'parentId') {
-  var res = []
-  var temp = {}
-  // 数组转成以下标为属性的对象
-  for (var i = 0; i < data.length; i++) {
-    temp[data[i][id]] = data[i]
-  }
-  // 遍历数组
-  for (var k = 0; k < data.length; k++) {
-    // 获取有父级部门的子部门
-    if (temp[data[k][pid]]) {
-      if (!temp[data[k][pid]]['children']) {
-        temp[data[k][pid]]['children'] = []
-      }
-      if (!temp[data[k][pid]]['_level']) {
-        temp[data[k][pid]]['_level'] = 1
-      }
-      data[k]['_level'] = temp[data[k][pid]]._level + 1
-      temp[data[k][pid]]['children'].push(data[k])
-    } else {
-      // 获取父级部门
-      res.push(data[k])
-    }
-  }
-  return res
-}
-
-// 部门列表和用户列表转成部门用户树
-export function treeDataTranslate2 (organList, userList, id = 'id', pid = 'parentId') {
-  var res = []
-  var temp = {}
-
-  for (var j = 0; j < userList.length; j++) {
-    // 获取用户的部门id
-    var organId = userList[j].organId
-
-    // 统一id和label的属性名称，elementUi tree组件的渲染需要
-    userList[j].departmentId = userList[j].userCode
-    userList[j].departmentName = userList[j].userName
-
-    // 错误数据，没有部门的用户
-    if (!organId) {
-      continue
-    }
-    // 遍历所有部门
-    for (var i = 0; i < organList.length; i++) {
-      // 获取部门id
-      var departmentId = organList[i].departmentId
-      if (organId === departmentId) {
-        if (!organList[i]['children']) {
-          organList[i]['children'] = []
-          // 添加用户到对应的部门下
-          organList[i]['children'].push(userList[j])
-        } else {
-          organList[i]['children'].push(userList[j])
-        }
-      }
-    }
-  }
-
-  console.log(organList)
-  res = treeDataTranslate(organList, id = 'departmentId', pid = 'departmentSuperiorId')
-  console.log(res)
-  return res
-}
-
-export function getTreeCheckedNodes (data, id = 'menuId', roleId = 'roleId') {
-  var res = []
-  // 遍历数组
-  for (var k = 0; k < data.length; k++) {
-    // 获取有父级部门的子部门
-    if (data[k][roleId]) {
-      res.push(data[k][id])
-    }
-  }
-  return res
-}
 
 // 验证字符串不是否包含中文且长度为32位
 export function checkNumber (theObj) {
@@ -421,7 +343,8 @@ export function dateDiff (date1, date2) {
   } else if (date2.getTime) {
     date2 = date2.getTime()
   }
-  return (date2 - date1) / 1000 / 60 / 60 / 24 // 除1000是毫秒，不加是秒
+  // return (date2 - date1) / 1000 / 60 / 60 / 24 // 除1000是毫秒，不加是秒
+  return (date2 - date1) / 1000 / 60  // 除1000是毫秒，不加是秒
 }
 
 //

@@ -6,32 +6,49 @@
                 <el-form-item label="科目">
                   <el-input v-model="listQuery.subject" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
                 </el-form-item>
-                <el-form-item label="学生学号">
-                  <el-input v-model="listQuery.usercode" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+                <el-form-item label="考试名">
+                  <el-input v-model="listQuery.examName" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
                 </el-form-item>
-                <el-form-item label="学生姓名">
-                  <el-input v-model="listQuery.name" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+                <el-form-item label="试卷名">
+                  <el-input v-model="listQuery.paperName" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+                </el-form-item>
+                <el-form-item label="班级" v-if="role != '学生'">
+                  <el-select v-model="listQuery.classId" placeholder="请选择">
+                    <el-option
+                      v-for="item in classesOptions"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
                 <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
                 <el-button @click="handleFilter"><svg-icon icon-class="btn-search" />搜索</el-button>
             </el-form>
         </div>
         <!--工具栏-->
-        <div class="operate-container">
+        <div class="operate-container" v-if="role != '学生'">
           <el-button @click="handleExport"><svg-icon icon-class="btn-download" />导出</el-button>
         </div>
         <!--表格数据-->
         <div class="data-container">
           <el-table v-loading="listLoading" max-height="600" :data="list" border highlight-current-row>
-              <!-- <el-table-column type="selection" width="55" align="center">
-              </el-table-column> -->
               <el-table-column type="index" label="序号" width="60" align="center">
               </el-table-column>
               <el-table-column label="科目" prop="subject" align="center">
               </el-table-column>
-              <el-table-column label="考试时间" prop="startTime" align="center">
+              <el-table-column label="考试名" prop="examName" align="center">
               </el-table-column>
-              <el-table-column label="学号" prop="usercode" align="center">
+              <el-table-column label="试卷名" prop="paperName" align="center">
+              </el-table-column>
+              <el-table-column label="考试时间" prop="beginTime" align="center">
+                <template slot-scope="scope">
+                  {{formatDate(scope.row.beginTime)}}
+                </template>
+              </el-table-column>
+              <el-table-column label="班级" prop="className" align="center">
+              </el-table-column>
+              <el-table-column label="学号" prop="code" align="center">
               </el-table-column>
               <el-table-column label="姓名" prop="name" align="center">
               </el-table-column>
@@ -47,7 +64,11 @@
     
 </template>
 <script>
-  // import score from "@/commons/api/score";
+  import classes from '@/commons/api/class'
+  import score from '@/commons/api/score'
+  import {format} from '@/commons/utils'
+  import { notify } from '@/commons/utils/notify'
+  import { getUserId, getRole } from "@/commons/utils/auth"
   export default {
     name: '',
     data() {
@@ -56,30 +77,24 @@
         listQuery: {
           pageNum: 1,
           pageSize: 10,
-          subject:"",
-          usercode: '',
-          name:'',
+          subject:'',
+          examName: '',
+          paperName:'',
+          classId: undefined,
+          isStudent:false,
         },
         total:3,
-        list:[
-          {subject:'语文',
-           time:'2019-01-03',
-           score:'87'
-          },
-          {subject:'数学',
-           time:'2019-01-03',
-           score:'87'
-          },
-          {subject:'历史',
-           time:'2019-01-03',
-           score:'87'
-          },
-        ],
+        list:[],
+        classesOptions:[],
         listLoading:false,
+        role:getRole(),
       }
     },
     created(){
-      // this.getList()
+      this.getList()
+      if(this.role != '学生'){
+        this.getClassesOptions()
+      }
     },
     methods: {
       //搜索
@@ -92,16 +107,22 @@
         this.listQuery = {
           pageNum: 1,
           pageSize: 10,
-          subject:"",
-          usercode: '',
-          name:'',
+          subject:'',
+          examName: '',
+          paperName:'',
+          classId: undefined,
+          isStudent:false,
         },
         this.getList()
       },
       getList() {
         this.listLoading = true;
         // console.log(this.listQuery)
-        score.getList(this.listQuery).then(response => {
+        if(getRole() == "学生") {
+          this.listQuery.userId = getUserId()
+          this.listQuery.isStudent = true
+        }
+        score.getGradePage(this.listQuery).then(response => {
           var res = notify(this, response, true);
           if (res) {
             this.list = response.data.list;
@@ -110,8 +131,22 @@
           this.listLoading = false;
         });
       },
+      getClassesOptions() {
+        classes.getClassList(this.listQuery).then(response => {
+          var res = notify(this, response, true);
+          if (res) {
+            this.classesOptions = response.data.list;
+          }
+          this.listLoading = false;
+        });
+      },
       handleExport () {
-        var url = `/app/intakeReport/export?startDate=${this.searchData.startDate}&endDate=${this.searchData.endDate}`
+        debugger
+        if(!this.listQuery.classId) {
+          var url = `/Exam/exam/download?subject=${this.listQuery.subject}&paperName=${this.listQuery.paperName}&examName=${this.listQuery.examName}&isStudent=${this.listQuery.isStudent}`
+        } else {
+          var url = `/Exam/exam/download?classId=${this.listQuery.classId}&subject=${this.listQuery.subject}&paperName=${this.listQuery.paperName}&examName=${this.listQuery.examName}&isStudent=${this.listQuery.isStudent}`
+        }
         let link = document.createElement("a");
         link.style.display = "none";
         link.href = url;
@@ -123,7 +158,11 @@
         // }, 1000);
       },
       handleDownload () {
-        eneralize.downloadTemplate({ type: this.values.searchData.type })
+        score.downLoadGrade(this.listQuery)
+      },
+      formatDate(time) {
+        var date = new Date(time);
+        return format(date, 'yyyy-MM-dd hh:mm:ss');
       },
       // downloadTemplate: (data) => getDownload('/app/waterquality/download?type=' + data.type), // 水质列表模板下载
       //=====分页相关=====
