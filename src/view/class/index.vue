@@ -1,5 +1,5 @@
 <template>
-  <div class="select">
+  <div class="app-container classes">
     <div class="filter-container">
       <el-form :inline="true">
         <el-form-item label="班级">
@@ -10,8 +10,8 @@
       </el-form>
     </div>
     <div class="tool">
-      <el-button @click="handleUpload"><svg-icon icon-class="btn-send" /> 导入</el-button>
-      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-add" />下载模板</el-button>
+      <el-button @click="handleUpload"><i class="el-icon-upload"></i>导入</el-button>
+      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-download" />下载模板</el-button>
       <el-button @click="handleAdd"><svg-icon icon-class="btn-add" /> 创建班级</el-button>
     </div>
     <div class="data-container">

@@ -55,10 +55,11 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="科目" prop="subject">
-              <el-select v-model="Data.subject" placeholder="请选择科目">
+              <!-- <el-select v-model="Data.subject" placeholder="请选择科目">
                 <el-option label="语文" value="语文"></el-option>
                 <el-option label="历史" value="历史"></el-option>
-              </el-select>
+              </el-select> -->
+              <el-input v-model="Data.subject"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">

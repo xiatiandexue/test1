@@ -1,5 +1,5 @@
 <template>
-  <div class="select">
+  <div class="app-container select">
     <div class="filter-container">
       <el-form :inline="true">
         <el-form-item label="题目">
@@ -21,7 +21,7 @@
     </div>
     <div class="tool">
       <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
-      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-add" />下载模板</el-button>
+      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-download" />下载模板</el-button>
       <el-button @click="handleImport"><i class="el-icon-upload"></i>导入</el-button>
     </div>
     <div class="data-container">
@@ -431,12 +431,12 @@ export default {
     //=====分页相关=====
     //控制每页显示条数
     handleSizeChange(val) {
-      this.searchData.pageSize = val;
+      this.listQuery.pageSize = val;
       this.getList();
     },
     //跳转页码
     handleCurrentChange(val) {
-      this.searchData.pageNum = val;
+      this.listQuery.pageNum = val;
       this.getList();
     },
   }

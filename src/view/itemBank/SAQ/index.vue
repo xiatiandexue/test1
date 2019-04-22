@@ -1,5 +1,5 @@
 <template>
-  <div class="SAQ">
+  <div class="app-container SAQ">
     <div class="filter-container">
       <el-form :inline="true">
         <el-form-item label="题目">
@@ -20,7 +20,7 @@
     </div>
     <div class="tool">
       <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
-      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-down" />下载模板</el-button>
+      <el-button @click="handleDownLoad"><svg-icon icon-class="btn-download" />下载模板</el-button>
       <el-button @click="handleImport"><i class="el-icon-upload"></i>导入</el-button>
     </div>
     <div class="data-container">

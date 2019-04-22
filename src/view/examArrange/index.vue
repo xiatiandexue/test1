@@ -47,7 +47,7 @@
       <el-button @click="handleCreate"><svg-icon icon-class="btn-add" />添加</el-button>
     </div>
     <div class="data-container">
-      <el-table v-loading="listLoading" max-height="300" :data="list" border highlight-current-row>
+      <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
         <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="subject" label="科目" align="center"></el-table-column>
         <el-table-column prop="examName" label="考试名" align="center"></el-table-column>
