@@ -40,8 +40,8 @@
               </el-radio-group>
               <div class="chart">
                 <div :id="'selectChart'+index" class="select-chart"></div>
-                <div class="tips" v-if="item.corrent < item.wrong">
-                  <span>Tips:本题错误人数较多，建议重点讲解</span>
+                <div class="tips">
+                  <span v-text="getTips(item.difficulty,item.corrent,item.totalNum)"></span>
                 </div>
               </div>
               <hr />
@@ -61,8 +61,8 @@
                 <el-radio label="否"></el-radio>
               </el-radio-group>
               <div :id="'saqChart'+index" class="select-chart"></div>
-              <div class="tips" v-if="item.corrent < item.wrong">
-                <span>Tips:本题错误人数较多，建议重点讲解</span>
+              <div class="tips">
+                <span v-text="getTips(item.difficulty,item.corrent,item.totalNum)"></span>
               </div>
               <hr />
             </li>
@@ -215,12 +215,31 @@ export default {
       this.$router.push({
         path:`/examArrange/`,
       })
+    },
+    getTips(difficulty,corrent,totalNum){
+      if(difficulty == 1){
+        if(corrent < 0.8*totalNum) {
+          return "Tips:本题难度为【简单】 错误人数超过20%，建议重点讲解"
+        }
+      } else if (difficulty == 2) {
+        if(corrent < 0.6*totalNum) {
+          return "Tips:本题难度为【一般】 错误人数超过40%，建议重点讲解"
+        }
+      } else {
+        if(corrent < 0.4*totalNum) {
+          return "Tips:本题难度为【困难】 错误人数超过60%，建议重点讲解"
+        }
+      }
     }
   }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss">
 .analysisPaper{
+  .back{
+    position: fixed;
+    right: 60px;
+  }
   .select-chart{
     height: 10rem;
     width: 30%;

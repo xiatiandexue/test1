@@ -191,10 +191,10 @@ export default {
 
       },
       handleBack() {
-      this.$router.push({
-        path:`/examinationPaper/`,
-      })
-    },
+        this.$router.push({
+          path:`/examinationPaper/`,
+        })
+      },
     
     }
   }
@@ -204,7 +204,7 @@ export default {
     padding: 20px 0;
     .back{
       position: fixed;
-      top: 15vh;
+      top: 10vh;
       right:5vh;
     }
     .delete_button{

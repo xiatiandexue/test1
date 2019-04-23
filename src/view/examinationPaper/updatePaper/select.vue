@@ -196,12 +196,12 @@ export default {
     //=====分页相关=====
     //控制每页显示条数
     handleSizeChange(val) {
-      this.searchData.pageSize = val;
+      this.listQuery.pageSize = val;
       this.getList();
     },
     //跳转页码
     handleCurrentChange(val) {
-      this.searchData.pageNum = val;
+      this.listQuery.pageNum = val;
       this.getList();
     },
   }
@@ -211,7 +211,7 @@ export default {
 .addSelect{
   .back{
     position: fixed;
-    top: 13vh;
+    top: 10vh;
     right:5vh;
   }
 }

@@ -5,6 +5,7 @@ const TokenKey = 'Admin'
 const NameKey = 'Name'
 const RoleKey = 'Role'
 var TimeKey = 'LoginTime'
+var SessionKey = 'SHAREJSESSIONID'
 
 export function getUserId () {
   return Cookies.get(UserIdKey)
@@ -37,6 +38,7 @@ export function setToken (token) {
 }
 
 export function removeToken () {
+   Cookies.remove(SessionKey)
   return Cookies.remove(TokenKey)
 }
 

@@ -286,7 +286,7 @@ export default {
       this.listLoading = true;
       // console.log(this.listQuery)
       if(this.role == '教师'){
-        this.listQuery.createuser = getName()
+        this.listQuery.createName = getName()
       }
       exam.getExamList(this.listQuery).then(response => {
         var res = notify(this, response, true);

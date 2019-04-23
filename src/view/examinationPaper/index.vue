@@ -66,21 +66,44 @@
             <el-form-item label="试卷总分"><el-input v-model="Data.score"></el-input></el-form-item>
           </el-col>
         </el-row>
-        <tip-title title="试卷信息"></tip-title>
+        <tip-title title="单选题"></tip-title>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="单选题总数"><el-input v-model="Data.totalselect"></el-input></el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="判断题总数"><el-input v-model="Data.totalsaq"></el-input></el-form-item>
+            <el-form-item label="单选题分数"><el-input v-model="Data.selectscore"></el-input></el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
+          <el-col :span="7">
+              <el-form-item label="第一章题目数"><el-input v-model="Data.one"></el-input></el-form-item>
+          </el-col>
+          <el-col :span="7">
+              <el-form-item label="第二章题目数"><el-input v-model="Data.two"></el-input></el-form-item>
+          </el-col>
+          <el-col :span="7">
+              <el-form-item label="第三章题目数"><el-input v-model="Data.three"></el-input></el-form-item>
+          </el-col>
+        </el-row>
+        <tip-title title="判断题"></tip-title>
+        <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="单选题分数"><el-input v-model="Data.selectscore"></el-input></el-form-item>
+            <el-form-item label="判断题总数"><el-input v-model="Data.totalsaq"></el-input></el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="判断题分数"><el-input v-model="Data.saqscore"></el-input></el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="7">
+              <el-form-item label="第一章题目数"><el-input v-model="Data.one"></el-input></el-form-item>
+          </el-col>
+          <el-col :span="7">
+              <el-form-item label="第二章题目数"><el-input v-model="Data.two"></el-input></el-form-item>
+          </el-col>
+          <el-col :span="7">
+              <el-form-item label="第三章题目数"><el-input v-model="Data.three"></el-input></el-form-item>
           </el-col>
         </el-row>
         <!-- <el-row>
