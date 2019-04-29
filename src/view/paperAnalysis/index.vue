@@ -239,6 +239,7 @@ export default {
   .back{
     position: fixed;
     right: 60px;
+    z-index: 10000;
   }
   .select-chart{
     height: 10rem;

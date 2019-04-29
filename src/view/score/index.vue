@@ -32,7 +32,7 @@
         </div>
         <!--表格数据-->
         <div class="data-container">
-          <el-table v-loading="listLoading" max-height="600" :data="list" border highlight-current-row>
+          <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
               <el-table-column type="index" label="序号" width="60" align="center">
               </el-table-column>
               <el-table-column label="科目" prop="subject" align="center">
@@ -83,7 +83,7 @@
           classId: undefined,
           isStudent:false,
         },
-        total:3,
+        total:undefined,
         list:[],
         classesOptions:[],
         listLoading:false,

@@ -65,7 +65,6 @@
     },
     created() {
       this.getList()
-      debugger
       var show = this.$route.query.takeExam
       if(show){
         this.showButton = false

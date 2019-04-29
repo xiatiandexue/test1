@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container score">
+  <div class="app-container examArrange">
     <!--筛选条件-->
     <div class="filter-container">
       <el-form :inline="true">
@@ -90,7 +90,7 @@
     <el-dialog
       :title="title"
       :visible.sync="dialogVisible"
-      width="45%">
+      width="55%">
       <el-form ref="form" :model="formValues" label-width="120px" :rules="rules">
         <tip-title title="基本信息"></tip-title>
         <el-row>
@@ -105,21 +105,21 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="12">
-            <el-form-item label="考试开始时间" prop="beginTime">
+            <el-form-item label="考试开始时间" prop="beginTime" class="beginTime">
               <el-date-picker v-model="formValues.beginTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="考试结束时间" prop="endTime">
+            <el-form-item label="考试结束时间" prop="endTime" class="beginTime">
               <el-date-picker v-model="formValues.endTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row>
           <el-col :span="12">
             <el-form-item label="试卷名" prop="paperId">
               <el-select
@@ -424,5 +424,11 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-
+.examArrange{
+  // .beginTime{
+  //   .el-date-editor.el-input, .el-date-editor.el-input__inner {
+  //     width: 164px;
+  //   }
+  // }
+}
 </style>

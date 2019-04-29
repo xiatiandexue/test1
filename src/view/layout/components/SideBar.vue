@@ -91,13 +91,13 @@
               </el-menu-item>
             </router-link>
           </template>
-          <template>
+          <!-- <template>
             <router-link to="/examinationPaper/autoGeneration" >
               <el-menu-item index="/examinationPaper/autoGeneration">
                 <span slot="title">自动组卷</span>
               </el-menu-item>
             </router-link>
-          </template>
+          </template> -->
         </el-submenu>
 
       </div>

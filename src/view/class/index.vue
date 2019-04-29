@@ -190,7 +190,10 @@ export default {
     },
     submitUpload () {
       // classes.addClass(this.formValues)
-      this.$refs.importForm.validate().then(res => { this.$refs.upload.submit(); }).catch(err => { console.log("失败了：" + err) })
+      this.$refs.importForm.validate().then(res => { 
+        this.$refs.upload.submit();
+      
+      }).catch(err => { console.log("失败了：" + err) })
     },
     beforeAvatarUpload (file) {
       if (this.filesList.length > 0) {
@@ -210,10 +213,12 @@ export default {
         });
         setTimeout(() => {
           this.getList()
-        }, 1000)
+          this.getStudentOption()
+        }, 6000)
       }
       this.loading.close()
-      this.importVisible = false
+      this.UpVisible = false
+      
     },
     uploadCallBack (response, file, fileList) {
       var res = notify(this, response);
