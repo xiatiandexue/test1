@@ -129,7 +129,7 @@ export default {
       paperid: '',
     }
   },
-  created(){
+  activated(){
     this.paperid = this.$route.query.paperid;
     this.listQuery.subject = this.$route.query.subject;
     this.getList()
@@ -138,6 +138,7 @@ export default {
     getList() {
       this.listLoading = true;
       // console.log(this.listQuery)
+      this.listQuery.paperId = this.paperid
       itemBank.getSelectPage(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {

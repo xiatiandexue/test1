@@ -139,31 +139,7 @@ export default {
                 item2.type = '1'
                 item2.value = this.paperData.saqScore
               })
-              // if(response.data.single[0].userAnswer){
-              //   this.selectQuestions = response.data.single
-              //   this.SAQQuestions = response.data.saq
-              // } else {
-              //   var tempSingle = response.data.single
-              //   var tempSAQ = response.data.saq
-              //   tempSingle.forEach(item1 => {
-              //     if(!item1.userAnser){
-              //       item1.type = '2'
-              //       item1.userAnswer = ''
-              //       item1.value = this.paperData.selectScore
-              //     }
-              //     this.selectQuestions.push(item1);
-              //   })
-              //   console.log(this.selectQuestions)
-              //   tempSAQ.forEach(item2 => {
-              //     if(!item2.userAnswer){
-              //       item2.type = '1'
-              //       item2.userAnswer = ''
-              //       item2.value = this.paperData.saqScore
-              //     }
-              //     this.SAQQuestions.push(item2);
-              //   })
-              //   console.log(this.SAQQuestions)
-              // }
+              
               this.duration = dateDiff(this.paperData.beginTime,this.paperData.endTime)
               this.startTime = this.paperData.beginTime;
               this.examTime = this.duration*60 - ((this.nowTime - new Date(this.startTime))/1000);
@@ -280,7 +256,7 @@ export default {
             this.$router.push({
               path:`/examList`,
               query: {
-                takeExam: false
+                takeExam: true
               }
             });
           }

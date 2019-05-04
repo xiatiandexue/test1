@@ -12,7 +12,7 @@
               <el-form-item label="科目" prop="subject">
                 <el-input v-model="paperData.subject" 
                           disabled
-                          style="width:100px;" />
+                          style="width:150px;" />
               </el-form-item>
             </el-col>
             <el-col :span="5">

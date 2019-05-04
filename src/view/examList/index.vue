@@ -39,9 +39,10 @@
 </template>
 <script>
   import {format} from '@/commons/utils'
-  import { getClassId } from "@/commons/utils/auth"
+  import { getUserId, getClassId } from "@/commons/utils/auth"
   import { notify } from '@/commons/utils/notify'
   import exam from '@/commons/api/exam'
+  import score from '@/commons/api/score'
   export default {
     name: '',
     data() {
@@ -52,7 +53,9 @@
           pageSize: 10,
           classId:getClassId(),
         },
+        
         total:undefined,
+        scoreTotal: undefined,
         list:[],
         listLoading:false,
         statusOptions: [
@@ -108,6 +111,27 @@
           }
         }
         return name
+      },
+      getScore(examName) {
+        var searchData ={
+          pageNum: 1,
+          pageSize: 10,
+          examName: '',
+          isStudent: true
+        }
+        searchData.examName = examName
+        searchData.userId = getUserId()
+        score.getGradePage(searchData).then(response => {
+          var res = notify(this, response, true);
+          if (res) {
+            this.scoreTotal = response.data.total;
+            if(this.scoreTotal > 0){
+              return true
+            } else {
+              return false
+            }
+          }
+        });
       },
       //=====分页相关=====
       //控制每页显示条数
