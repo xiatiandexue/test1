@@ -109,7 +109,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button v-if="this.create" type="primary" @click="createData">确 定</el-button>
         <el-button v-else type="primary" @click="updateData">确 定</el-button>
-    </span>
+      </span>
     </el-dialog>
   </div>
 </template>

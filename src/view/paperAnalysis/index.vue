@@ -25,26 +25,33 @@
             </el-row>
           </el-form>
         </div>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="全部" name="all"></el-tab-pane>
+          <el-tab-pane label="建议讲解" name="some"></el-tab-pane>
+        </el-tabs>
         <div class="select">
           <h3>一、单选题（{{paperData.selectScore}}分）</h3>
           <ul class="question-item">
-            <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionId">
-              <p class="question-title">
-                {{index+1}} 、{{item.question}}
-              </p>
-              <el-radio-group v-model="item.answer">
-                <el-radio :label="item.one">{{options[0]}}、{{item.one}}</el-radio>
-                <el-radio :label="item.two">{{options[1]}}、{{item.two}}</el-radio>
-                <el-radio :label="item.three">{{options[2]}}、{{item.three}}</el-radio>
-                <el-radio :label="item.four">{{options[3]}}、{{item.four}}</el-radio>
-              </el-radio-group>
-              <div class="chart">
-                <div :id="'selectChart'+index" class="select-chart"></div>
-                <div class="tips">
-                  <span v-text="getTips(item.difficulty,item.corrent,item.totalNum)"></span>
+            <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionId"  v-show="activeName == 'some'? getTips(item.difficulty,item.corrent,item.totalNum)?true:false:true">
+              <div>
+                <p class="question-title">
+                  {{index+1}} 、{{item.question}}
+                </p>
+                <el-radio-group v-model="item.answer">
+                  <el-radio :label="item.one">{{options[0]}}、{{item.one}}</el-radio>
+                  <el-radio :label="item.two">{{options[1]}}、{{item.two}}</el-radio>
+                  <el-radio :label="item.three">{{options[2]}}、{{item.three}}</el-radio>
+                  <el-radio :label="item.four">{{options[3]}}、{{item.four}}</el-radio>
+                </el-radio-group>
+                <div class="chart">
+                  <div :id="'selectChart'+index" class="select-chart"></div>
+                  <div class="tips">
+                    <span v-text="getTips(item.difficulty,item.corrent,item.totalNum)"></span>
+                  </div>
                 </div>
+                <hr />
+
               </div>
-              <hr />
             </li>
           </ul>
         </div>
@@ -52,10 +59,10 @@
         <div class="SAQ">
           <h3>二、判断题（{{paperData.saqScore}}分）</h3>
           <ul class="question-item">
-            <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.questionId">
+            <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.questionId" v-show="activeName == 'some'? getTips(item.difficulty,item.corrent,item.totalNum)?true:false:true">
               <p class="question-title">
                 {{index+1}} 、{{item.question}}
-                </p>
+              </p>
               <el-radio-group v-model="item.answer">
                 <el-radio label="是"></el-radio>
                 <el-radio label="否"></el-radio>
@@ -91,6 +98,8 @@ export default {
         examId: undefined,
         isAnalyze: true,
       },
+      activeName:'all',
+      show: true,
     }
   },
   mounted(){
@@ -166,6 +175,22 @@ export default {
                   ];
                   return colorList[params.dataIndex]
                 },
+                label: {
+                  show: true, //开启显示
+                  position: 'right', //在右方显示
+                  textStyle: { //数值样式
+                    color: 'black',
+                    fontSize: 16,
+                    fontWeight: 600
+                  },
+                  formatter:function(params){
+                    if(params.value==0){
+                      return '';
+                    }else{
+                      return params.value;
+                    }
+                  }
+                }
               }
             },
             data:this.tempChartData  //系列中的数据内容数组，柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值    
@@ -216,17 +241,29 @@ export default {
         path:`/examArrange/`,
       })
     },
+    handleClick(){
+
+    },
     getTips(difficulty,corrent,totalNum){
       if(difficulty == 1){
         if(corrent < 0.8*totalNum) {
+          if(this.activeName == "some"){
+            this.show = true
+          }
           return "Tips:本题难度为【简单】 错误人数超过20%，建议重点讲解"
-        }
+        } 
       } else if (difficulty == 2) {
         if(corrent < 0.6*totalNum) {
+          if(this.activeName == "some"){
+            this.show = true
+          }
           return "Tips:本题难度为【一般】 错误人数超过40%，建议重点讲解"
         }
       } else {
         if(corrent < 0.4*totalNum) {
+          if(this.activeName == "some"){
+            this.show = true
+          }
           return "Tips:本题难度为【困难】 错误人数超过60%，建议重点讲解"
         }
       }

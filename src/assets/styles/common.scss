@@ -282,11 +282,30 @@
             background: #d7e7ee !important;
           }
 
-          .router-link-active {
-            .el-menu-item {
-              background: #d7e7ee !important;
-            }
+          .el-menu-item.is-active {
+            background: #d7e7ee !important;
           }
+        }
+        .menu-item {
+          .el-menu-item {
+            height: 34px !important;
+            line-height: 34px !important;
+            margin-top: 6px !important;
+            background: url('../images/common/bg-menu-item.png');
+            border: 1px solid #13b6f4 !important;
+            border-radius: 3px;
+            color: #015b8b !important;
+            font-weight: bold;
+          }
+
+          .el-menu-item:hover {
+            // background: #d7e7ee !important;
+            border: 1.5px solid #07b0f3 !important;
+          }
+          .el-menu-item.is-active {
+            border: 1.5px solid #07b0f3 !important;
+          }
+          
         }
       }
     }

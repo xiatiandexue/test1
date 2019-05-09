@@ -8,11 +8,13 @@ const paperRouter = [
   {path: '/examinationPaper/autoGeneration', component: () => import('@/view/examinationPaper/autoGeneration'), name: 'AutoGeneration', meta: { title: '自动组卷'}},
   {path: '/examinationPaper/updatePaper', component: () => import('@/view/examinationPaper/updatePaper'), name: 'UpdatePaper', meta: { title: '更新试卷'}},
   {path: '/examinationPaper/updatePaper/addSelect', component: () => import('@/view/examinationPaper/updatePaper/select'), name: 'AddSelect', meta: { title: '添加单选题'}},
-  {path: '/examinationPaper/updatePaper/addSAQ', component: () => import('@/view/examinationPaper/updatePaper/saq'), name: 'AddSAQ', meta: { title: '添加单选题'}},
+  {path: '/examinationPaper/updatePaper/addSAQ', component: () => import('@/view/examinationPaper/updatePaper/saq'), name: 'AddSAQ', meta: { title: '添加判断题'}},
 ]
 const itemRouter = [
-  {path: '/itemBank/singleSelect', component: () => import('@/view/itemBank/singleSelect'), name: 'SingleSelect', meta: { title: '单选题管理'}},
-  {path: '/itemBank/SAQ', component: () => import('@/view/itemBank/SAQ'), name: 'SAQ', meta: { title: '简答题管理'}},
+  // {path: '/itemBank/singleSelect', component: () => import('@/view/itemBank/singleSelect'), name: 'SingleSelect', meta: { title: '单选题管理'}},
+  // {path: '/itemBank/SAQ', component: () => import('@/view/itemBank/SAQ'), name: 'SAQ', meta: { title: '简答题管理'}},
+  {path: '/itemBank/Chinese', component: () => import('@/view/itemBank/Chinese'), name: 'Chinese', meta: { title: '大学语文'}},
+  {path: '/itemBank/history', component: () => import('@/view/itemBank/history'), name: 'History', meta: { title: '中国古代历史'}},
 ]
 
 

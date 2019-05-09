@@ -214,7 +214,6 @@ export default {
         } else {
           isAllAnswer = false;
         }
-        console.log(isAllAnswer,isMust);
         if(isAllAnswer === false && isMust !== true){
           this.$message({
             type: 'warning',

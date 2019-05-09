@@ -7,9 +7,10 @@
       background-color="#304156"
       text-color="#bfcbd9"
       active-text-color="#409EFF"
+      router
     >
       
-      <div class="menu-wrapper">
+      <!-- <div class="menu-wrapper">
         <el-submenu index="1">
           <template slot="title">
             <svg-icon icon-class="update-psw"/>
@@ -24,7 +25,6 @@
             </router-link>
           </template>
         </el-submenu>
-
       </div>
       <div class="menu-wrapper">
         <el-submenu index="2">
@@ -36,13 +36,11 @@
           <template>
             <router-link to="/score" >
               <el-menu-item index="/score">
-                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
                 <span slot="title">查看成绩</span>
               </el-menu-item>
             </router-link>
           </template>
         </el-submenu>
-
       </div>
       <div v-if="role=='管理员'" class="menu-wrapper">
         <el-submenu index="3">
@@ -54,13 +52,12 @@
           <template>
             <router-link to="/user" >
               <el-menu-item index="/user">
-                <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"/> -->
+                <svg-icon icon-class="score"/>
                 <span slot="title">用户管理</span>
               </el-menu-item>
             </router-link>
           </template>
         </el-submenu>
-
       </div>
       <div v-if="role=='管理员'" class="menu-wrapper">
         <el-submenu index="4">
@@ -91,15 +88,14 @@
               </el-menu-item>
             </router-link>
           </template>
-          <!-- <template>
+          <template>
             <router-link to="/examinationPaper/autoGeneration" >
               <el-menu-item index="/examinationPaper/autoGeneration">
                 <span slot="title">自动组卷</span>
               </el-menu-item>
             </router-link>
-          </template> -->
+          </template>
         </el-submenu>
-
       </div>
       <div v-if="role != '学生'" class="menu-wrapper">
         <el-submenu index="6">
@@ -109,16 +105,16 @@
           </template>
 
           <template>
-            <router-link to="/itemBank/singleSelect" >
-              <el-menu-item index="/itemBank/singleSelect">
-                <span slot="title">单选题管理</span>
+            <router-link to="/itemBank/Chinese" >
+              <el-menu-item index="/itemBank/Chinese">
+                <span slot="title">大学语文</span>
               </el-menu-item>
             </router-link>
           </template>
           <template>
-            <router-link to="/itemBank/SAQ" >
-              <el-menu-item index="/itemBank/SAQ">
-                <span slot="title">判断题管理</span>
+            <router-link to="/itemBank/history" >
+              <el-menu-item index="/itemBank/history">
+                <span slot="title">中国古代历史</span>
               </el-menu-item>
             </router-link>
           </template>
@@ -146,6 +142,65 @@
             </router-link>
           </template>
         </el-submenu>
+      </div> -->
+      <div class="menu-item">
+        <el-menu-item index="/updatePSW">
+          <svg-icon icon-class="update-psw"/>
+          <span slot="title">修改密码</span>
+        </el-menu-item>
+      </div>
+      <div class="menu-item">
+        <el-menu-item index="/score">
+          <svg-icon icon-class="score"/>
+          <span slot="title">成绩管理</span>
+        </el-menu-item>
+      </div>
+      <div v-if="role=='管理员'" class="menu-item">
+        <el-menu-item index="/user">
+          <svg-icon icon-class="score"/>
+          <span slot="title">用户管理</span>
+        </el-menu-item>
+      </div>
+      <div v-if="role=='管理员'" class="menu-item">
+        <el-menu-item index="/class">
+          <svg-icon icon-class="class"/>
+          <span slot="title">班级管理</span>
+        </el-menu-item>
+      </div>
+      <div v-if="role != '学生'" class="menu-item">
+        <el-menu-item index="/examinationPaper">
+          <svg-icon icon-class="paper"/>
+          <span slot="title">试卷管理</span>
+        </el-menu-item>
+      </div>
+      <div v-if="role != '学生'" class="menu-wrapper">
+        <el-submenu index="6">
+          <template slot="title">
+            <svg-icon icon-class="itemBank"/>
+            <span slot="title">题库管理</span>
+          </template>
+
+          <template>
+              <el-menu-item index="/itemBank/Chinese">
+                <span slot="title">大学语文</span>
+              </el-menu-item>
+          </template>
+          <template>
+              <el-menu-item index="/itemBank/history">
+                <span slot="title">中国古代历史</span>
+              </el-menu-item>
+          </template>
+        </el-submenu>
+      </div>
+      <div class="menu-item">
+        <el-menu-item index="/examList" v-if="role == '学生'">
+          <svg-icon icon-class="examlist"/>
+          <span slot="title">考试列表</span>
+        </el-menu-item>
+        <el-menu-item index="/examArrange" v-else>
+          <svg-icon icon-class="examlist"/>
+          <span slot="title">考试安排</span>
+        </el-menu-item>
       </div>
     </el-menu>
   </el-scrollbar>

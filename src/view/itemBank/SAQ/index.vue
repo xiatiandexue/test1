@@ -110,7 +110,7 @@
     <el-dialog :visible.sync="importVisible"
                   :append-to-body='true'
                  width="40%">
-      <div style="margin:0rem 1rem;">
+      
         <el-form ref="importForm"
                   :rules="rules"
                   :model="data"
@@ -126,7 +126,7 @@
               </el-col>
             </el-row>
           </tip-title> -->
-          <tip-title title="二、上传数据">
+          <tip-title title="上传数据">
             <div style="overflow:hidden;">
               <div style="height:28px;line-height:28px;width:100px;float:left;font-weight:bold;">上传文件：</div>
               <div style="float:left;">
@@ -155,13 +155,13 @@
             </div>
           </tip-title>
         </el-form>
-        <div slot="footer"
+        <span slot="footer"
               class="dialog-footer">
           <el-button @click="submitUpload"
                       type="primary">上传</el-button>
           <el-button @click="importVisible = false">关闭</el-button>
-        </div>
-      </div>
+      </span>
+      
     </el-dialog>
   </div>
 </template>
@@ -174,7 +174,11 @@ import { getName } from "@/commons/utils/auth"
 import { getRole } from "@/commons/utils/auth"
 import TipTitle from "@/components/TipTitle";
 export default {
+  name:'judge',
   components:{TipTitle},
+  props:{
+    subject:{type: String},
+  },
   data () {
     return {
       listLoading:false,
@@ -214,6 +218,7 @@ export default {
     }
   },
   created () {
+    this.listQuery.subject = this.subject
     this.getList()
   },
   methods: {
