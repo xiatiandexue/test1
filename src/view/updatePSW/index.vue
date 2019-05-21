@@ -14,7 +14,6 @@
 </template>
 
 <script>
-  // import { pswRules } from "@/commons/utils/validate";
   import user from '@/commons/api/user'
   import { notify } from '@/commons/utils/notify'
   import { getToken } from "@/commons/utils/auth";

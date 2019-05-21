@@ -68,7 +68,6 @@ export default {
   mounted () {
     console.log(this.logintime)
   },
-  // mixins: [ResizeMixin],
   computed: {
     
   },
@@ -81,11 +80,6 @@ export default {
       });
     },
     
-    // getBubble() {
-    //   bubbleEmergencyEvent().then(res => {
-    //     this.bubbleNum = res.data;
-    //   });
-    // }
   }
 };
 </script>

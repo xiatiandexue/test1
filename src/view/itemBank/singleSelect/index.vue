@@ -5,9 +5,9 @@
         <el-form-item label="题目">
           <el-input v-model="listQuery.question" clearable style="width:250px;"  />
         </el-form-item>
-        <el-form-item label="科目">
+        <!-- <el-form-item label="科目">
           <el-input v-model="listQuery.subject" clearable style="width:250px;"/>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="章节">
           <el-input v-model="listQuery.chapter" clearable style="width:250px;"/>
         </el-form-item>
@@ -131,7 +131,10 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="科目" prop="subject">
-              <el-input v-model="data.subject" clearable style="width:200px;" />
+              <el-select v-model="data.subject" placeholder="请选择科目">
+                <el-option label="大学语文" value="大学语文"></el-option>
+                <el-option label="中国古代历史" value="中国古代历史"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">

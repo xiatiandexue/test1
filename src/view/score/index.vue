@@ -4,7 +4,10 @@
         <div class="filter-container">
             <el-form :inline="true">
                 <el-form-item label="科目">
-                  <el-input v-model="listQuery.subject" clearable style="width:250px;" @keyup.enter.native="handleFilter" />
+                  <el-select v-model="listQuery.subject" placeholder="请选择科目">
+                    <el-option label="大学语文" value="大学语文"></el-option>
+                    <el-option label="中国古代历史" value="中国古代历史"></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="考试名">
                   <el-input v-model="listQuery.examName" clearable style="width:250px;" @keyup.enter.native="handleFilter" />

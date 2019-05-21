@@ -17,7 +17,7 @@
       </div>
       
       <div class="SAQ">
-        <h3>二、简答题</h3>
+        <h3>二、判断题</h3>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in saqids" :key="item.id">
             <p class="question-title">{{index+1}} 、{{item.name}}</p>

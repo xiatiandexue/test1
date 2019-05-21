@@ -1,9 +1,9 @@
 'use strict'
-// Template version: 1.3.1
-// see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
+const os = require('os')
+var networkInterfaces=os.networkInterfaces();
+var ip=networkInterfaces['本地连接'][1].address
 module.exports = {
   dev: {
     env: require('./dev.env'),
@@ -22,7 +22,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: ip, // can be overwritten by process.env.HOST
     port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
