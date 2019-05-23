@@ -5,9 +5,9 @@
         <el-form-item label="题目">
           <el-input v-model="listQuery.question" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
-        <el-form-item label="科目">
+        <!-- <el-form-item label="科目">
           <el-input v-model="listQuery.subject" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="章节">
           <el-input v-model="listQuery.chapter" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
