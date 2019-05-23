@@ -55,11 +55,10 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="科目" prop="subject">
-              <!-- <el-select v-model="Data.subject" placeholder="请选择科目">
-                <el-option label="语文" value="语文"></el-option>
-                <el-option label="历史" value="历史"></el-option>
-              </el-select> -->
-              <el-input v-model="Data.subject"></el-input>
+              <el-select v-model="Data.subject" placeholder="请选择科目">
+                <el-option label="大学语文" value="大学语文"></el-option>
+                <el-option label="中国古代历史" value="中国古代历史"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -210,14 +209,7 @@ export default {
             if (res) {
               this.dialogVisible = false
               this.getList()
-              this.Data = {
-                name: '',
-                subject: '',
-                score: '',
-                selectnum: '',
-                saqnum: '',
-                createuser: getName()
-              }
+              this.$refs["form"].resetField()
               
             }
           })

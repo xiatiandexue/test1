@@ -157,7 +157,7 @@
       </div>
       <div v-if="role=='管理员'" class="menu-item">
         <el-menu-item index="/user">
-          <svg-icon icon-class="score"/>
+          <svg-icon icon-class="user"/>
           <span slot="title">用户管理</span>
         </el-menu-item>
       </div>
@@ -209,9 +209,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getRole } from "@/commons/utils/auth";
-// import SidebarItem from './SidebarItem'
 export default {
-  // components: { SidebarItem },
   data(){
     return{
       role: getRole(),
@@ -220,13 +218,9 @@ export default {
   computed: {
     ...mapGetters([
       'privRouters',
-      // 'permission_routers',
       'sidebar'
     ]),
-    // isCollapse() {
-    //   // console.log("privRouters",this.privRouters)
-    //   return !this.sidebar.opened
-    // }
+   
   }
 }
 </script>

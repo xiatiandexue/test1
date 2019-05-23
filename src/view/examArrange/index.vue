@@ -96,7 +96,10 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="科目" prop="subject">
-              <el-input v-model="formValues.subject"></el-input>
+              <el-select v-model="formValues.subject" placeholder="请选择科目">
+                <el-option label="大学语文" value="大学语文"></el-option>
+                <el-option label="中国古代历史" value="中国古代历史"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">

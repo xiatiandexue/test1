@@ -20,7 +20,7 @@ export default {
   data(){
     return{
       activeName: 'select',
-      subject:'语文'
+      subject:'大学语文'
     }
   }
 }
