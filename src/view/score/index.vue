@@ -102,7 +102,7 @@
     methods: {
       //搜索
       handleFilter(){
-        this.listQuery.pageNum = 1;
+        // this.listQuery.pageNum = 1;
         this.getList()
       },
       //重置
@@ -144,7 +144,6 @@
         });
       },
       handleExport () {
-        debugger
         if(!this.listQuery.classId) {
           var url = `/Exam/exam/download?subject=${this.listQuery.subject}&paperName=${this.listQuery.paperName}&examName=${this.listQuery.examName}&isStudent=${this.listQuery.isStudent}`
         } else {
@@ -171,12 +170,12 @@
       //=====分页相关=====
       //控制每页显示条数
       handleSizeChange(val) {
-        this.searchData.pageSize = val;
+        this.listQuery.pageSize = val;
         this.getList();
       },
       //跳转页码
       handleCurrentChange(val) {
-        this.searchData.pageNum = val;
+        this.listQuery.pageNum = val;
         this.getList();
       },
     }

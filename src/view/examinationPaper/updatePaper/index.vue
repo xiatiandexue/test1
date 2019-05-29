@@ -1,7 +1,7 @@
 <template>
   <div class="updatePaper" style="height: 87vh">
     <span class="back">
-      <el-button type="primary" @click="handleUpdate">确定</el-button>
+      <!-- <el-button type="primary" @click="handleUpdate">确定</el-button> -->
       <el-button type="primary" @click="handleBack">返回</el-button>
     </span>
     <div class="main">
@@ -25,7 +25,7 @@
             <el-col :span="10">
               <el-form-item label="试卷名" prop="name">
                 <el-input v-model="paperData.name" 
-                          clearable
+                          disabled
                           style="width:350px;" />
               </el-form-item>
             </el-col>
@@ -35,7 +35,7 @@
       <div class="select">
         <h3>一、单选题（{{paperData.selectscore}}分）</h3>
         <div class="tool">
-          <el-button @click="addSelect"><svg-icon icon-class="btn-add" />添加</el-button>
+          <el-button v-show="showAddSelect" @click="addSelect"><svg-icon icon-class="btn-add" />添加</el-button>
         </div>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in selectQuestions" :key="item.questionid">
@@ -59,7 +59,7 @@
       <div class="SAQ">
         <h3>二、判断题（{{paperData.saqscore}}分）</h3>
         <div class="tool">
-          <el-button @click="addSAQ"><svg-icon icon-class="btn-add" />添加</el-button>
+          <el-button v-show="showAddSaq" @click="addSAQ"><svg-icon icon-class="btn-add" />添加</el-button>
         </div>
         <ul class="question-item">
           <li class="marginB10" v-for="(item,index) in SAQQuestions" :key="item.saqid">
@@ -92,13 +92,41 @@ export default {
         selectQuestions: '',
         SAQQuestions:'',
         options:['A','B','C','D'],
-        selectDialog: false
+        selectDialog: false,
+        showAddSelect: false,
+        showAddSaq: false
       }
     },
     
     activated() {
       this.paperid = this.$route.query.paperid;
       this.init();
+    },
+    watch:{
+      'paperData.selectnum': {
+        handler(newVal, oldVal) {
+          debugger
+          if(this.paperData.totalselect > this.paperData.selectnum){
+            this.showAddSelect = true
+          } else {
+            this.showAddSelect = false
+          }
+        },
+        deep: true,
+        immediate: true
+      },
+      'paperData.saqnum': {
+        handler(newVal, oldVal) {
+          debugger
+          if(this.paperData.totalsaq > this.paperData.saqnum){
+            this.showAddSaq = true
+          } else {
+            this.showAddSaq = false
+          }
+        },
+        deep: true,
+        immediate: true
+      }
     },
     methods:{
       //初始化
@@ -191,9 +219,17 @@ export default {
 
       },
       handleBack() {
-        this.$router.push({
-          path:`/examinationPaper/`,
-        })
+        if(this.paperData.totalselect == this.paperData.selectnum && this.paperData.totalsaq == this.paperData.saqnum){
+          this.$router.push({
+            path:`/examinationPaper/`,
+          })
+        } else {
+          var msg = '单选题数量应为' + this.paperData.totalselect + '道;'+'判断题数量应为' + this.paperData.totalsaq + '道;' + '<br />' + '单选题数量现为' + this.paperData.selectnum + '道;'+'判断题数量现为' + this.paperData.saqnum + '道'
+          this.$alert(msg, '题目数量不足', {
+            confirmButtonText: '确定',
+          })
+          .catch(() => {});
+        }
       },
     
     }
