@@ -62,24 +62,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="试卷总分"><el-input v-model="Data.score"></el-input></el-form-item>
+            <el-form-item label="试卷总分" prop="score"><el-input v-model="Data.score"></el-input></el-form-item>
           </el-col>
         </el-row>
         <tip-title title="试卷信息"></tip-title>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="单选题总数"><el-input v-model="Data.totalselect"></el-input></el-form-item>
+            <el-form-item label="单选题总数" prop="totalselect"><el-input v-model="Data.totalselect"></el-input></el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="单选题分数"><el-input v-model="Data.selectscore"></el-input></el-form-item>
+            <el-form-item label="单选题分数" prop="selectscore"><el-input v-model="Data.selectscore"></el-input></el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="判断题总数"><el-input v-model="Data.totalsaq"></el-input></el-form-item>
+            <el-form-item label="判断题总数" prop="totalsaq"><el-input v-model="Data.totalsaq"></el-input></el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="判断题分数"><el-input v-model="Data.saqscore"></el-input></el-form-item>
+            <el-form-item label="判断题分数" prop="saqscore"><el-input v-model="Data.saqscore"></el-input></el-form-item>
           </el-col>
         </el-row>
       </el-form>

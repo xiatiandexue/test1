@@ -175,7 +175,13 @@ export const saqRules = {
   score: [reqf('分值'), numf()],
 }
 export const autoGeneratingPaperRules = {
-  subject: [reqf('科目')]
+  name: [reqf('试卷名')],
+  subject: [reqf('科目')],
+  score: [reqf('试卷总分'), numf()],
+  totalselect: [reqf('单选题总数'), numf()],
+  selectscore: [reqf('单选题分数'), numf()],
+  totalsaq: [reqf('判断题总数'), numf()],
+  saqscore: [reqf('判断题分数'), numf()]
 }
 export const classesRules = {
   name: [reqf('班级')]
