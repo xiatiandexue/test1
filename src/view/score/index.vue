@@ -167,7 +167,6 @@
         var date = new Date(time);
         return format(date, 'yyyy-MM-dd hh:mm:ss');
       },
-      // downloadTemplate: (data) => getDownload('/app/waterquality/download?type=' + data.type), // 水质列表模板下载
       //=====分页相关=====
       //控制每页显示条数
       handleSizeChange(val) {

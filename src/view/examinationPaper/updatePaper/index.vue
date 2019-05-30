@@ -25,7 +25,7 @@
             <el-col :span="10">
               <el-form-item label="试卷名" prop="name">
                 <el-input v-model="paperData.name" 
-                          clearable
+                          disabled
                           style="width:350px;" />
               </el-form-item>
             </el-col>

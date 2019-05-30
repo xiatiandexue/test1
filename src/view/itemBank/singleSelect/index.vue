@@ -159,7 +159,6 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-              <!-- <el-input v-model="data.difficulty" clearable style="width:100px;" /> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -178,16 +177,6 @@
                   :model="data"
                   label-width="80px"
                   label-position="center">
-          <!-- <tip-title title="一、导入信息">
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="科目"
-                              prop="subject">
-                  <el-input v-model="formValue.subject" clearable style="width:200px;" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </tip-title> -->
           <tip-title title="上传数据">
             <div style="overflow:hidden;">
               <div style="height:28px;line-height:28px;width:100px;float:left;font-weight:bold;">上传文件：</div>
@@ -206,10 +195,6 @@
                   <el-button slot="trigger"
                               size="small"
                               type="primary">选取文件</el-button>
-                  <!-- <el-button style="margin-left: 10px;"
-                              size="small"
-                              type="primary"
-                              @click="submitUpload">上传到服务器</el-button> -->
                   <div class="el-upload__tip"
                         slot="tip">只能上传xls/xlsx文件</div>
                 </el-upload>
