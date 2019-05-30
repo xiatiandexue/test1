@@ -85,7 +85,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleCreate">生成试卷</el-button>
+        <el-button type="primary" @click="handleCreate(Data)">生成试卷</el-button>
     </span>
     </el-dialog>
   </div>
@@ -119,8 +119,10 @@ export default {
         name: '',
         subject: '',
         score: '',
-        selectnum: '',
-        saqnum: '',
+        totalselect: '',
+        totalsaq: '',
+        selectscore: '',
+        saqscore: '',
         createuser: getName()
       },
       listLoading:false,
@@ -171,18 +173,25 @@ export default {
         this.listLoading = false;
       });
     },
-    handleCreate() {
+    handleCreate(Data) {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          paper.autoGenerating(this.Data).then(response => {
-            var res = notify(this, response)
-            if (res) {
-              this.dialogVisible = false
-              this.getList()
-              this.$refs["form"].resetField()
-              
-            }
-          })
+          if(Data.score == Data.totalsaq*Data.saqscore + Data.totalselect*Data.selectscore) {
+            paper.autoGenerating(Data).then(response => {
+              var res = notify(this, response)
+              if (res) {
+                this.dialogVisible = false
+                this.getList()
+                this.$refs["form"].resetField()
+                
+              }
+            })
+          } else {
+            this.$alert('分数不正确，请重新算分', '提示', {
+              confirmButtonText: '确定',
+            })
+            .catch(() => {});
+          }
         }
       })
     },

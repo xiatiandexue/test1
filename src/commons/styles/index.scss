@@ -128,7 +128,7 @@ code {
 
 //main-container全局样式
 .app-container {
-  padding: 20px;
+  // padding: 20px;
   .filter-container{
     .el-form-item {
       margin-bottom: 0px!important;
@@ -136,7 +136,7 @@ code {
     .el-form--inline .el-form-item__content{
       height: 30px;
       .el-input--suffix{
-        width: 200px!important;
+        width: 170px!important;
         .el-input__inner{
           height: 30px;
         }
