@@ -105,7 +105,6 @@ export default {
     watch:{
       'paperData.selectnum': {
         handler(newVal, oldVal) {
-          debugger
           if(this.paperData.totalselect > this.paperData.selectnum){
             this.showAddSelect = true
           } else {
@@ -117,7 +116,6 @@ export default {
       },
       'paperData.saqnum': {
         handler(newVal, oldVal) {
-          debugger
           if(this.paperData.totalsaq > this.paperData.saqnum){
             this.showAddSaq = true
           } else {
@@ -224,11 +222,12 @@ export default {
             path:`/examinationPaper/`,
           })
         } else {
-          var msg = '单选题数量应为' + this.paperData.totalselect + '道;'+'判断题数量应为' + this.paperData.totalsaq + '道;' + '<br />' + '单选题数量现为' + this.paperData.selectnum + '道;'+'判断题数量现为' + this.paperData.saqnum + '道'
-          this.$alert(msg, '题目数量不足', {
+          var msg = `<p><span>单选题数量应为:</span>${this.paperData.totalselect}<span>道;判断题数量应为</span>${this.paperData.totalsaq}<span>道;<span><br><span>单选题数量现为</span>${this.paperData.selectnum}<span>道;判断题数量现为</span>${this.paperData.saqnum}<span>道</span></p>`
+          this.$alert(msg<br>msg, '题目数量不足', {
             confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true
           })
-          .catch(() => {});
+            .catch(() => {});
         }
       },
     

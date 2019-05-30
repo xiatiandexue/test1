@@ -16,14 +16,10 @@
     </div>
     <div class="data-container">
       <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
-        <!-- <el-table-column type="selection" width="55" align="center">
-        </el-table-column> -->
         <el-table-column type="index" label="序号" width="60" align="center">
         </el-table-column>
         <el-table-column label="班级" prop="name" align="center">
         </el-table-column>
-        <!-- <el-table-column label="学号" prop="" align="center">
-        </el-table-column> -->
         <el-table-column label="姓名" prop="studentNames" align="center">
           <template slot-scope="{row}">
             <span>{{row.studentNames&&row.studentNames.join(',')}}</span>
@@ -71,10 +67,6 @@
           <el-button slot="trigger"
                       size="small"
                       type="primary">选取文件</el-button>
-          <!-- <el-button style="margin-left: 10px;"
-                      size="small"
-                      type="primary"
-                      @click="submitUpload">上传到服务器</el-button> -->
           <div class="el-upload__tip"
                 slot="tip">只能上传xls/xlsx文件</div>
         </el-upload>
@@ -157,7 +149,6 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      // console.log(this.listQuery)
       classes.getClassList(this.listQuery).then(response => {
         var res = notify(this, response, true);
         if (res) {
@@ -189,7 +180,6 @@ export default {
       this.UpVisible = true
     },
     submitUpload () {
-      // classes.addClass(this.formValues)
       this.$refs.importForm.validate().then(res => { 
         this.$refs.upload.submit();
       

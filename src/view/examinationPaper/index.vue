@@ -160,7 +160,6 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      // console.log(this.listQuery)
       if(this.role == '教师'){
         this.listQuery.createuser = getName()
       }

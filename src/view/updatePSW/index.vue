@@ -8,7 +8,6 @@
       <el-input type="password" v-model="addUserFormData.password_confirm" placeholder="确认密码"></el-input>
     </el-form-item>
     <el-button type="primary" @click="handleUpdate()" style="float:right;">确 定</el-button>
-    <!-- <el-button @click="handleUpdate"><svg-icon icon-class="btn-search" />确定</el-button> -->
   </el-form>
 </div>
 </template>
@@ -48,7 +47,6 @@ export default {
   },
   methods: {
     handleUpdate () {
-      debugger
       this.$refs["vueElForm"].validate((valid) => {
         if (valid) {
           this.tempData.usercode = getToken()

@@ -14,7 +14,6 @@
         <el-form-item v-if="role == '管理员'" label="创建者">
           <el-input v-model="listQuery.createuser" clearable style="width:150px;" @keyup.enter.native="handleFilter" />
         </el-form-item>
-        <!-- <svg-icon icon-class="btn-reset" /> -->
         <el-button @click="handleReset"><svg-icon icon-class="btn-reset" />重置</el-button>
         <el-button @click="handleFilter"><svg-icon icon-class="btn-search" />搜索</el-button>
       </el-form>
@@ -26,8 +25,6 @@
     </div>
     <div class="data-container">
       <el-table v-loading="listLoading" max-height="350" :data="list" border highlight-current-row>
-        <!-- <el-table-column type="selection" width="55" align="center">
-        </el-table-column> -->
         <el-table-column type="index" label="序号" width="60" align="center">
         </el-table-column>
         <el-table-column label="题目" align="center">
